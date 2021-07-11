@@ -6,4 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/timerFrame"
+        android:layout_width="350dp"
+        android:layout_height="406dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="299dp"
+        android:contentDescription="Timer frame"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/frame1" />
+
+    <TextView
+        android:id="@+id/timerText"
+        android:layout_width="139dp"
+        android:layout_height="69dp"
+        android:gravity="center"
+        android:text="Time"
+        app:layout_constraintBottom_toBottomOf="@+id/timerFrame"
+        app:layout_constraintEnd_toEndOf="@+id/timerFrame"
+        app:layout_constraintStart_toStartOf="@+id/timerFrame"
+        app:layout_constraintTop_toTopOf="@+id/timerFrame" />
+
+    <ImageView
+        android:id="@+id/libraryChain"
+        android:layout_width="125dp"
+        android:layout_height="272dp"
+        android:layout_marginStart="173dp"
+        android:layout_marginTop="69dp"
+        android:layout_marginEnd="113dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timerFrame"
+        app:srcCompat="@drawable/watch_chain" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="63dp"
+        android:layout_height="179dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="590dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/tag_records" />
 </androidx.constraintlayout.widget.ConstraintLayout>
