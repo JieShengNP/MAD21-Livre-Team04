@@ -10,6 +10,15 @@ public class Book {
     public String thumbnail;
     public int readSeconds;
     public boolean isCustom;
+    public boolean isArchived;
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
+    }
 
     public ArrayList<Book> bookArrayList;
 
