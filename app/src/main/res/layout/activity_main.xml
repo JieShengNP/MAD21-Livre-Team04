@@ -21,35 +21,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/frame1" />
 
-    <TextView
+    <Chronometer
         android:id="@+id/timerText"
         android:layout_width="139dp"
         android:layout_height="69dp"
         android:gravity="center"
-        android:text="Time"
+        android:format="00:00:00"
         app:layout_constraintBottom_toBottomOf="@+id/timerFrame"
         app:layout_constraintEnd_toEndOf="@+id/timerFrame"
         app:layout_constraintStart_toStartOf="@+id/timerFrame"
         app:layout_constraintTop_toTopOf="@+id/timerFrame" />
 
-    <ImageView
-        android:id="@+id/libraryChain"
-        android:layout_width="125dp"
-        android:layout_height="272dp"
-        android:layout_marginStart="173dp"
-        android:layout_marginTop="69dp"
-        android:layout_marginEnd="113dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timerFrame"
-        app:srcCompat="@drawable/watch_chain" />
-
-    <ImageView
-        android:id="@+id/recordsTag"
-        android:layout_width="65dp"
-        android:layout_height="107dp"
-        android:layout_marginEnd="52dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tag_records" />
 </androidx.constraintlayout.widget.ConstraintLayout>
