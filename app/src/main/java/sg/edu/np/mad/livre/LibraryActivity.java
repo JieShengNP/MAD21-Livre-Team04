@@ -13,13 +13,13 @@ import java.util.ArrayList;
 
 public class LibraryActivity extends AppCompatActivity {
 
-    ImageView archiveButton;
+    ImageView archiveButton, catalogueButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
-        
+
         archiveButton = findViewById(R.id.libraryArchiveImage);
         archiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,6 +29,14 @@ public class LibraryActivity extends AppCompatActivity {
             }
         });
 
+        catalogueButton = findViewById(R.id.libraryCatalogueImage);
+        catalogueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LibraryActivity.this, CatalogueActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //TODO: Populate ArrayList<ArrayList<Book>> with contents
         ArrayList<ArrayList<Book>> bookNestedList = new ArrayList<>();
