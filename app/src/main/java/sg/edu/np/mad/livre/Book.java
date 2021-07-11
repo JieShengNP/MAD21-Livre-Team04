@@ -3,6 +3,7 @@ package sg.edu.np.mad.livre;
 public class Book {
     public int isbn;
     public String name;
+    public String author;
     public String blurb;
     public String thumbnail;
     public int readSeconds;
@@ -56,11 +57,20 @@ public class Book {
         isCustom = custom;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
                 "isbn=" + isbn +
                 ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
                 ", blurb='" + blurb + '\'' +
                 ", thumbnail='" + thumbnail + '\'' +
                 ", readSeconds=" + readSeconds +
