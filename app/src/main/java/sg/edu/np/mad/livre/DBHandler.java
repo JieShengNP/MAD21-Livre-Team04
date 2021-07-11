@@ -269,7 +269,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return  totalTime;
     }
 
-    public ArrayList<Records> GetAllRecords() throws ParseException {
+    public ArrayList<Records> GetAllRecords(){
         ArrayList<Records> recordsList = new ArrayList<Records>();
         String dbQuery = "SELECT * FROM " + TABLE_LOG + " ORDER BY " + LOG_COLUMN_ID + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -281,7 +281,12 @@ public class DBHandler extends SQLiteOpenHelper {
                 records.setName(cursor.getString(1));
                 records.setIsbn(cursor.getString(2));
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                records.setDateRead(sdf.parse(cursor.getString(3)));
+                try {
+                    records.setDateRead(sdf.parse(cursor.getString(3)));
+                }catch (ParseException ex)
+                {
+                    records.setDateRead(null);
+                }
                 records.setTimeReadSec(cursor.getInt(4));
                 recordsList.add(records);
             } while (cursor.moveToNext());
