@@ -2,18 +2,22 @@
     <!-- Base application theme. -->
     <style name="Theme.Livre" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/cream</item>
+        <item name="colorPrimaryVariant">@color/lightbrown</item>
+        <item name="colorOnPrimary">@color/brown</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/brown</item>
+        <item name="colorSecondaryVariant">@color/lightbrown</item>
+        <item name="colorOnSecondary">@color/offwhite</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/cream</item>
         <item name="android:fontFamily">@font/stxingka</item>
-        <item name="fontFamily">@font/stxingka</item>
+        <item name="fontFamily">@font/stxingka</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+
+        <item name="android:textSize">30sp</item>
+
     </style>
+
 </resources>
