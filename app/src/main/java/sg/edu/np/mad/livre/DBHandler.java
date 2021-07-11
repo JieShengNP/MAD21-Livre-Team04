@@ -189,4 +189,63 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Gets all the books that are currently stored in the Database
+     * @return An ArrayList that contains all the Books.
+     */
+    public ArrayList<Book> GetAllArchivedBooks(){
+        ArrayList<Book> bookList = new ArrayList<>();
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ARCHIVED + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, new String[] {String.valueOf(1)});
+        if (cursor.moveToFirst()){
+            do {
+                Book book = new Book();
+                book.setID(cursor.getInt(0));
+                book.setIsbn(cursor.getString(1));
+                book.setName(cursor.getString(2));
+                book.setBlurb(cursor.getString(3));
+                book.setThumbnail(cursor.getString(4));
+                book.setReadSeconds(cursor.getInt(5));
+                book.setCustom(cursor.getInt(6) == 1? true: false);
+                book.setArchived(cursor.getInt(7) == 1? true: false);
+                bookList.add(book);
+            } while (cursor.moveToNext());
+            cursor.close();
+        } else {
+            bookList = null;
+        }
+        db.close();
+        return bookList;
+    }
+
+    /**
+     * Gets all the books that are currently stored in the Database
+     * @return An ArrayList that contains all the Books.
+     */
+    public ArrayList<Book> GetAllNonArchivedBooks(){
+        ArrayList<Book> bookList = new ArrayList<>();
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ARCHIVED + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, new String[] {String.valueOf(0)});
+        if (cursor.moveToFirst()){
+            do {
+                Book book = new Book();
+                book.setID(cursor.getInt(0));
+                book.setIsbn(cursor.getString(1));
+                book.setName(cursor.getString(2));
+                book.setBlurb(cursor.getString(3));
+                book.setThumbnail(cursor.getString(4));
+                book.setReadSeconds(cursor.getInt(5));
+                book.setCustom(cursor.getInt(6) == 1? true: false);
+                book.setArchived(cursor.getInt(7) == 1? true: false);
+                bookList.add(book);
+            } while (cursor.moveToNext());
+            cursor.close();
+        } else {
+            bookList = null;
+        }
+        db.close();
+        return bookList;
+    }
 }
