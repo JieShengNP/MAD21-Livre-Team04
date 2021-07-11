@@ -3,6 +3,7 @@ package sg.edu.np.mad.livre;
 import java.util.ArrayList;
 
 public class Book {
+    public int ID;
     public String isbn;
     public String name;
     public String author;
@@ -84,6 +85,14 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int id) {
+        this.ID = id;
     }
 
     @Override
