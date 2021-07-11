@@ -2,6 +2,8 @@ package sg.edu.np.mad.livre;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -14,6 +16,7 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,9 +24,10 @@ public class MainActivity extends AppCompatActivity {
     ImageView recordsTag,libraryChain, timerFrame;
     Chronometer timer;
     Handler handler;
-    long tMilliSec, tStart, tBuff, tUpdate = 0L;
+    long tMilliSec, tStart = 0L;
     int sec,min,hour;
     boolean timerRunning;
+    DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +35,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         timer = findViewById(R.id.timerText);
         timerFrame = findViewById(R.id.timerFrame);
-
         handler = new Handler();
+        dbHandler = new DBHandler(this);
+        String isbn = getIntent().getStringExtra("Isbn");
 
         timerFrame.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -48,10 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 //timer running
                 else
                 {
-                    tBuff += tMilliSec;
-                    handler.removeCallbacks(runnable);
-                    timer.stop();
-                    timerRunning = false;
+                    AlertDialog(isbn);
                 }
                 return false;
             }
@@ -62,9 +64,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             tMilliSec = SystemClock.uptimeMillis() - tStart;
-            tUpdate = tBuff + tMilliSec;
             //Converting milliseconds into Hour Min Sec
-            sec = (int) (tUpdate/1000);
+            sec = (int) (tMilliSec/1000);
             min = sec/60;
             sec = sec % 60;
             hour = min/60;
@@ -74,4 +75,34 @@ public class MainActivity extends AppCompatActivity {
             handler.postDelayed(this,1000);
         }
     };
+
+    public void AlertDialog(String isbn)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure?");
+        builder.setMessage("Do you want to stop the timer?");
+        builder.setPositiveButton("Yesh", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                handler.removeCallbacks(runnable);
+                timer.stop();
+                timerRunning = false;
+                dbHandler.updateLog(isbn, (int)(tMilliSec / 1000));
+                updateTotalTimeRead(isbn);
+                Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton("Nah", null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public void updateTotalTimeRead(String isbn)
+    {
+        Book dbBook = dbHandler.FindBookByISBN(isbn);
+        dbBook.setReadSeconds(dbBook.getReadSeconds() + (int)(tMilliSec/1000));
+        dbHandler.updateTotalTime(dbBook);
+    }
 }
