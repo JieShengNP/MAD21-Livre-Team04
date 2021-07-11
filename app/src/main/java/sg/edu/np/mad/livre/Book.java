@@ -8,8 +8,9 @@ public class Book {
     public String name;
     public String author;
     public String blurb;
-    public String thumbnail;
+    public String year;
     public int readSeconds;
+    public String thumbnail;
     public boolean isCustom;
     public boolean isArchived;
 
@@ -95,16 +96,28 @@ public class Book {
         this.ID = id;
     }
 
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
-                "isbn=" + isbn +
+                "ID=" + ID +
+                ", isbn='" + isbn + '\'' +
                 ", name='" + name + '\'' +
                 ", author='" + author + '\'' +
                 ", blurb='" + blurb + '\'' +
-                ", thumbnail='" + thumbnail + '\'' +
+                ", year='" + year + '\'' +
                 ", readSeconds=" + readSeconds +
+                ", thumbnail='" + thumbnail + '\'' +
                 ", isCustom=" + isCustom +
+                ", isArchived=" + isArchived +
+                ", bookArrayList=" + bookArrayList +
                 '}';
     }
 }
