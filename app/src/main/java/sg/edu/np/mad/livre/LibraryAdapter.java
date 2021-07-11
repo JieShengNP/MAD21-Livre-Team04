@@ -1,6 +1,7 @@
 package sg.edu.np.mad.livre;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -40,6 +41,43 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
                 SetImage(i, Uri.parse(("android.resource://" + context.getPackageName() + "/" + R.drawable.shelf_bust)), holder, defaultImage);
             }
         }
+        //Set On Click Listeners for Each Image which will bring them to BookDetails page
+        holder.book1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bookDetailsIntent = new Intent(holder.book1.getContext(), BookDetails.class);
+                bookDetailsIntent.putExtra("BookObject", bookDataList.get(0));
+                bookDetailsIntent.putExtra("StartLocation", 0);
+                holder.book1.getContext().startActivity(bookDetailsIntent);
+            }
+        });
+        holder.book2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bookDetailsIntent = new Intent(holder.book2.getContext(), BookDetails.class);
+                bookDetailsIntent.putExtra("BookObject", bookDataList.get(1));
+                bookDetailsIntent.putExtra("StartLocation", 0);
+                holder.book2.getContext().startActivity(bookDetailsIntent);
+            }
+        });
+        holder.book3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bookDetailsIntent = new Intent(holder.book3.getContext(), BookDetails.class);
+                bookDetailsIntent.putExtra("BookObject", bookDataList.get(2));
+                bookDetailsIntent.putExtra("StartLocation", 0);
+                holder.book3.getContext().startActivity(bookDetailsIntent);
+            }
+        });
+        holder.book4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bookDetailsIntent = new Intent(holder.book4.getContext(), BookDetails.class);
+                bookDetailsIntent.putExtra("BookObject", bookDataList.get(3));
+                bookDetailsIntent.putExtra("StartLocation", 0);
+                holder.book4.getContext().startActivity(bookDetailsIntent);
+            }
+        });
     }
 
     public void SetImage(int position, Uri uri, LibraryViewHolder holder, Drawable defaultImage){
