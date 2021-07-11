@@ -23,12 +23,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="25dp"
         android:background="@drawable/rounded_edittext"
-        android:drawableRight="@drawable/search"
+        android:hint="What would you like to find?"
         android:inputType="textCapWords"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="Book"
+        android:paddingRight="45dp"
         android:textColor="@color/offwhite"
+        android:textSize="27sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
@@ -71,6 +71,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/catalogueSearch"
         app:srcCompat="@drawable/frame2" />
+
+    <ImageView
+        android:id="@+id/catsearchicon"
+        android:layout_width="39dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:scrollbarSize="30dp"
+        app:layout_constraintEnd_toEndOf="@+id/catalogueSearch"
+        app:layout_constraintTop_toTopOf="@+id/catalogueSearch"
+        app:srcCompat="@drawable/search" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
