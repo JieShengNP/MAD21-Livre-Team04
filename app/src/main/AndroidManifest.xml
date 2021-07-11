@@ -11,11 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Livre">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".LibraryActivity"></activity>
-        <activity android:name=".ArchiveActivity"></activity>
-        <activity android:name=".CatalogueActivity"></activity>
-        <activity android:name=".BookDetails"></activity>
+        <activity android:name=".RecordActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".LibraryActivity" />
+        <activity android:name=".ArchiveActivity" />
+        <activity android:name=".CatalogueActivity" />
+        <activity android:name=".BookDetails" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
