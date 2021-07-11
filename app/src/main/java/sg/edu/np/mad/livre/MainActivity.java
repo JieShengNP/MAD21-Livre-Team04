@@ -34,17 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
         handler = new Handler();
 
-        //set timer to 0
-//        time = 0;
-//        timerText.setText("00:00:00");
-//        timeRunning = true;
-
-
-
-
         timerFrame.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                //timer not running
                 if (!timerRunning)
                 {
                     tStart = SystemClock.uptimeMillis();
@@ -52,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                     timer.start();
                     timerRunning = true;
                 }
+                //timer running
                 else
                 {
                     tBuff += tMilliSec;
