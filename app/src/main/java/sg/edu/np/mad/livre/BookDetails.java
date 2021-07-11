@@ -17,7 +17,7 @@ public class BookDetails extends AppCompatActivity {
     DBHandler dbHandler;
     ImageView bookImage;
     TextView bookTitle, bookDetails, bookDurationRead, bookDescription;
-    Button addToLibraryBtn, toggleArchiveBtn;
+    Button addToLibraryBtn, toggleArchiveBtn, startReadingBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +42,18 @@ public class BookDetails extends AppCompatActivity {
                 .into(bookImage);
         bookTitle.setText(book.getName());
         bookDetails.setText(book.getAuthor() + "\nISBN: " + book.getIsbn());
-        bookDurationRead.setText("Reading Time: " + String.valueOf(book.getReadSeconds()));
+        bookDurationRead.setText("Reading Time: " + CalculateTotalTime(book));
         bookDescription.setText(book.getBlurb());
 
 
         if(startLocation == 0){
             toggleArchiveBtn = findViewById(R.id.detToggleArcBtn);
+            startReadingBtn = findViewById(R.id.detStartBtn);
+            toggleArchiveBtn.setVisibility(View.VISIBLE);
             if (book.isArchived()){
                 toggleArchiveBtn.setText("Move to Library");
             } else {
+                startReadingBtn.setVisibility(View.VISIBLE);
                 toggleArchiveBtn.setText("Move to Archive");
             }
             toggleArchiveBtn.setOnClickListener(new View.OnClickListener() {
@@ -60,19 +63,46 @@ public class BookDetails extends AppCompatActivity {
                         book.setArchived(false);
                         Toast.makeText(getBaseContext(), "Moved to Library!", Toast.LENGTH_SHORT).show();
                         toggleArchiveBtn.setText("Move to Archive");
+                        startReadingBtn.setVisibility(View.VISIBLE);
                     } else {
                         book.setArchived(true);
                         Toast.makeText(getBaseContext(), "Moved to Archive!", Toast.LENGTH_SHORT).show();
                         toggleArchiveBtn.setText("Move to Library");
+                        startReadingBtn.setVisibility(View.GONE);
                     }
                     dbHandler.ToggleArchive(book);
                 }
             });
-            toggleArchiveBtn.setVisibility(View.VISIBLE);
+            startReadingBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(BookDetails.this, MainActivity.class);
+                    intent.putExtra("Isbn", book.getIsbn());
+                    startActivity(intent);
+                }
+            });
         }
         if(startLocation == 1){
             addToLibraryBtn = findViewById(R.id.detAddToLibBtn);
             addToLibraryBtn.setVisibility(View.VISIBLE);
         }
+
+
+    }
+    public String CalculateTotalTime(Book book){
+        int sec = book.getReadSeconds();
+        int min = sec/60;
+        sec = sec % 60;
+        int hour = min/60;
+        min = min % 60;
+        String returnMessage = "";
+        if (hour > 0){
+            returnMessage += hour + "H ";
+        }
+        if (min > 0){
+            returnMessage += min + "M ";
+        }
+        returnMessage += sec + "S";
+        return returnMessage;
     }
 }
