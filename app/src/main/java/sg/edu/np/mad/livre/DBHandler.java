@@ -151,4 +151,14 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateTotalTime(Book book)
+    {
+        ContentValues values = new ContentValues();
+        values.put(BOOK_COLUMN_READING_TIME, book.getReadSeconds());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(TABLE_BOOK, values, BOOK_COLUMN_ISBN + " = ?",new String[]{book.isbn});
+        db.close();
+    }
+
 }
