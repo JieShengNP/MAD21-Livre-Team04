@@ -6,7 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class DBHandler extends SQLiteOpenHelper {
 
@@ -21,6 +24,10 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String BOOK_COLUMN_READING_TIME = "READING_TIME";
     public static final String BOOK_COLUMN_CUSTOM = "CUSTOM";
     public static final String BOOK_COLUMN_ARCHIVED = "ARCHIVED";
+    public static final String TABLE_LOG = "Log";
+    public static final String LOG_COLUMN_ISBN = "Isbn";
+    public static final String LOG_COLUMN_DATE = "Date";
+    public static final String LOG_COLUMN_SECOND = "Time";
 
     public DBHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,7 +38,10 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_BOOK_TABLE = "CREATE TABLE " + TABLE_BOOK + "(" + BOOK_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + BOOK_COLUMN_ISBN + " TEXT," + BOOK_COLUMN_AUTHOR + "TEXT" + BOOK_COLUMN_BLURB + " TEXT," + BOOK_COLUMN_THUMBNAIL + " TEXT," + BOOK_COLUMN_READING_TIME + " INT," + BOOK_COLUMN_CUSTOM + " INT," + BOOK_COLUMN_ARCHIVED + " INT" + ")";
+        String CREATE_LOG_TABLE = "CREATE TABLE " + TABLE_LOG + "(" + LOG_COLUMN_ISBN+ " TEXT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_ISBN + " TEXT,"
+                                    + "PRIMARY KEY ("  + LOG_COLUMN_ISBN+", " + LOG_COLUMN_DATE + "))";
         db.execSQL(CREATE_BOOK_TABLE);
+        db.execSQL(CREATE_LOG_TABLE);
 
     }
 
@@ -77,8 +87,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public void ToggleArchive(Book book){
         SQLiteDatabase db = this.getWritableDatabase();
-//        String dbQuery = "UPDATE " + TABLE_BOOK + " SET " + BOOK_COLUMN_ARCHIVED + " = " + (book.isArchived? 1: 0) + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\"";
-//        db.execSQL(dbQuery);
+        String dbQuery = "UPDATE " + TABLE_BOOK + " SET " + BOOK_COLUMN_ARCHIVED + " = " + (book.isArchived? 1: 0) + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\"";
+        db.execSQL(dbQuery);
         ContentValues values = new ContentValues();
         values.put(BOOK_COLUMN_ARCHIVED, book.isArchived()? 1: 0);
         int rowsAffected = db.update(TABLE_BOOK, values, BOOK_COLUMN_ISBN + " = " + book.getIsbn(), null);
@@ -126,6 +136,19 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         db.close();
         return bookList;
+    }
+
+    public void updateLog(String isbn,int seconds)
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        ContentValues values = new ContentValues();
+        values.put(LOG_COLUMN_ISBN, isbn);
+        values.put(LOG_COLUMN_DATE, formatter.format(Calendar.getInstance().getTime()));
+        values.put(LOG_COLUMN_SECOND, seconds);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_LOG, null, values);
+        db.close();
     }
 
 }
