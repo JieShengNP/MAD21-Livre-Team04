@@ -1,8 +1,9 @@
 package sg.edu.np.mad.livre;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Book {
+public class Book implements Serializable {
     public int ID;
     public String isbn;
     public String name;

@@ -15,6 +15,7 @@
         <activity android:name=".LibraryActivity"></activity>
         <activity android:name=".ArchiveActivity"></activity>
         <activity android:name=".CatalogueActivity"></activity>
+        <activity android:name=".BookDetails"></activity>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
