@@ -35,7 +35,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
         String URL;
         for(int i = 0; i < bookDataList.size(); i++){
             if ((URL = bookDataList.get(i).getThumbnail()) != null){
-                SetImage(i, URL, holder, defaultImage);
+                SetImage(i, Uri.parse(URL), holder, defaultImage);
             } else {
                 SetImage(i, Uri.parse(("android.resource://" + context.getPackageName() + "/" + R.drawable.shelf_bust)), holder, defaultImage);
             }
@@ -68,39 +68,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
             case(3):
                 Picasso.get()
                         .load(uri)
-                        .placeholder(defaultImage)
-                        .resize(90, 140)
-                        .into(holder.book4);
-                break;
-        }
-    }
-
-    public void SetImage(int position, String URL, LibraryViewHolder holder, Drawable defaultImage){
-        switch(position){
-            case(0):
-                Picasso.get()
-                        .load(URL)
-                        .placeholder(defaultImage)
-                        .resize(90, 140)
-                        .into(holder.book1);
-                break;
-            case(1):
-                Picasso.get()
-                        .load(URL)
-                        .placeholder(defaultImage)
-                        .resize(90, 140)
-                        .into(holder.book2);
-                break;
-            case(2):
-                Picasso.get()
-                        .load(URL)
-                        .placeholder(defaultImage)
-                        .resize(90, 140)
-                        .into(holder.book3);
-                break;
-            case(3):
-                Picasso.get()
-                        .load(URL)
                         .placeholder(defaultImage)
                         .resize(90, 140)
                         .into(holder.book4);
