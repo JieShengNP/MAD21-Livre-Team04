@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Livre">
         <activity android:name=".MainActivity"></activity>
+        <activity android:name=".LibraryActivity"></activity>
+        <activity android:name=".ArchiveActivity"></activity>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
