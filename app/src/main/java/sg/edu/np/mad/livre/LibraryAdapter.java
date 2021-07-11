@@ -28,13 +28,14 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
 
     @Override
     public void onBindViewHolder(LibraryViewHolder holder, int position) {
+        // Gets the Book List for the current shelf and populate the shelf with the images of the books.
         ArrayList<Book> bookDataList = bookListData.get(position);
         Context context = holder.book1.getContext();
         Drawable defaultImage = context.getResources().getDrawable(R.drawable.shelf_bust);
         String URL;
         for(int i = 0; i < bookDataList.size(); i++){
             if ((URL = bookDataList.get(i).getThumbnail()) != null){
-                SetImage(i, URL, holder, defaultImage);
+                SetImage(i, Uri.parse(URL), holder, defaultImage);
             } else {
                 SetImage(i, Uri.parse(("android.resource://" + context.getPackageName() + "/" + R.drawable.shelf_bust)), holder, defaultImage);
             }
@@ -67,39 +68,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
             case(3):
                 Picasso.get()
                         .load(uri)
-                        .placeholder(defaultImage)
-                        .resize(90, 140)
-                        .into(holder.book4);
-                break;
-        }
-    }
-
-    public void SetImage(int position, String URL, LibraryViewHolder holder, Drawable defaultImage){
-        switch(position){
-            case(0):
-                Picasso.get()
-                        .load(URL)
-                        .placeholder(defaultImage)
-                        .resize(90, 140)
-                        .into(holder.book1);
-                break;
-            case(1):
-                Picasso.get()
-                        .load(URL)
-                        .placeholder(defaultImage)
-                        .resize(90, 140)
-                        .into(holder.book2);
-                break;
-            case(2):
-                Picasso.get()
-                        .load(URL)
-                        .placeholder(defaultImage)
-                        .resize(90, 140)
-                        .into(holder.book3);
-                break;
-            case(3):
-                Picasso.get()
-                        .load(URL)
                         .placeholder(defaultImage)
                         .resize(90, 140)
                         .into(holder.book4);

@@ -56,8 +56,8 @@
 
         <ImageView
             android:id="@+id/recyclerViewShelf"
-            android:layout_width="340dp"
-            android:layout_height="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
             app:srcCompat="@drawable/shelf1" />
     </LinearLayout>
 

@@ -1,6 +1,5 @@
 package sg.edu.np.mad.livre;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,6 +15,5 @@ public class LibraryViewHolder extends RecyclerView.ViewHolder {
         book2 = itemView.findViewById(R.id.recyclerViewBook2);
         book3 = itemView.findViewById(R.id.recyclerViewBook3);
         book4 = itemView.findViewById(R.id.recyclerViewBook4);
-        Log.v("ViewHolder", "Created");
     }
 }
