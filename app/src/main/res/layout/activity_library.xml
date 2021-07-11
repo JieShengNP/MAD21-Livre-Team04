@@ -6,17 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".LibraryActivity">
 
-    <ImageView
-        android:id="@+id/libraryTimerImage"
-        android:layout_width="112dp"
-        android:layout_height="140dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginEnd="182dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
+    <TextView
+        android:id="@+id/libraryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
+        android:text="Library"
+        android:textColor="@color/sage"
+        android:textSize="60sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/watch_watch" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/libraryRecordTag"
