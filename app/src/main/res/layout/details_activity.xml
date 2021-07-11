@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".BookDetails">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/detailsdet"
+            android:layout_width="wrap_content"
+            android:layout_height="101dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="16dp"
+            android:text="Details"
+            android:textColor="@color/sage"
+            android:textSize="60sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/thumbdet"
+            android:layout_width="135dp"
+            android:layout_height="210dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailsdet"
+            app:srcCompat="@drawable/shelf_bust" />
+
+        <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Title"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thumbdet" />
+
+        <TextView
+            android:id="@+id/detinfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="detail info"
+            android:textSize="15sp"
+            android:textColor="@color/sage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <ImageView
+            android:id="@+id/catalogueRecordTag"
+            android:layout_width="65dp"
+            android:layout_height="107dp"
+            android:layout_marginEnd="56dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/tag_catalogue" />
+
+        <TextView
+            android:id="@+id/timeSpentDet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="detail info"
+            android:textColor="@color/lightbrown"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detinfo" />
+
+
+        <TextView
+            android:id="@+id/detDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="24dp"
+            android:text="I have an XML layout file, but the text is more than fits into the screen size. What do I need to do in order to make a I have an XML layout file, but the text is more than fits into the screen size. What do I need to do in order to make a I have an XML layout file, but the text is more than fits into the screen size. What do I need to do in order to make a"
+            android:textColor="@color/brown"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frame2det" />
+
+        <ImageView
+            android:id="@+id/frame2det"
+            android:layout_width="40dp"
+            android:layout_height="13dp"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timeSpentDet"
+            app:srcCompat="@drawable/frame2" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="175dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/brown"
+            android:drawableRight="@drawable/icon_pen"
+            android:minHeight="48dp"
+            android:padding="-3dp"
+            android:text="Add to Library"
+            android:textAllCaps="false"
+            android:textColor="@color/cream"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detDesc" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
