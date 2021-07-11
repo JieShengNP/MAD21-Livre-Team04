@@ -33,6 +33,12 @@ public class ArchiveActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         //Retrieve Data and Populate Recycler View
         //Nested List is used to split into chunks for Recycler View
         ArrayList<ArrayList<Book>> bookNestedList = new ArrayList<>();
@@ -52,5 +58,6 @@ public class ArchiveActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.archiveRecyclerView);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(libraryAdapter);
+        libraryAdapter.notifyDataSetChanged();
     }
 }
