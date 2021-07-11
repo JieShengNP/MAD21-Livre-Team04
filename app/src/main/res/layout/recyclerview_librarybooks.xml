@@ -24,6 +24,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
+                android:visibility="gone"
                 app:srcCompat="@drawable/shelf_bust" />
 
             <ImageView
@@ -33,6 +34,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
+                android:visibility="gone"
                 app:srcCompat="@drawable/shelf_bust" />
 
             <ImageView
@@ -42,6 +44,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
+                android:visibility="gone"
                 app:srcCompat="@drawable/shelf_bust" />
 
             <ImageView
@@ -51,6 +54,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
+                android:visibility="gone"
                 app:srcCompat="@drawable/shelf_bust" />
         </LinearLayout>
 

@@ -45,6 +45,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
     public void SetImage(int position, Uri uri, LibraryViewHolder holder, Drawable defaultImage){
         switch(position){
             case(0):
+                holder.book1.setVisibility(View.VISIBLE);
                 Picasso.get()
                         .load(uri)
                         .placeholder(defaultImage)
@@ -52,6 +53,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
                         .into(holder.book1);
                 break;
             case(1):
+                holder.book2.setVisibility(View.VISIBLE);
                 Picasso.get()
                         .load(uri)
                         .placeholder(defaultImage)
@@ -59,6 +61,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
                         .into(holder.book2);
                 break;
             case(2):
+                holder.book3.setVisibility(View.VISIBLE);
                 Picasso.get()
                         .load(uri)
                         .placeholder(defaultImage)
@@ -66,6 +69,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
                         .into(holder.book3);
                 break;
             case(3):
+                holder.book4.setVisibility(View.VISIBLE);
                 Picasso.get()
                         .load(uri)
                         .placeholder(defaultImage)
