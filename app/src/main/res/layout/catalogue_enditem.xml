@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/catThumb" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/detAddToLibBtn"
         android:layout_width="175dp"
         android:layout_height="43dp"
         android:layout_marginTop="28dp"
