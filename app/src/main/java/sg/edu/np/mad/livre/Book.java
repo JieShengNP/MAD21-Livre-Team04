@@ -3,7 +3,7 @@ package sg.edu.np.mad.livre;
 import java.util.ArrayList;
 
 public class Book {
-    public int isbn;
+    public String isbn;
     public String name;
     public String author;
     public String blurb;
@@ -21,11 +21,11 @@ public class Book {
         this.bookArrayList = bookArrayList;
     }
 
-    public int getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(int isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
