@@ -13,15 +13,16 @@ import java.util.ArrayList;
 
 public class LibraryActivity extends AppCompatActivity {
 
-    ImageView archiveButton, catalogueButton;
+    ImageView archiveImage, catalogueImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
 
-        archiveButton = findViewById(R.id.libraryArchiveImage);
-        archiveButton.setOnClickListener(new View.OnClickListener() {
+        //Set the Archive Image to send user back to Archive Activity
+        archiveImage = findViewById(R.id.libraryArchiveImage);
+        archiveImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LibraryActivity.this, ArchiveActivity.class);
@@ -29,8 +30,9 @@ public class LibraryActivity extends AppCompatActivity {
             }
         });
 
-        catalogueButton = findViewById(R.id.libraryCatalogueImage);
-        catalogueButton.setOnClickListener(new View.OnClickListener() {
+        //Set the Catalogue Image to send user back to Catalogue Activity
+        catalogueImage = findViewById(R.id.libraryCatalogueImage);
+        catalogueImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LibraryActivity.this, CatalogueActivity.class);
@@ -38,6 +40,7 @@ public class LibraryActivity extends AppCompatActivity {
             }
         });
 
+        //Retrieve Data and Populate Recycler View
         //TODO: Populate ArrayList<ArrayList<Book>> with contents
         ArrayList<ArrayList<Book>> bookNestedList = new ArrayList<>();
 

@@ -15,6 +15,7 @@ public class CatalogueActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalogue);
 
+        //Set the Library Image to send user back to Library Activity
         libraryImage = findViewById(R.id.catalogueLibraryTag);
         libraryImage.setOnClickListener(new View.OnClickListener() {
             @Override

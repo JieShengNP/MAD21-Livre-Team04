@@ -41,6 +41,10 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Adding of Book into the Database.
+     * @param book Book to be added
+     */
     public void AddBook(Book book){
         ContentValues values = new ContentValues();
         values.put(BOOK_COLUMN_ISBN, book.getIsbn());
@@ -56,6 +60,11 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Retriving of Book by its ISBN number.
+     * @param ISBN ISBN of the book
+     * @return Book if it exists in the Database.
+     */
     public Book FindBookByISBN(String ISBN){
         String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + ISBN +"\"";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -75,8 +84,13 @@ public class DBHandler extends SQLiteOpenHelper {
         return book;
     }
 
+    /**
+     * Toggling of book archival status in the Database.
+     * @param book The archival status of book to be toggled
+     */
     public void ToggleArchive(Book book){
         SQLiteDatabase db = this.getWritableDatabase();
+        //Alternative Method
 //        String dbQuery = "UPDATE " + TABLE_BOOK + " SET " + BOOK_COLUMN_ARCHIVED + " = " + (book.isArchived? 1: 0) + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\"";
 //        db.execSQL(dbQuery);
         ContentValues values = new ContentValues();
@@ -85,6 +99,11 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Deletion of book from the Database.
+     * @param book The book to be deleted
+     * @return
+     */
     public boolean DeleteBook(Book book){
         SQLiteDatabase db = this.getWritableDatabase();
         boolean result = false;
@@ -102,6 +121,10 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Gets all the books that are currently stored in the Database
+     * @return An ArrayList that contains all the Books.
+     */
     public ArrayList<Book> GetAllBooks(){
         ArrayList<Book> bookList = new ArrayList<>();
         String dbQuery = "SELECT * FROM " + TABLE_BOOK;

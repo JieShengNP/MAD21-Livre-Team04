@@ -20,6 +20,7 @@ public class ArchiveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_archive);
 
+        //Set the Library Image to send user back to Library Activity
         libraryImage = findViewById(R.id.archiveArchiveImage);
         libraryImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,6 +29,7 @@ public class ArchiveActivity extends AppCompatActivity {
             }
         });
 
+        //Retrieve Data and Populate Recycler View
         //TODO: Populate ArrayList<ArrayList<Book>> with contents
         ArrayList<ArrayList<Book>> bookNestedList = new ArrayList<>();
 

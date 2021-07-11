@@ -28,6 +28,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
 
     @Override
     public void onBindViewHolder(LibraryViewHolder holder, int position) {
+        // Gets the Book List for the current shelf and populate the shelf with the images of the books.
         ArrayList<Book> bookDataList = bookListData.get(position);
         Context context = holder.book1.getContext();
         Drawable defaultImage = context.getResources().getDrawable(R.drawable.shelf_bust);
