@@ -249,4 +249,19 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return bookList;
     }
+
+    public int GetTotalReadingTimeInSec()
+    {
+        int totalTime = 0;
+        String dbQuery = "SELECT SUM(" + LOG_COLUMN_SECOND + ") FROM " + TABLE_LOG;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if (cursor.moveToFirst())
+        {
+            totalTime = cursor.getInt(0);
+        }
+
+        db.close();
+        return  totalTime;
+    }
 }
