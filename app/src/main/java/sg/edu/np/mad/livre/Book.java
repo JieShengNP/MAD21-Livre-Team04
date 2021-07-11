@@ -1,5 +1,7 @@
 package sg.edu.np.mad.livre;
 
+import java.util.ArrayList;
+
 public class Book {
     public int isbn;
     public String name;
@@ -8,6 +10,16 @@ public class Book {
     public String thumbnail;
     public int readSeconds;
     public boolean isCustom;
+
+    public ArrayList<Book> bookArrayList;
+
+    public ArrayList<Book> getBookArrayList() {
+        return bookArrayList;
+    }
+
+    public void setBookArrayList(ArrayList<Book> bookArrayList) {
+        this.bookArrayList = bookArrayList;
+    }
 
     public int getIsbn() {
         return isbn;
