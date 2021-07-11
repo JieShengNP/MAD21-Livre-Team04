@@ -6,7 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class DBHandler extends SQLiteOpenHelper {
 
@@ -21,6 +24,11 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String BOOK_COLUMN_READING_TIME = "READING_TIME";
     public static final String BOOK_COLUMN_CUSTOM = "CUSTOM";
     public static final String BOOK_COLUMN_ARCHIVED = "ARCHIVED";
+    public static final String TABLE_LOG = "Log";
+    public static final String LOG_COLUMN_ISBN = "Isbn";
+    public static final String LOG_COLUMN_DATE = "Date";
+    public static final String LOG_COLUMN_SECOND = "Time";
+    public static final String LOG_COLUMN_ID = "_id";
 
     public DBHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -30,8 +38,11 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_BOOK_TABLE = "CREATE TABLE " + TABLE_BOOK + "(" + BOOK_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + BOOK_COLUMN_ISBN + " TEXT," + BOOK_COLUMN_AUTHOR + "TEXT" + BOOK_COLUMN_BLURB + " TEXT," + BOOK_COLUMN_THUMBNAIL + " TEXT," + BOOK_COLUMN_READING_TIME + " INT," + BOOK_COLUMN_CUSTOM + " INT," + BOOK_COLUMN_ARCHIVED + " INT" + ")";
+                + BOOK_COLUMN_ISBN + " TEXT," + BOOK_COLUMN_AUTHOR + " TEXT," + BOOK_COLUMN_BLURB + " TEXT," + BOOK_COLUMN_THUMBNAIL + " TEXT," + BOOK_COLUMN_READING_TIME + " INT," + BOOK_COLUMN_CUSTOM + " INT," + BOOK_COLUMN_ARCHIVED + " INT" + ")";
+        String CREATE_LOG_TABLE = "CREATE TABLE " + TABLE_LOG + "(" + LOG_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                                    + LOG_COLUMN_ISBN+ " TEXT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_SECOND + " INT)";
         db.execSQL(CREATE_BOOK_TABLE);
+        db.execSQL(CREATE_LOG_TABLE);
 
     }
 
@@ -41,6 +52,10 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Adding of Book into the Database.
+     * @param book Book to be added
+     */
     public void AddBook(Book book){
         ContentValues values = new ContentValues();
         values.put(BOOK_COLUMN_ISBN, book.getIsbn());
@@ -56,6 +71,11 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Retriving of Book by its ISBN number.
+     * @param ISBN ISBN of the book
+     * @return Book if it exists in the Database.
+     */
     public Book FindBookByISBN(String ISBN){
         String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + ISBN +"\"";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -75,8 +95,13 @@ public class DBHandler extends SQLiteOpenHelper {
         return book;
     }
 
+    /**
+     * Toggling of book archival status in the Database.
+     * @param book The archival status of book to be toggled
+     */
     public void ToggleArchive(Book book){
         SQLiteDatabase db = this.getWritableDatabase();
+        //Alternative Method
 //        String dbQuery = "UPDATE " + TABLE_BOOK + " SET " + BOOK_COLUMN_ARCHIVED + " = " + (book.isArchived? 1: 0) + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\"";
 //        db.execSQL(dbQuery);
         ContentValues values = new ContentValues();
@@ -85,6 +110,11 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Deletion of book from the Database.
+     * @param book The book to be deleted
+     * @return
+     */
     public boolean DeleteBook(Book book){
         SQLiteDatabase db = this.getWritableDatabase();
         boolean result = false;
@@ -102,6 +132,10 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Gets all the books that are currently stored in the Database
+     * @return An ArrayList that contains all the Books.
+     */
     public ArrayList<Book> GetAllBooks(){
         ArrayList<Book> bookList = new ArrayList<>();
         String dbQuery = "SELECT * FROM " + TABLE_BOOK;
@@ -128,4 +162,91 @@ public class DBHandler extends SQLiteOpenHelper {
         return bookList;
     }
 
+    /*
+        Creates a log entry of time read .
+    */
+    public void updateLog(String isbn,int seconds)
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        ContentValues values = new ContentValues();
+        values.put(LOG_COLUMN_ISBN, isbn);
+        values.put(LOG_COLUMN_DATE, formatter.format(Calendar.getInstance().getTime()));
+        values.put(LOG_COLUMN_SECOND, seconds);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_LOG, null, values);
+        db.close();
+    }
+    /*
+        Updates total time read in Book table
+    */
+    public void updateTotalTime(Book book)
+    {
+        ContentValues values = new ContentValues();
+        values.put(BOOK_COLUMN_READING_TIME, book.getReadSeconds());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(TABLE_BOOK, values, BOOK_COLUMN_ISBN + " = ?",new String[]{book.isbn});
+        db.close();
+    }
+
+    /**
+     * Gets all the books that are currently stored in the Database
+     * @return An ArrayList that contains all the Books.
+     */
+    public ArrayList<Book> GetAllArchivedBooks(){
+        ArrayList<Book> bookList = new ArrayList<>();
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ARCHIVED + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, new String[] {String.valueOf(1)});
+        if (cursor.moveToFirst()){
+            do {
+                Book book = new Book();
+                book.setID(cursor.getInt(0));
+                book.setIsbn(cursor.getString(1));
+                book.setName(cursor.getString(2));
+                book.setBlurb(cursor.getString(3));
+                book.setThumbnail(cursor.getString(4));
+                book.setReadSeconds(cursor.getInt(5));
+                book.setCustom(cursor.getInt(6) == 1? true: false);
+                book.setArchived(cursor.getInt(7) == 1? true: false);
+                bookList.add(book);
+            } while (cursor.moveToNext());
+            cursor.close();
+        } else {
+            bookList = null;
+        }
+        db.close();
+        return bookList;
+    }
+
+    /**
+     * Gets all the books that are currently stored in the Database
+     * @return An ArrayList that contains all the Books.
+     */
+    public ArrayList<Book> GetAllNonArchivedBooks(){
+        ArrayList<Book> bookList = new ArrayList<>();
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ARCHIVED + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, new String[] {String.valueOf(0)});
+        if (cursor.moveToFirst()){
+            do {
+                Book book = new Book();
+                book.setID(cursor.getInt(0));
+                book.setIsbn(cursor.getString(1));
+                book.setName(cursor.getString(2));
+                book.setBlurb(cursor.getString(3));
+                book.setThumbnail(cursor.getString(4));
+                book.setReadSeconds(cursor.getInt(5));
+                book.setCustom(cursor.getInt(6) == 1? true: false);
+                book.setArchived(cursor.getInt(7) == 1? true: false);
+                bookList.add(book);
+            } while (cursor.moveToNext());
+            cursor.close();
+        } else {
+            bookList = null;
+        }
+        db.close();
+        return bookList;
+    }
 }
