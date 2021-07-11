@@ -38,9 +38,6 @@ public class ArchiveActivity extends AppCompatActivity {
         ArrayList<ArrayList<Book>> bookNestedList = new ArrayList<>();
         ArrayList<Book> allNonArchivedBookList = dbHandler.GetAllArchivedBooks();
         if (allNonArchivedBookList != null){
-            for (int i = 0; i < allNonArchivedBookList.size(); i++){
-
-            }
             //Separating to 4 per list
             int chunk = 4;
             for(int i = 0; i < allNonArchivedBookList.size(); i += chunk){
@@ -50,7 +47,6 @@ public class ArchiveActivity extends AppCompatActivity {
                 bookNestedList.add(splitBookArray);
             }
         }
-        
         LibraryAdapter libraryAdapter = new LibraryAdapter(bookNestedList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         RecyclerView recyclerView = findViewById(R.id.archiveRecyclerView);

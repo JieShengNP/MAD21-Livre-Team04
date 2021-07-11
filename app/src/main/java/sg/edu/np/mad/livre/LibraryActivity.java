@@ -49,9 +49,6 @@ public class LibraryActivity extends AppCompatActivity {
         ArrayList<ArrayList<Book>> bookNestedList = new ArrayList<>();
         ArrayList<Book> allNonArchivedBookList = dbHandler.GetAllNonArchivedBooks();
         if (allNonArchivedBookList != null){
-            for (int i = 0; i < allNonArchivedBookList.size(); i++){
-
-            }
             //Separating to 4 per list
             int chunk = 4;
             for(int i = 0; i < allNonArchivedBookList.size(); i += chunk){
