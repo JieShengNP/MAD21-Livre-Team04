@@ -6,17 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".LibraryActivity">
 
-    <ImageView
-        android:id="@+id/libraryTimerImage"
-        android:layout_width="112dp"
-        android:layout_height="140dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginEnd="182dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
+    <TextView
+        android:id="@+id/libraryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
+        android:text="Library"
+        android:textColor="@color/sage"
+        android:textSize="60sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/watch_watch" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/libraryRecordTag"
@@ -33,8 +33,7 @@
         android:layout_height="487dp"
         app:layout_constraintBottom_toTopOf="@+id/libraryFooterLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -45,8 +44,7 @@
         android:background="#B79E8C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/libraryRecyclerView">
+        app:layout_constraintStart_toStartOf="parent">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -54,7 +52,7 @@
         android:id="@+id/libraryArchiveImage"
         android:layout_width="122dp"
         android:layout_height="128dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="64dp"
         android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,26 +63,12 @@
         android:id="@+id/libraryCatalogueImage"
         android:layout_width="122dp"
         android:layout_height="87dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="64dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="@+id/libraryFooterLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/libraryFooterLayout"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/library_catalogue" />
-
-    <ImageView
-        android:id="@+id/libraryRemoveImage"
-        android:layout_width="116dp"
-        android:layout_height="94dp"
-        android:layout_marginStart="320dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginBottom="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/libraryFooterLayout"
-        app:srcCompat="@drawable/library_remove" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

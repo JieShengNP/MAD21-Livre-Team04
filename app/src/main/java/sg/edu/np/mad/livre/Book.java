@@ -3,13 +3,23 @@ package sg.edu.np.mad.livre;
 import java.util.ArrayList;
 
 public class Book {
-    public int isbn;
+    public int ID;
+    public String isbn;
     public String name;
     public String author;
     public String blurb;
     public String thumbnail;
     public int readSeconds;
     public boolean isCustom;
+    public boolean isArchived;
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
+    }
 
     public ArrayList<Book> bookArrayList;
 
@@ -21,11 +31,11 @@ public class Book {
         this.bookArrayList = bookArrayList;
     }
 
-    public int getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(int isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
@@ -75,6 +85,14 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int id) {
+        this.ID = id;
     }
 
     @Override
