@@ -61,7 +61,7 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
         Book b = data.get(position);
         holder.cattitle.setText(b.name);
         holder.catdesc.setText(b.blurb);
-        holder.catauthordate.setText(b.author + ", " + b.year);
+        holder.catauthordate.setText(b.author + " · " + b.year);
 
         Picasso.get()
                 .load(b.getThumbnail())
