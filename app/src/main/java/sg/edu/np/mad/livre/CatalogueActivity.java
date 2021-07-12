@@ -38,7 +38,7 @@ public class CatalogueActivity extends AppCompatActivity {
     ArrayList<String> seedList;
     ArrayList<Book> bookList;
 
-    ImageView libraryImage;
+    ImageView libraryImage, temporaryCreateImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,15 @@ public class CatalogueActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        temporaryCreateImage = findViewById(R.id.temporaryCreateImage);
+        temporaryCreateImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
+                startActivity(intent);
             }
         });
 
