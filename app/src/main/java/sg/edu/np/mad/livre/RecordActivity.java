@@ -1,17 +1,23 @@
 package sg.edu.np.mad.livre;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class RecordActivity extends AppCompatActivity {
     ImageView libraryTag;
     TextView totalTime;
     DBHandler dbHandler;
+    ArrayList<Records> recordList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +26,7 @@ public class RecordActivity extends AppCompatActivity {
         libraryTag = findViewById(R.id.recordLibraryTag);
         totalTime = findViewById(R.id.recordTotalTime);
         dbHandler = new DBHandler(this);
+        recordList = dbHandler.GetAllRecords();
 
         setTotalTime();
 
@@ -32,6 +39,12 @@ public class RecordActivity extends AppCompatActivity {
         });
 
         setTotalTime();
+
+        RecordAdapter recordAdapter = new RecordAdapter(recordList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        RecyclerView recyclerView = findViewById(R.id.recordRecyclerView);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(recordAdapter);
 
 
     }
