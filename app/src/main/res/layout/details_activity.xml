@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
 
         <TextView
@@ -36,16 +36,16 @@
             app:srcCompat="@drawable/shelf_bust" />
 
         <TextView
-        android:id="@+id/detTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Title"
-        android:textSize="48sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/thumbdet" />
+            android:id="@+id/detTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Title"
+            android:textSize="48sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/thumbdet" />
 
         <TextView
             android:id="@+id/detinfo"
@@ -77,7 +77,7 @@
             android:layout_marginEnd="8dp"
             android:text="detail info"
             android:textColor="@color/lightbrown"
-            android:textSize="15sp"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +137,6 @@
             android:layout_width="175dp"
             android:layout_height="43dp"
             android:layout_marginTop="32dp"
-            android:layout_marginBottom="24dp"
             android:backgroundTint="@color/brown"
             android:minHeight="48dp"
             android:padding="-3dp"
@@ -146,9 +145,27 @@
             android:textColor="@color/cream"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detDesc" />
+
+        <Button
+            android:id="@+id/detStartBtn"
+            android:layout_width="175dp"
+            android:layout_height="43dp"
+            android:backgroundTint="@color/brown"
+            android:minHeight="48dp"
+            android:padding="-3dp"
+            android:text="Start Reading"
+            android:textAllCaps="false"
+            android:textColor="@color/cream"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detToggleArcBtn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

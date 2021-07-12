@@ -38,11 +38,20 @@ public class CatalogueActivity extends AppCompatActivity {
     ArrayList<String> seedList;
     ArrayList<Book> bookList;
 
+    ImageView libraryImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalogue);
 
+        libraryImage = findViewById(R.id.catalogueLibraryTag);
+        libraryImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         //Find search icon and set onclicklistener
         ImageView searchIcon = findViewById(R.id.catsearchicon);
