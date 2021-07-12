@@ -78,87 +78,87 @@ public class CatalogueActivity extends AppCompatActivity {
 
                 //request string
                 String url ="https://openlibrary.org/search.json?q=" + inputText;
-                    //API call to get list of seeds
-                    //Create JsonObjectRequest object
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                            (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                //API call to get list of seeds
+                //Create JsonObjectRequest object
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-                                //Handle response
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
+                            //Handle response
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
 
-                                        //get jsonarray docs
-                                        JSONArray docs = response.getJSONArray("docs");
-                                        //append isbn to list
-                                        for (int i = 0; i < 20; i++) {
-                                            JSONObject object = docs.getJSONObject(i);
-                                            JSONArray seedArray = object.getJSONArray("seed");
-                                            String firstseed = seedArray.get(0).toString();
-                                            Log.v("FIRST SEED", firstseed);
+                                    //get jsonarray docs
+                                    JSONArray docs = response.getJSONArray("docs");
+                                    //append isbn to list
+                                    for (int i = 0; i < 20; i++) {
+                                        JSONObject object = docs.getJSONObject(i);
+                                        JSONArray seedArray = object.getJSONArray("seed");
+                                        String firstseed = seedArray.get(0).toString();
+                                        Log.v("FIRST SEED", firstseed);
 
-                                            if (!firstseed.contains("/books/")) {
-                                                continue;
-                                            }
-                                            String firpub;
-                                            try {
-                                                firpub = String.valueOf(object.getInt("first_publish_year"));
-                                            } catch (JSONException e) {
-                                                firpub = "Unavailable";
-
-                                            }
-                                            String auth;
-                                            String titl;
-                                            String isbn;
-                                            try {
-                                                auth = object.getString("author_name");
-                                                titl = object.getString("title");
-                                                isbn = object.getJSONArray("isbn").get(0).toString();
-                                            } catch (JSONException e) {
-
-                                                continue;
-                                            }
-                                            ;
-
-
-                                            Book b = new Book();
-                                            b.name = titl;
-                                            b.author = auth;
-                                            b.year = firpub;
-                                            b.isbn = isbn;
-
-
-                                            bookList.add(b);
-
-                                            Log.v("DESC", String.valueOf(bookList.size()));
-                                            Log.v("Book", b.toString());
-                                            seedList.add(firstseed);
+                                        if (!firstseed.contains("/books/")) {
+                                            continue;
                                         }
+                                        String firpub;
+                                        try {
+                                            firpub = String.valueOf(object.getInt("first_publish_year"));
+                                        } catch (JSONException e) {
+                                            firpub = "Unavailable";
 
-                                    } catch (JSONException e) { //catch exception
-                                        e.printStackTrace();
+                                        }
+                                        String auth;
+                                        String titl;
+                                        String isbn;
+                                        try {
+                                            auth = object.getString("author_name");
+                                            titl = object.getString("title");
+                                            isbn = object.getJSONArray("isbn").get(0).toString();
+                                        } catch (JSONException e) {
+
+                                            continue;
+                                        }
+                                        ;
+
+
+                                        Book b = new Book();
+                                        b.name = titl;
+                                        b.author = auth;
+                                        b.year = firpub;
+                                        b.isbn = isbn;
+
+
+                                        bookList.add(b);
+
+                                        Log.v("DESC", String.valueOf(bookList.size()));
+                                        Log.v("Book", b.toString());
+                                        seedList.add(firstseed);
                                     }
 
-
-                                    Log.v("DESC1111", String.valueOf(bookList.size()));
+                                } catch (JSONException e) { //catch exception
+                                    e.printStackTrace();
                                 }
 
-                            }, new Response.ErrorListener() {
 
-                                //handle error response
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
+                                Log.v("DESC1111", String.valueOf(bookList.size()));
+                            }
 
-                                    new AlertDialog.Builder(getApplicationContext())
-                                            .setTitle("Error!")
-                                            .setMessage("Catalogue is not working at the moment, please try again later")
-                                            .setPositiveButton("OK", null)
-                                            .show();
-                                }
-                            });
+                        }, new Response.ErrorListener() {
 
-                    // Access the RequestQueue through singleton class.
-                    ApiSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+                            //handle error response
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                                new AlertDialog.Builder(getApplicationContext())
+                                        .setTitle("Error!")
+                                        .setMessage("Catalogue is not working at the moment, please try again later")
+                                        .setPositiveButton("OK", null)
+                                        .show();
+                            }
+                        });
+
+                // Access the RequestQueue through singleton class.
+                ApiSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
 
 
 
@@ -229,7 +229,7 @@ public class CatalogueActivity extends AppCompatActivity {
                                         String key;
                                         if(keys.hasNext()){
                                             key = keys.next();
-                                             thumb = response.getJSONObject(key).getString("thumbnail_url");
+                                            thumb = response.getJSONObject(key).getString("thumbnail_url");
                                         }
                                         thumbList.add(thumb);
 

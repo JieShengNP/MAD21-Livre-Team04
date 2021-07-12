@@ -41,7 +41,7 @@ public class BookDetails extends AppCompatActivity {
                 .resize(135, 210)
                 .into(bookImage);
         bookTitle.setText(book.getName());
-        bookDetails.setText(book.getAuthor() + "\nISBN: " + book.getIsbn());
+        bookDetails.setText(book.getAuthor() +" · "+ book.getYear() +"\nISBN: " + book.getIsbn());
         bookDurationRead.setText("Reading Time: " + CalculateTotalTime(book));
         bookDescription.setText(book.getBlurb());
 
