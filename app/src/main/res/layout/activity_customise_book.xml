@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BookDetails">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/customiseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        android:text="Customise"
+        android:textColor="@color/sage"
+        android:textSize="60sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/CusCatalogue"
+        android:layout_width="65dp"
+        android:layout_height="107dp"
+        android:layout_marginEnd="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tag_catalogue" />
+
+        <TextView
+            android:id="@+id/cusTitletext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Title"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/customiseText" />
+
+        <EditText
+            android:id="@+id/cusTitleEdit"
+            android:layout_width="0dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/rounded_edittext"
+            android:inputType="textCapWords"
+            android:paddingLeft="20dp"
+            android:paddingRight="45dp"
+            android:textColor="@color/offwhite"
+            android:textSize="27sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cusTitletext" />
+
+
+        <TextView
+            android:id="@+id/cusAuthtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Author"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cusTitleEdit" />
+
+        <EditText
+            android:id="@+id/cusAuthEdit"
+            android:layout_width="0dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/rounded_edittext"
+            android:inputType="textCapWords"
+            android:paddingLeft="20dp"
+            android:paddingRight="45dp"
+            android:textColor="@color/offwhite"
+            android:textSize="27sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cusAuthtext" />
+
+
+        <TextView
+            android:id="@+id/cusYeartxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="PublishedYear"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cusAuthEdit" />
+
+        <EditText
+            android:id="@+id/cusYearEdit"
+            android:layout_width="0dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/rounded_edittext"
+            android:inputType="textCapWords"
+            android:paddingLeft="20dp"
+            android:paddingRight="45dp"
+            android:textColor="@color/offwhite"
+            android:textSize="27sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cusYeartxt" />
+
+        <TextView
+            android:id="@+id/cusISBNtxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="ISBN"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cusYearEdit" />
+
+        <EditText
+            android:id="@+id/cusISBNEdit"
+            android:layout_width="0dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/rounded_edittext"
+            android:inputType="textCapWords"
+            android:paddingLeft="20dp"
+            android:paddingRight="45dp"
+            android:textColor="@color/offwhite"
+            android:textSize="27sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cusISBNtxt" />
+
+
+        <TextView
+            android:id="@+id/cusSynopsis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Synopsis"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cusISBNEdit" />
+
+        <EditText
+            android:id="@+id/cusSynopsisEdit"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/rounded_edittext"
+            android:inputType="textCapWords"
+            android:paddingLeft="20dp"
+            android:paddingRight="45dp"
+            android:textColor="@color/offwhite"
+            android:textSize="27sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cusSynopsis" />
+
+        <Button
+            android:id="@+id/detToggleArcBtn"
+            android:layout_width="175dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/brown"
+            android:minHeight="48dp"
+            android:padding="-3dp"
+            android:text="Add to Library"
+            android:drawableRight="@drawable/icon_pen"
+            android:textAllCaps="false"
+            android:textColor="@color/cream"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cusSynopsisEdit"
+            app:layout_constraintVertical_bias="1.0" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
