@@ -67,8 +67,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(BOOK_COLUMN_ISBN, book.getIsbn());
         values.put(BOOK_COLUMN_AUTHOR, book.getAuthor());
         values.put(BOOK_COLUMN_TITLE, book.getName());
-        values.put(BOOK_COLUMN_AUTHOR, book.getName());
-        values.put(BOOK_COLUMN_YEAR, book.getName());
+        values.put(BOOK_COLUMN_YEAR, book.getYear());
         values.put(BOOK_COLUMN_BLURB, book.getBlurb());
         values.put(BOOK_COLUMN_THUMBNAIL, book.getThumbnail());
         values.put(BOOK_COLUMN_READING_TIME, book.getReadSeconds());
