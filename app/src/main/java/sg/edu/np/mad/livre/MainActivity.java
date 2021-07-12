@@ -85,10 +85,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 handler.removeCallbacks(runnable);
+
+                // stop timer
                 timer.stop();
                 timerRunning = false;
-                dbHandler.updateLog(isbn, (int)(tMilliSec / 1000));
-                updateTotalTimeRead(isbn);
+
+                Book dbBook = dbHandler.FindBookByISBN(isbn);
+                dbBook.setReadSeconds(dbBook.getReadSeconds() + (int)(tMilliSec/1000));
+
+                //Updating Database
+                dbHandler.updateLog(isbn, dbBook.getReadSeconds(),dbBook.name);
+                dbHandler.updateTotalTime(dbBook);
+
                 Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
                 startActivity(intent);
                 finish();
@@ -97,12 +105,5 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton("Nah", null);
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-    }
-
-    public void updateTotalTimeRead(String isbn)
-    {
-        Book dbBook = dbHandler.FindBookByISBN(isbn);
-        dbBook.setReadSeconds(dbBook.getReadSeconds() + (int)(tMilliSec/1000));
-        dbHandler.updateTotalTime(dbBook);
     }
 }

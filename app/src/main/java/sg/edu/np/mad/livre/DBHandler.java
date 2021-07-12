@@ -6,10 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DBHandler extends SQLiteOpenHelper {
 
@@ -29,6 +31,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String LOG_COLUMN_DATE = "Date";
     public static final String LOG_COLUMN_SECOND = "Time";
     public static final String LOG_COLUMN_ID = "_id";
+    public static final String LOG_COLUMN_NAME = "Name";
 
     public DBHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -40,7 +43,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String CREATE_BOOK_TABLE = "CREATE TABLE " + TABLE_BOOK + "(" + BOOK_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + BOOK_COLUMN_ISBN + " TEXT," + BOOK_COLUMN_AUTHOR + " TEXT," + BOOK_COLUMN_BLURB + " TEXT," + BOOK_COLUMN_THUMBNAIL + " TEXT," + BOOK_COLUMN_READING_TIME + " INT," + BOOK_COLUMN_CUSTOM + " INT," + BOOK_COLUMN_ARCHIVED + " INT" + ")";
         String CREATE_LOG_TABLE = "CREATE TABLE " + TABLE_LOG + "(" + LOG_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                                    + LOG_COLUMN_ISBN+ " TEXT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_SECOND + " INT)";
+                                    + LOG_COLUMN_NAME+ " TEXT," + LOG_COLUMN_ISBN+ " TEXT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_SECOND + " INT)";
         db.execSQL(CREATE_BOOK_TABLE);
         db.execSQL(CREATE_LOG_TABLE);
 
@@ -165,13 +168,14 @@ public class DBHandler extends SQLiteOpenHelper {
     /*
         Creates a log entry of time read .
     */
-    public void updateLog(String isbn,int seconds)
+    public void updateLog(String isbn,int seconds, String name)
     {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         ContentValues values = new ContentValues();
         values.put(LOG_COLUMN_ISBN, isbn);
         values.put(LOG_COLUMN_DATE, formatter.format(Calendar.getInstance().getTime()));
         values.put(LOG_COLUMN_SECOND, seconds);
+        values.put(LOG_COLUMN_NAME, name);
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_LOG, null, values);
@@ -248,5 +252,46 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         db.close();
         return bookList;
+    }
+
+    public int GetTotalReadingTimeInSec()
+    {
+        int totalTime = 0;
+        String dbQuery = "SELECT SUM(" + LOG_COLUMN_SECOND + ") FROM " + TABLE_LOG;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if (cursor.moveToFirst())
+        {
+            totalTime = cursor.getInt(0);
+        }
+
+        db.close();
+        return  totalTime;
+    }
+
+    public ArrayList<Records> GetAllRecords(){
+        ArrayList<Records> recordsList = new ArrayList<Records>();
+        String dbQuery = "SELECT * FROM " + TABLE_LOG + " ORDER BY " + LOG_COLUMN_ID + " DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if (cursor.moveToFirst())
+        {
+            do {
+                Records records = new Records();
+                records.setName(cursor.getString(1));
+                records.setIsbn(cursor.getString(2));
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                try {
+                    records.setDateRead(sdf.parse(cursor.getString(3)));
+                }catch (ParseException ex)
+                {
+                    records.setDateRead(null);
+                }
+                records.setTimeReadSec(cursor.getInt(4));
+                recordsList.add(records);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return recordsList;
     }
 }
