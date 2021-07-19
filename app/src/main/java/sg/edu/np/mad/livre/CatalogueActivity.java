@@ -33,7 +33,7 @@ public class CatalogueActivity extends AppCompatActivity {
     static ArrayList<String> thumbList;
     static ArrayList<String> descList;
 
-    ImageView libraryImage, temporaryCreateImage;
+    ImageView libraryImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +44,6 @@ public class CatalogueActivity extends AppCompatActivity {
         libraryImage = findViewById(R.id.catalogueLibraryTag);
         libraryImage.setOnClickListener(v -> finish());
 
-        temporaryCreateImage = findViewById(R.id.temporaryCreateImage);
-        temporaryCreateImage.setOnClickListener(v -> {
-            Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
-            startActivity(intent);
-        });
 
 
         RecyclerView rv = findViewById(R.id.catRecyclerView);
@@ -95,12 +90,7 @@ public class CatalogueActivity extends AppCompatActivity {
                                     JSONArray docs = response.getJSONArray("docs");
                                     //append isbn to list
                                     int count = 0;
-                                    if (docs.length()>20){
-                                        count = 20;
-                                    }
-                                    else if (docs.length() <= 20) {
                                         count = docs.length();
-                                    }
                                     Log.v("count", String.valueOf(count));
                                     for (int i = 0; i < count; i++) {
                                         JSONObject object = docs.getJSONObject(i);
@@ -176,6 +166,12 @@ Log.v("error", "error");
 
             }
         });
+    }
+
+    public void customBook(View view){
+            Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
+            startActivity(intent);
+
     }
 
     public void getThumbsfromAPI() {
