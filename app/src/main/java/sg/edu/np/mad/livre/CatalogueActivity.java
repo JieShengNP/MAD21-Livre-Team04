@@ -79,6 +79,8 @@ public class CatalogueActivity extends AppCompatActivity {
 
                 //request string
                 String url ="https://openlibrary.org/search.json?q=" + inputText;
+
+                Log.v("DEBUG", url);
                 //API call to get list of seeds
                 //Create JsonObjectRequest object
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -162,12 +164,9 @@ public class CatalogueActivity extends AppCompatActivity {
                             //handle error response
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                error.printStackTrace();
 
-                                new AlertDialog.Builder(getApplicationContext())
-                                        .setTitle("Error!")
-                                        .setMessage("Catalogue is not working at the moment, please try again later")
-                                        .setPositiveButton("OK", null)
-                                        .show();
+Log.v("error", "error");
                             }
                         });
 
@@ -222,11 +221,15 @@ public class CatalogueActivity extends AppCompatActivity {
 
                         }
 
-                    }, error -> new AlertDialog.Builder(getApplicationContext())
-                            .setTitle("Error!")
-                            .setMessage("Catalogue is not working at the moment, please try again later")
-                            .setPositiveButton("OK", null)
-                            .show());
+                    },new Response.ErrorListener() {
+
+                                //handle error response
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    error.printStackTrace();
+                                }
+                            });
+
 
             // Access the RequestQueue through singleton class.
             ApiSingleton.getInstance(getApplicationContext()).addToRequestQueue(reqObj);
@@ -292,11 +295,7 @@ public class CatalogueActivity extends AppCompatActivity {
                         //handle error response
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            new AlertDialog.Builder(getApplicationContext())
-                                    .setTitle("Error!")
-                                    .setMessage("Catalogue is not working at the moment, please try again later")
-                                    .setPositiveButton("OK", null)
-                                    .show();
+                            error.printStackTrace();
                         }
                     });
 
