@@ -29,6 +29,7 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
     public CatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View item = null;
 
+        Log.v("ooooooooooooooooh", String.valueOf(viewType));
         if(viewType == 0) {
             item = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.catalogue_item,
@@ -47,7 +48,9 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
 
     @Override
     public int getItemViewType(int position) {
-        if (position == getItemCount()-1){
+        Log.v("informationactioatio", String.valueOf(position));
+        Log.v("informationactionratio", String.valueOf(getItemCount()));
+        if (position != (getItemCount() -1)){
             return 0;
         }
         else{
@@ -59,6 +62,7 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull CatViewHolder holder, int position) {
         Book b = data.get(position);
+        Log.v("infoinfo", b.toString());
         holder.cattitle.setText(b.name);
         holder.catdesc.setText(b.blurb);
         holder.catauthordate.setText(b.author + " · " + b.year);

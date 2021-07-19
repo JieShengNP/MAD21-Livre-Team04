@@ -28,12 +28,11 @@ import java.util.Iterator;
 import java.util.List;
 
 public class CatalogueActivity extends AppCompatActivity {
-    ArrayList<String> seedList;
-    ArrayList<Book> bookList;
+    static ArrayList<String> seedList;
+    static ArrayList<Book> bookList;
+    static ArrayList<String> thumbList;
+    static ArrayList<String> descList;
 
-    static ArrayList<String> finalSeedList;
-    static ArrayList<Book> finalBookList;
-    static int noOfEntries;
     ImageView libraryImage, temporaryCreateImage;
 
     @Override
@@ -51,15 +50,27 @@ public class CatalogueActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+
+        RecyclerView rv = findViewById(R.id.catRecyclerView);
+        CatItemsAdapter itemsAdapter = new CatItemsAdapter(new ArrayList<Book>());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        rv.setLayoutManager(linearLayoutManager);
+        rv.setAdapter(itemsAdapter);
+
+
+
+
+
         //Find search icon and set onclicklistener
         ImageView searchIcon = findViewById(R.id.catsearchicon);
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                noOfEntries = 0;
                 Log.v("DEBUG", "CLICKED");
                 seedList = new ArrayList<String>();
                 bookList = new ArrayList<Book>();
+                thumbList = new ArrayList<>();
+                descList = new ArrayList<>();
 
                 //get input from search bar, replace spaces with plus
                 EditText input = findViewById(R.id.catalogueSearch);
@@ -109,7 +120,7 @@ public class CatalogueActivity extends AppCompatActivity {
                                         String titl;
                                         String isbn;
                                         try {
-                                            auth = object.getString("author_name");
+                                            auth = object.getJSONArray("author_name").get(0).toString();
                                             titl = object.getString("title");
                                             isbn = object.getJSONArray("isbn").get(0).toString();
                                         } catch (JSONException e) {
@@ -130,34 +141,13 @@ public class CatalogueActivity extends AppCompatActivity {
                                     }
 
 
-noOfEntries = bookList.size();
 
 
                                     //SECOND API CALL
                                     Log.v("Debug", "getDescFromAPIOOOOOOOOOOOOOOOO");
-
-
-
-
-                                    ArrayList<String> descList = getDescFromAPI(seedList);
+                                    getDescFromAPI();
                                     Log.v("Debug", "getTHUMBSFromAPI");
-                                    ArrayList<String> thumbList = getThumbsfromAPI(bookList);
-                                    Log.v("Debujjg", String.valueOf(thumbList.size()));
-//                                    for (int b = 0; b<bookList.toArray().length; b++){
-//                                        Book book = bookList.get(b);
-//                                        book.blurb = descList.get(b);
-//                                        book.thumbnail = thumbList.get(b);
-//
-//                                        bookList.set(b, book);
-//                                    }
-//
-//
-//                                    RecyclerView rv = findViewById(R.id.catRecyclerView);
-//                                    CatItemsAdapter itemsAdapter = new CatItemsAdapter(bookList);
-//                                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-//                                    rv.setLayoutManager(linearLayoutManager);
-//                                    rv.setAdapter(itemsAdapter);
-
+                                    getThumbsfromAPI();
 
                                 } catch (JSONException e) { //catch exception
                                     e.printStackTrace();
@@ -189,9 +179,8 @@ noOfEntries = bookList.size();
         });
     }
 
-    public ArrayList<String> getThumbsfromAPI(ArrayList<Book> bookList) {
+    public void getThumbsfromAPI() {
         Log.v("DeAAAAAAAAb", "getTHUMBSFromAPI");
-        ArrayList<String> thumbList = new ArrayList<>();
 
         for (int b = 0; b < bookList.size(); b++)  {
             String requrl = "https://openlibrary.org/api/books?bibkeys=ISBN:" + bookList.get(b).isbn + "&format=json";
@@ -204,7 +193,7 @@ noOfEntries = bookList.size();
                         //Handle response
                         @Override
                         public void onResponse(JSONObject response) {
-                            String thumb = "";
+                            String thumb = "unavailable";
                             try {
                                 //get jsonarray docs
 
@@ -225,9 +214,10 @@ noOfEntries = bookList.size();
                                 thumbList.add(thumb);
                                 e.printStackTrace();
                             }
-                            if(thumbList.size() == noOfEntries){
 
-                                updateList(bookList, thumbList, null);
+                            if(bookList.size() == thumbList.size()){
+                                updateBookList();
+                                return;
                             }
 
                         }
@@ -242,13 +232,11 @@ noOfEntries = bookList.size();
             ApiSingleton.getInstance(getApplicationContext()).addToRequestQueue(reqObj);
 
         }
-        return thumbList;
     }
 
 
 
-    public ArrayList<String> getDescFromAPI(List<String> seedList) {
-        ArrayList<String> descList = new ArrayList<>();
+    public void getDescFromAPI() {
         for (int b = 0; b < seedList.size(); b++) {
 
             String requrl = "https://openlibrary.org/" + seedList.get(b) + ".json";
@@ -293,7 +281,10 @@ noOfEntries = bookList.size();
                                 descList.add("Unavailable");
 
                             }
-
+                            if(seedList.size() == descList.size()){
+                                updateBookList();
+                                return;
+                            }
 
                         }
                     }, new Response.ErrorListener() {
@@ -313,13 +304,37 @@ noOfEntries = bookList.size();
             ApiSingleton.getInstance(getApplicationContext()).addToRequestQueue(reqObj);
 
         }
-
-        return descList;
-
     }
 
 
-    public void updateList(ArrayList<Book> bookList, ArrayList<String> thumbList, ArrayList<String> descList){
+    public void updateBookList(){
+        Log.v("updatebooklist", String.valueOf(bookList.size()));
+        Log.v("updatebooklistdesc", String.valueOf(descList.size()));
+        Log.v("updatebooklistthumb", String.valueOf(thumbList.size()));
+        if(bookList.size()!=descList.size() || thumbList.size()!=bookList.size()){
+            return;
+        }
+
+        for (int b = 0; b<bookList.size(); b++){
+            Book book = bookList.get(b);
+            book.blurb = descList.get(b);
+            book.thumbnail = thumbList.get(b);
+
+            bookList.set(b, book);
+
+            Log.v("updatebooklist", String.valueOf(b));
+        }
+
+        for (int b = 0; b<bookList.size(); b++){
+
+            Log.v("updatebooklistAAA", bookList.get(b).toString());
+        }
+
+        RecyclerView rv = findViewById(R.id.catRecyclerView);
+        CatItemsAdapter itemsAdapter = new CatItemsAdapter(bookList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        rv.setLayoutManager(linearLayoutManager);
+        rv.setAdapter(itemsAdapter);
 
     }
 
