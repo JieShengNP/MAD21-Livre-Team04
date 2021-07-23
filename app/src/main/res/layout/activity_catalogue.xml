@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="3dp">
+    >
 
     <ImageView
         android:id="@+id/catalogueLibraryTag"
@@ -54,10 +54,12 @@
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frame2cat" />
+        app:layout_constraintTop_toBottomOf="@+id/frame2cat"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/frame2cat"
@@ -81,6 +83,51 @@
         app:layout_constraintTop_toTopOf="@+id/catalogueSearch"
         app:srcCompat="@drawable/search" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/loadLayout"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/catRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/catRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/catRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/frame2cat">
+
+        <VideoView
+            android:id="@+id/loadVid"
+            android:layout_width="61dp"
+            android:layout_height="62dp"
+            android:layout_gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/catRecyclerView" />
+
+        <TextView
+            android:id="@+id/changeloadText"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Scouring..."
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/catRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loadVid" />
+
+        <TextView
+            android:id="@+id/loadText"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginBottom="16dp"
+            android:text="This might take a while."
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/catRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loadVid" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/catThumb"
         android:layout_width="102dp"
-        android:layout_height="179dp"
+        android:layout_height="160dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@color/quicksand"
@@ -50,16 +50,17 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="3"
         android:text="lorem ipsum dolor sit amet consectetuer adipiscing elit sed diam nonummy nibh lorem ipsum dolor sit amet consectetuer adipiscing elit sed diam nonummy nibh"
         android:textSize="20sp"
-        android:translationY="-10dp"
-        android:maxLines="3"
-        android:ellipsize="end"
+        android:translationY="-20dp"
         app:layout_constraintBottom_toBottomOf="@+id/catThumb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/catThumb"
-        app:layout_constraintTop_toBottomOf="@+id/catauthorDate" />
+        app:layout_constraintTop_toBottomOf="@+id/catauthorDate"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/frame2cat"
@@ -119,6 +120,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/authorDate" />
+
+    <TextView
+        android:id="@+id/customTxt"
+        android:layout_width="102dp"
+        android:layout_height="20dp"
+        android:background="@color/cream"
+        android:text="Custom"
+        android:visibility="gone"
+        android:textAlignment="center"
+        android:alpha = ".5"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/catThumb"
+        app:layout_constraintEnd_toEndOf="@+id/catThumb"
+        app:layout_constraintStart_toStartOf="@+id/catThumb" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

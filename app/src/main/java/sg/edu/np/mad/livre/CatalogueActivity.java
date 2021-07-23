@@ -2,11 +2,15 @@ package sg.edu.np.mad.livre;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +36,8 @@ public class CatalogueActivity extends AppCompatActivity {
     static ArrayList<Book> bookList;
     static ArrayList<String> thumbList;
     static ArrayList<String> descList;
+    static ArrayList<Book> allBooks;
+    DBHandler dbHandler;
 
     ImageView libraryImage;
 
@@ -41,8 +47,21 @@ public class CatalogueActivity extends AppCompatActivity {
         setContentView(R.layout.activity_catalogue);
 
 
-        libraryImage = findViewById(R.id.catalogueLibraryTag);
-        libraryImage.setOnClickListener(v -> finish());
+        VideoView loadVid = findViewById(R.id.loadVid);
+        //setting video path
+        String uri = "android.resource://" + getPackageName() + "/" + R.raw.lanima;
+        loadVid.setVideoURI(Uri.parse(uri));
+        loadVid.start();
+        loadVid.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
+
+
+        dbHandler = new DBHandler(this);
+        allBooks = dbHandler.GetAllBooks();
 
 
 
@@ -60,8 +79,18 @@ public class CatalogueActivity extends AppCompatActivity {
         ImageView searchIcon = findViewById(R.id.catsearchicon);
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Log.v("DEBUG", "CLICKED");
+            public void onClick(View v) { //when search button is clicked
+                ((TextView)findViewById(R.id.changeloadText)).setText("Scouring...");
+                findViewById(R.id.loadLayout).setVisibility(View.VISIBLE);
+
+
+                RecyclerView rv = findViewById(R.id.catRecyclerView);
+                CatItemsAdapter itemsAdapter = new CatItemsAdapter(new ArrayList<Book>());
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                rv.setLayoutManager(linearLayoutManager);
+                rv.setAdapter(itemsAdapter);
+
+
                 seedList = new ArrayList<String>();
                 bookList = new ArrayList<Book>();
                 thumbList = new ArrayList<>();
@@ -84,6 +113,7 @@ public class CatalogueActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONObject response) {
                                 Log.v("DEBUG", "first API CALL");
+                                ((TextView)findViewById(R.id.changeloadText)).setText("Voilà, a scroll of titles, let's get sorting!");
                                 try {
                                     Log.v("URL", url);
                                     //get jsonarray docs
@@ -171,12 +201,9 @@ Log.v("error", "error");
     public void customBook(View view){
             Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
             startActivity(intent);
-
     }
 
     public void getThumbsfromAPI() {
-        Log.v("DeAAAAAAAAb", "getTHUMBSFromAPI");
-
         for (int b = 0; b < bookList.size(); b++)  {
             String requrl = "https://openlibrary.org/api/books?bibkeys=ISBN:" + bookList.get(b).isbn + "&format=json";
             Log.v("THE URL", requrl);
@@ -188,6 +215,7 @@ Log.v("error", "error");
                         //Handle response
                         @Override
                         public void onResponse(JSONObject response) {
+                            ((TextView)findViewById(R.id.changeloadText)).setText("Catching flyaway book covers...");
                             String thumb = "unavailable";
                             try {
                                 //get jsonarray docs
@@ -246,7 +274,7 @@ Log.v("error", "error");
                         //Handle response
                         @Override
                         public void onResponse(JSONObject response) {
-
+                            ((TextView)findViewById(R.id.changeloadText)).setText("Getting descriptions of broody, mysterious books...");
                             try {
                                 //get jsonarray docs
 
@@ -303,6 +331,7 @@ Log.v("error", "error");
 
 
     public void updateBookList(){
+        ((TextView)findViewById(R.id.changeloadText)).setText("Dotting the i's, crossing the t's...");
         Log.v("updatebooklist", String.valueOf(bookList.size()));
         Log.v("updatebooklistdesc", String.valueOf(descList.size()));
         Log.v("updatebooklistthumb", String.valueOf(thumbList.size()));
@@ -325,18 +354,18 @@ Log.v("error", "error");
             Log.v("updatebooklistAAA", bookList.get(b).toString());
         }
 
+        updateRecyclerView();
+    }
+
+
+    public void updateRecyclerView(){
+        ((TextView)findViewById(R.id.changeloadText)).setText("Done!");
+        findViewById(R.id.loadLayout).setVisibility(View.GONE);
+
         RecyclerView rv = findViewById(R.id.catRecyclerView);
         CatItemsAdapter itemsAdapter = new CatItemsAdapter(bookList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(linearLayoutManager);
         rv.setAdapter(itemsAdapter);
-
     }
-
-
-
-
-
-
-
 }

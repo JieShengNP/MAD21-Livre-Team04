@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/catThumb"
         android:layout_width="102dp"
-        android:layout_height="179dp"
+        android:layout_height="160dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@color/quicksand"
@@ -52,7 +52,7 @@
         android:layout_marginEnd="8dp"
         android:text="lorem ipsum dolor sit amet consectetuer adipiscing elit sed diam nonummy nibh lorem ipsum dolor sit amet consectetuer adipiscing elit sed diam nonummy nibh"
         android:textSize="20sp"
-        android:translationY="-10dp"
+        android:translationY="-20dp"
         android:maxLines="3"
         android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="@+id/catThumb"
@@ -73,5 +73,19 @@
         app:layout_constraintTop_toBottomOf="@+id/catThumb"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/frame2" />
+
+    <TextView
+        android:id="@+id/customTxt"
+        android:layout_width="102dp"
+        android:layout_height="20dp"
+        android:background="@color/cream"
+        android:visibility="gone"
+        android:text="Custom"
+        android:textAlignment="center"
+        android:alpha = ".5"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/catThumb"
+        app:layout_constraintEnd_toEndOf="@+id/catThumb"
+        app:layout_constraintStart_toStartOf="@+id/catThumb" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
