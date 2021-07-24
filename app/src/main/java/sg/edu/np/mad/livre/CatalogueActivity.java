@@ -11,39 +11,28 @@ import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class CatalogueActivity extends AppCompatActivity {
     static ArrayList<String> seedList;
@@ -226,6 +215,7 @@ public class CatalogueActivity extends AppCompatActivity {
 
                                 } catch (JSONException e) { //catch exception
                                     e.printStackTrace();
+                                    errorWhileSearchingAlertDialogue("We are experiencing trouble handling the data we received");
                                 }
 
 
@@ -238,21 +228,7 @@ public class CatalogueActivity extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 error.printStackTrace();
-                                AlertDialog.Builder bui = new AlertDialog.Builder(CatalogueActivity.this);
-
-                                        bui.setMessage("This might be due to queries causing the servers to time out. Please try again later or with a different query.")
-                                        .setCancelable(false)
-                                        .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                finish();
-                                            }
-                                        });
-                                //Creating dialog box
-                                AlertDialog alert = bui.create();
-                                //Setting the title manually
-                                alert.setTitle("Error in Catalogue!");
-                                alert.show();
-                                Log.v("error", "error11");
+                                errorWhileSearchingAlertDialogue("This might be due to queries causing the servers to time out");
                             }
                         });
 
@@ -447,21 +423,52 @@ public class CatalogueActivity extends AppCompatActivity {
             updateRecyclerView();
         }
         else{
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Nothing Found!",
-                    Toast.LENGTH_SHORT);
+            View v = findViewById(R.id.featherDuster);
+            v.setVisibility(View.VISIBLE);
 
-            toast.show();
-            updateRecyclerView();
-            if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-                findViewById(R.id.featherDuster).setVisibility(View.VISIBLE);
-            };
+
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    shake(70);
+                    final Handler handler1 = new Handler();
+                    handler1.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            levitate(50);
+                            AlertDialog.Builder bui = new AlertDialog.Builder(CatalogueActivity.this);
+
+                            bui.setMessage("There were no results for your query, create a custom book?")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Create Custom Book", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
+                                            startActivity(intent);
+                                        }
+                                    })
+                                    .setNegativeButton("Stay Here", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            recreate();
+                                        }
+                                    });
+
+                            //Creating dialog box
+                            AlertDialog alert = bui.create();
+                            //Setting the title manually
+                            alert.setTitle("No Results");
+                            alert.show();
+
+                        }
+                    }, 500);
+
+                }
+            }, 250);
+
+
+
         }
-    }
-
-    public static int dpToPx(int dp, Context context) {
-        float density = context.getResources().getDisplayMetrics().density;
-        return Math.round((float) dp * density);
     }
 
     public void updateRecyclerView(){
@@ -472,6 +479,11 @@ public class CatalogueActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(linearLayoutManager);
         rv.setAdapter(itemsAdapter);
+    }
+
+    public static int dpToPx(int dp, Context context) {
+        float density = context.getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
     }
 
     public void levitate (float Y){
@@ -490,6 +502,22 @@ public class CatalogueActivity extends AppCompatActivity {
                 });
     }
 
+    public void shake (float X){
+        final long yourDuration = 50;
+        final TimeInterpolator yourInterpolator = new DecelerateInterpolator();
+        findViewById(R.id.featherDuster).animate().
+                translationXBy(X).
+                setDuration(yourDuration).
+                setInterpolator(yourInterpolator).
+                setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        shake(-X);
+                    }
+                });
+    }
+
     public void setOrentationDifferences(){
 
 //        View tag = findViewById(R.id.catalogueLibraryTag);
@@ -501,6 +529,24 @@ public class CatalogueActivity extends AppCompatActivity {
 //            tag.setRotation(0);
 //
 //        }
+    }
+
+
+    public void errorWhileSearchingAlertDialogue (String s){
+        AlertDialog.Builder bui = new AlertDialog.Builder(CatalogueActivity.this);
+
+        bui.setMessage(s + ". Please try again later or with a different query.")
+                .setCancelable(false)
+                .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        recreate();
+                    }
+                });
+        //Creating dialog box
+        AlertDialog alert = bui.create();
+        //Setting the title manually
+        alert.setTitle("Error in Catalogue!");
+        alert.show();
     }
 
 
