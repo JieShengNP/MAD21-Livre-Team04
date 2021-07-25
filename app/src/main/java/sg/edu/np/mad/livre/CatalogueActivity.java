@@ -130,14 +130,17 @@ public class CatalogueActivity extends AppCompatActivity {
             thumbList = new ArrayList<>();
             descList = new ArrayList<>();
 
+            //replace spaces in input with plus, create request url
+            String inputText = input.getText().toString().replace(" ", "+");
+            String url ="https://openlibrary.org/search.json?q=" + inputText;
+
             //Loading indicators appear
             ((TextView)findViewById(R.id.changeloadText)).setText("Scouring...");
             findViewById(R.id.featherDuster).setVisibility(View.GONE);
             findViewById(R.id.loadLayout).setVisibility(View.VISIBLE);
 
-            //replace spaces in input with plus, create request url
-            String inputText = input.getText().toString().replace(" ", "+");
-            String url ="https://openlibrary.org/search.json?q=" + inputText;
+            //make information (number of results, etc.) gone
+            findViewById(R.id.catInfo).setVisibility(View.GONE);
 
             //make edittext more of a textview while search processes
             searchIcon.setVisibility(View.GONE);
