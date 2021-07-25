@@ -43,6 +43,10 @@ public class CatalogueActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalogue);
 
+        //Find search icon, make visible
+        ImageView searchIcon = findViewById(R.id.catsearchicon);
+        searchIcon.setVisibility(View.VISIBLE);
+
         //make information (number of results, etc.) gone
         findViewById(R.id.catInfo).setVisibility(View.GONE);
         //feather duster visible
@@ -73,13 +77,20 @@ public class CatalogueActivity extends AppCompatActivity {
         rv.setLayoutManager(linearLayoutManager);
         rv.setAdapter(itemsAdapter);
 
+        //find search bar
+        EditText input = findViewById(R.id.catalogueSearch);
 
-        //Find search icon
-        ImageView searchIcon = findViewById(R.id.catsearchicon);
+        //when search bar is in focus, clear
+        input.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus){
+                input.getText().clear();
+                input.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            }
+        });
 
 
         //if person clicks search on keyboard it triggers onlick on the search icon
-        ((EditText)findViewById(R.id.catalogueSearch)).setOnEditorActionListener((v, actionId, event) -> {
+        input.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchIcon.callOnClick();
                 return true;
@@ -90,9 +101,8 @@ public class CatalogueActivity extends AppCompatActivity {
 
         //set onclicklistener for search icon/button
         searchIcon.setOnClickListener(v -> {
-            //when search button is clicked
+            //when search icon is clicked
             //get input from search bar
-            EditText input = findViewById(R.id.catalogueSearch);
 
             //return if EditText is empty/whitespace
             if (input.getText().toString().trim().isEmpty()){
@@ -114,7 +124,6 @@ public class CatalogueActivity extends AppCompatActivity {
             rv.setLayoutManager(linearLayoutManager1);
             rv.setAdapter(itemsAdapter1);
 
-
             //create instances of static arraylists
             seedList = new ArrayList<>();
             bookList = new ArrayList<>();
@@ -130,11 +139,13 @@ public class CatalogueActivity extends AppCompatActivity {
             String inputText = input.getText().toString().replace(" ", "+");
             String url ="https://openlibrary.org/search.json?q=" + inputText;
 
+            //make edittext more of a textview while search processes
+            searchIcon.setVisibility(View.GONE);
+            input.setEnabled(false);
+            input.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            input.setPadding(input.getPaddingLeft(), 0, input.getPaddingLeft(), 0);
 
             //First API call, creates correlating ArrayList of seeds and Book objects without description and thumbnail properties
-            //Create JsonObjectRequest object
-            //Handle response to first API call
-            //handle error response
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                     (Request.Method.GET, url, null, response -> {
                         //change loading text
@@ -399,6 +410,15 @@ public class CatalogueActivity extends AppCompatActivity {
         if (bookList.size()!=0) {
             ((TextView) findViewById(R.id.resNum)).setText(String.valueOf(bookList.size()));
              findViewById(R.id.catInfo).setVisibility(View.VISIBLE);
+
+             //search bar
+            View search = findViewById(R.id.catalogueSearch);
+
+            //make EditText like search bar
+            search.setPadding(search.getPaddingLeft(), 0,  (int) Math.round(search.getPaddingLeft() * 2.25), 0);
+            findViewById(R.id.catsearchicon).setVisibility(View.VISIBLE);
+            search.setEnabled(true);
+
             updateRecyclerView();
         }
         else{
