@@ -15,7 +15,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".LibraryActivity" />
         <activity android:name=".ArchiveActivity" />
-        <activity android:name=".CatalogueActivity" />
+        <activity android:name=".CatalogueActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".BookDetails" />
         <activity android:name=".CustomiseBook"/>
         <activity android:name=".SplashScreenActivity">

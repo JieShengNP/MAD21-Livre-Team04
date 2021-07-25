@@ -7,10 +7,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -20,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
@@ -27,6 +32,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -43,6 +50,9 @@ public class CatalogueActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalogue);
 
+        //Make changes based on orientation
+        setOrentationDifferences();
+
         //Find search icon, make visible
         ImageView searchIcon = findViewById(R.id.catsearchicon);
         searchIcon.setVisibility(View.VISIBLE);
@@ -52,7 +62,6 @@ public class CatalogueActivity extends AppCompatActivity {
         //feather duster visible
         findViewById(R.id.featherDuster).setVisibility(View.VISIBLE);
 
-        setOrentationDifferences();
 
         //load video
         VideoView loadVid = findViewById(R.id.loadVid);
@@ -98,6 +107,7 @@ public class CatalogueActivity extends AppCompatActivity {
             return false;
         });
 
+        setOrentationDifferences();
 
         //set onclicklistener for search icon/button
         searchIcon.setOnClickListener(v -> {
@@ -231,19 +241,9 @@ public class CatalogueActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        //on resume, load video
-        VideoView loadVid = findViewById(R.id.loadVid);
-        //setting video path
-        String uri = "android.resource://" + getPackageName() + "/" + R.raw.lanima;
-        loadVid.setVideoURI(Uri.parse(uri));
-        loadVid.start();
-        loadVid.setOnPreparedListener(mp -> mp.setLooping(true));
-    }
-
-    @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        //make changed based on orientation
         setOrentationDifferences();
     }
 
@@ -472,11 +472,6 @@ public class CatalogueActivity extends AppCompatActivity {
         rv.setAdapter(itemsAdapter);
     }
 
-    public static int dpToPx(int dp, @org.jetbrains.annotations.NotNull Context context) {
-        float density = context.getResources().getDisplayMetrics().density;
-        return Math.round((float) dp * density);
-    }
-
     public void levitate (float Y){
         //Levitation animation in one direction (up/down)
         final long yourDuration = 3000; //duration of one direction
@@ -515,15 +510,54 @@ public class CatalogueActivity extends AppCompatActivity {
 
     public void setOrentationDifferences(){
 
-//        View tag = findViewById(R.id.catalogueLibraryTag);
-//        TextView catText = (TextView) findViewById(R.id.catalogueText);
-//        if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-//tag.setRotation(270);
-//catText.setTextAppearance(getApplicationContext(), R.xml.)
-//        }else{
-//            tag.setRotation(0);
-//
-//        }
+        //find views
+        ImageView tag = (ImageView) findViewById(R.id.catalogueLibraryTag);
+        TextView catTxt = (TextView) findViewById(R.id.catalogueText);
+        ImageView frame2 = (ImageView) findViewById(R.id.frame2cat);
+        ImageView feadus = (ImageView) findViewById(R.id.featherDuster);
+
+        //if landscape
+        if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //tag
+            tag.getLayoutParams().height = (int) Math.round(70 * Resources.getSystem().getDisplayMetrics().density);
+            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0,0,0,0);
+            tag.setRotation(270);
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tag.getLayoutParams();
+            p.setMargins(0,(int) Math.round(20 * Resources.getSystem().getDisplayMetrics().density),(int) Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+
+            //catalogue text
+            catTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 42);
+            ViewGroup.MarginLayoutParams ct = (ViewGroup.MarginLayoutParams) catTxt.getLayoutParams();
+            ct.setMargins((int) Math.round(48 * Resources.getSystem().getDisplayMetrics().density),(int) Math.round(0 * Resources.getSystem().getDisplayMetrics().density),0,0);
+            catTxt.getLayoutParams().height = (int) Math.round(62 * Resources.getSystem().getDisplayMetrics().density);
+
+            //frame2
+            frame2.setVisibility(View.GONE);
+
+            //featherdusters
+            feadus.getLayoutParams().height = (int) Math.round(70 * Resources.getSystem().getDisplayMetrics().density);
+        }
+        else { //if portrait
+            //tag
+            tag.getLayoutParams().height = (int) Math.round(107 * Resources.getSystem().getDisplayMetrics().density);
+            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0, 0, (int) Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+            tag.setRotation(0);
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tag.getLayoutParams();
+            p.setMargins(0,0,(int) Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+
+            //catalogue text
+            catTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 60);
+            ViewGroup.MarginLayoutParams ct = (ViewGroup.MarginLayoutParams) catTxt.getLayoutParams();
+            ct.setMargins((int) Math.round(48 * Resources.getSystem().getDisplayMetrics().density),(int) Math.round(16 * Resources.getSystem().getDisplayMetrics().density),0,0);
+            catTxt.getLayoutParams().height = (int) Math.round(85 * Resources.getSystem().getDisplayMetrics().density);
+
+            //frame2
+            frame2.setVisibility(View.VISIBLE);
+
+            //featherdusters
+            feadus.getLayoutParams().height = (int) Math.round(114 * Resources.getSystem().getDisplayMetrics().density);
+        }
+        tag.requestLayout();
     }
 
     public void errorWhileSearchingAlertDialogue (String s){
@@ -540,7 +574,4 @@ public class CatalogueActivity extends AppCompatActivity {
         alert.setTitle("Oh No :<");
         alert.show();
     }
-
-
-
 }

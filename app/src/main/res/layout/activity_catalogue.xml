@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/catalogueConLay"
     >
 
     <ImageView
         android:id="@+id/catalogueLibraryTag"
         android:layout_width="65dp"
         android:layout_height="107dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginRight="52dp"
         android:onClick="LibraryTagClick"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/catalogueText"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/tag_library" />
 
@@ -45,7 +44,7 @@
         android:id="@+id/catalogueText"
         android:layout_width="wrap_content"
         android:layout_height="85dp"
-        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
         android:layout_marginTop="16dp"
         android:text="Catalogue"
         android:textColor="@color/sage"
