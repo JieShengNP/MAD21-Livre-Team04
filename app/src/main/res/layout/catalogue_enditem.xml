@@ -111,7 +111,7 @@
         android:minHeight="48dp"
         android:padding="-3dp"
         android:text="Add Custom Story"
-        android:onClick="customBook"
+        android:onClick="detAddToLibBtnClick"
         android:textAllCaps="false"
         android:textColor="@color/cream"
         android:textSize="15sp"

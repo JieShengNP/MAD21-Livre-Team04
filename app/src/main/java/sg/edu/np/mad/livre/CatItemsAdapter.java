@@ -1,11 +1,5 @@
 package sg.edu.np.mad.livre;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +21,8 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
     @NonNull
     @Override
     public CatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View item = null;
+        View item;
 
-        Log.v("ooooooooooooooooh", String.valueOf(viewType));
         if(viewType == 0) {
             item = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.catalogue_item,
@@ -48,8 +41,6 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
 
     @Override
     public int getItemViewType(int position) {
-        Log.v("informationactioatio", String.valueOf(position));
-        Log.v("informationactionratio", String.valueOf(getItemCount()));
         if (position != (getItemCount() -1)){
             return 0;
         }
@@ -62,10 +53,10 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull CatViewHolder holder, int position) {
         Book b = data.get(position);
-        Log.v("infoinfo", b.toString());
         holder.cattitle.setText(b.name);
         holder.catdesc.setText(b.blurb);
-        holder.catauthordate.setText(b.author + " · " + b.year);
+        String catauthordate = b.author + " · " + b.year;
+        holder.catauthordate.setText(catauthordate);
 
         Picasso.get()
                 .load(b.getThumbnail())
