@@ -167,7 +167,16 @@ public class BookDetails extends AppCompatActivity {
             recreate();
         }
 
+    }
 
+    public void backClick() {
+        if (book.isCustom() && book.isAdded() && isFromCus) {
+            Intent intent = new Intent(BookDetails.this, LibraryActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        } else {
+            finish();
+        }
     }
 
     public String CalculateTotalTime(){
