@@ -47,7 +47,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
             public void onClick(View v) {
                 Intent bookDetailsIntent = new Intent(holder.book1.getContext(), BookDetails.class);
                 bookDetailsIntent.putExtra("BookObject", bookDataList.get(0));
-                bookDetailsIntent.putExtra("StartLocation", 0);
                 holder.book1.getContext().startActivity(bookDetailsIntent);
             }
         });
@@ -56,7 +55,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
             public void onClick(View v) {
                 Intent bookDetailsIntent = new Intent(holder.book2.getContext(), BookDetails.class);
                 bookDetailsIntent.putExtra("BookObject", bookDataList.get(1));
-                bookDetailsIntent.putExtra("StartLocation", 0);
                 holder.book2.getContext().startActivity(bookDetailsIntent);
             }
         });
@@ -65,7 +63,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
             public void onClick(View v) {
                 Intent bookDetailsIntent = new Intent(holder.book3.getContext(), BookDetails.class);
                 bookDetailsIntent.putExtra("BookObject", bookDataList.get(2));
-                bookDetailsIntent.putExtra("StartLocation", 0);
                 holder.book3.getContext().startActivity(bookDetailsIntent);
             }
         });
@@ -74,7 +71,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
             public void onClick(View v) {
                 Intent bookDetailsIntent = new Intent(holder.book4.getContext(), BookDetails.class);
                 bookDetailsIntent.putExtra("BookObject", bookDataList.get(3));
-                bookDetailsIntent.putExtra("StartLocation", 0);
                 holder.book4.getContext().startActivity(bookDetailsIntent);
             }
         });
