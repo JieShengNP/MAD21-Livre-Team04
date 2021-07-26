@@ -62,7 +62,7 @@ public class CatalogueActivity extends AppCompatActivity {
         setContentView(R.layout.activity_catalogue);
 
         //Make changes based on orientation
-        setOrentationDifferences();
+        setOrientationDifferences();
 
         //Find search icon, make visible
         ImageView searchIcon = findViewById(R.id.catsearchicon);
@@ -118,7 +118,7 @@ public class CatalogueActivity extends AppCompatActivity {
             return false;
         });
 
-        setOrentationDifferences();
+        setOrientationDifferences();
 
         //set onclicklistener for search icon/button
         searchIcon.setOnClickListener(v -> {
@@ -259,7 +259,7 @@ public class CatalogueActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         //make changed based on orientation
-        setOrentationDifferences();
+        setOrientationDifferences();
     }
 
     public void detAddToLibBtnClick(View view){
@@ -541,7 +541,7 @@ public class CatalogueActivity extends AppCompatActivity {
                 });
     }
 
-    public void setOrentationDifferences(){
+    public void setOrientationDifferences(){
         //find views
         ImageView tag = findViewById(R.id.catalogueLibraryTag);
         TextView catTxt = findViewById(R.id.catalogueText);
