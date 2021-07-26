@@ -209,6 +209,7 @@ public class CatalogueActivity extends AppCompatActivity {
                                 b.author = auth;
                                 b.year = firpub;
                                 b.isbn = isbn;
+                                b.setCustom(false);
 
                                 //add Book object to booklist and first seed to seedlist
                                 bookList.add(b);
