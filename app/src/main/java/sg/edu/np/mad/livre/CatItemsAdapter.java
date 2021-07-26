@@ -70,6 +70,12 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
             bookDetailsIntent.putExtra("BookObject", b);
             holder.catthumb.getContext().startActivity(bookDetailsIntent);;
         });
+        if (b.isCustom()) {
+            holder.customtxt.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.customtxt.setVisibility(View.GONE);
+        }
   }
 
 
