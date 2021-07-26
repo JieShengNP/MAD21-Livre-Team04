@@ -33,9 +33,22 @@ public class BookDetails extends AppCompatActivity {
         bookDescription = findViewById(R.id.detDesc);
 
         Intent receivedIntent = getIntent();
-        // Start Location: 0 for Archive/Library, 1 for Catalogue (Helps with buttons assignment)
-        int startLocation = receivedIntent.getIntExtra("StartLocation", 0);
-        Book book = (Book) receivedIntent.getSerializableExtra("BookObject");
+        book = (Book) receivedIntent.getSerializableExtra("BookObject");
+        book.setAdded(dbHandler.isBookAdded(book.isbn));
+        isFromCus =  getIntent().getExtras().getBoolean("isFromCus");
+
+
+        String isCustom = "";
+        if (book.isCustom){
+            isCustom = "\nCustom";
+            removeBtn.setText("Delete Custom Book");
+        }else{
+            removeBtn.setText("Remove from Library");
+        }
+
+        if (book.getThumbnail().equals("unavailable") || book.getThumbnail() == null){
+            book.setThumbnail("android.resource://" + getPackageName() + "/" + R.drawable.shelf_bust);
+        }
         Picasso.get()
                 .load(book.getThumbnail())
                 .resize(135, 210)

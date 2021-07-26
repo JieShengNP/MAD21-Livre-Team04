@@ -64,27 +64,11 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
                 .into(holder.catthumb);
 
 
-//        holder.img.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                Log.d("Debug", "Image clicked");
-//
-//                new AlertDialog.Builder(holder.img.getContext())
-//                        .setTitle("Profile")
-//                        .setMessage(u.name)
-//                        .setPositiveButton("View", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                Intent viewProfile = new Intent(holder.img.getContext(), MainActivity.class);
-//                                viewProfile.putExtra("id", position);
-//                                holder.img.getContext().startActivity(viewProfile);
-//                            }
-//                        })
-//                        .setNegativeButton("Close", null)
-//                        .show();
-//
-//            }
-//        });
+        holder.catthumb.setOnClickListener(v -> {
+            Intent bookDetailsIntent = new Intent(holder.catthumb.getContext(), BookDetails.class);
+            bookDetailsIntent.putExtra("BookObject", b);
+            holder.catthumb.getContext().startActivity(bookDetailsIntent);;
+        });
   }
 
 
