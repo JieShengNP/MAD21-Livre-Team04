@@ -27,6 +27,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String BOOK_COLUMN_THUMBNAIL = "THUMBNAIL";
     public static final String BOOK_COLUMN_READING_TIME = "READING_TIME";
     public static final String BOOK_COLUMN_CUSTOM = "CUSTOM";
+    public static final String BOOK_COLUMN_ADDED = "ADDED";
     public static final String BOOK_COLUMN_ARCHIVED = "ARCHIVED";
     public static final String TABLE_LOG = "Log";
     public static final String LOG_COLUMN_ISBN = "Isbn";
@@ -43,9 +44,9 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_BOOK_TABLE = "CREATE TABLE " + TABLE_BOOK + "(" + BOOK_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + BOOK_COLUMN_ISBN + " TEXT," + BOOK_COLUMN_AUTHOR + " TEXT," + BOOK_COLUMN_YEAR + " TEXT," + BOOK_COLUMN_TITLE + " TEXT," + BOOK_COLUMN_BLURB + " TEXT," + BOOK_COLUMN_THUMBNAIL + " TEXT," + BOOK_COLUMN_READING_TIME + " INT," + BOOK_COLUMN_CUSTOM + " INT," + BOOK_COLUMN_ARCHIVED + " INT" + ")";
+                + BOOK_COLUMN_ISBN + " TEXT," + BOOK_COLUMN_AUTHOR + " TEXT," + BOOK_COLUMN_YEAR + " TEXT," + BOOK_COLUMN_TITLE + " TEXT," + BOOK_COLUMN_BLURB + " TEXT," + BOOK_COLUMN_THUMBNAIL + " TEXT," + BOOK_COLUMN_READING_TIME + " INT," + BOOK_COLUMN_CUSTOM + " INT," + BOOK_COLUMN_ADDED + " INT," + BOOK_COLUMN_ARCHIVED + " INT" + ")";
         String CREATE_LOG_TABLE = "CREATE TABLE " + TABLE_LOG + "(" + LOG_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                                    + LOG_COLUMN_NAME+ " TEXT," + LOG_COLUMN_ISBN+ " TEXT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_SECOND + " INT)";
+                + LOG_COLUMN_NAME+ " TEXT," + LOG_COLUMN_ISBN+ " TEXT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_SECOND + " INT)";
         db.execSQL(CREATE_BOOK_TABLE);
         db.execSQL(CREATE_LOG_TABLE);
 
@@ -73,6 +74,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(BOOK_COLUMN_READING_TIME, book.getReadSeconds());
         values.put(BOOK_COLUMN_CUSTOM, book.isCustom()? 1: 0);
         values.put(BOOK_COLUMN_ARCHIVED, book.isArchived()? 1: 0);
+        values.put(BOOK_COLUMN_ADDED, book.isAdded()? 1: 0);
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_BOOK, null, values);
@@ -98,7 +100,8 @@ public class DBHandler extends SQLiteOpenHelper {
             book.setThumbnail(cursor.getString(6));
             book.setReadSeconds(cursor.getInt(7));
             book.setCustom(cursor.getInt(8) == 1? true: false);
-            book.setArchived(cursor.getInt(9) == 1? true: false);
+            book.setAdded(cursor.getInt(9) == 1? true: false);
+            book.setArchived(cursor.getInt(10) == 1? true: false);
         } else {
             book = null;
         }
@@ -121,11 +124,11 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Deletion of book from the Database.
+     * Remove of book from the Database.
      * @param book The book to be deleted
-     * @return
+     * @return result
      */
-    public boolean DeleteBook(Book book){
+    public boolean RemoveBook(Book book){
         SQLiteDatabase db = this.getWritableDatabase();
         boolean result = false;
         String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\"";
@@ -139,7 +142,6 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         db.close();
         return result;
-
     }
 
     /**
@@ -163,7 +165,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 book.setThumbnail(cursor.getString(6));
                 book.setReadSeconds(cursor.getInt(7));
                 book.setCustom(cursor.getInt(8) == 1? true: false);
-                book.setArchived(cursor.getInt(9) == 1? true: false);
+                book.setAdded(cursor.getInt(9) == 1? true: false);
+                book.setArchived(cursor.getInt(10) == 1? true: false);
                 bookList.add(book);
             } while (cursor.moveToNext());
             cursor.close();
@@ -224,7 +227,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 book.setThumbnail(cursor.getString(6));
                 book.setReadSeconds(cursor.getInt(7));
                 book.setCustom(cursor.getInt(8) == 1? true: false);
-                book.setArchived(cursor.getInt(9) == 1? true: false);
+                book.setAdded(cursor.getInt(9) == 1? true: false);
+                book.setArchived(cursor.getInt(10) == 1? true: false);
                 bookList.add(book);
             } while (cursor.moveToNext());
             cursor.close();
@@ -256,7 +260,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 book.setThumbnail(cursor.getString(6));
                 book.setReadSeconds(cursor.getInt(7));
                 book.setCustom(cursor.getInt(8) == 1? true: false);
-                book.setArchived(cursor.getInt(9) == 1? true: false);
+                book.setAdded(cursor.getInt(9) == 1? true: false);
+                book.setArchived(cursor.getInt(10) == 1? true: false);
                 bookList.add(book);
             } while (cursor.moveToNext());
             cursor.close();
@@ -266,6 +271,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return bookList;
     }
+
 
     public int GetTotalReadingTimeInSec()
     {

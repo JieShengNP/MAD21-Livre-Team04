@@ -14,9 +14,14 @@ public class Book implements Serializable {
     public String thumbnail;
     public boolean isCustom;
     public boolean isArchived;
+    public boolean isAdded;
 
     public boolean isArchived() {
         return isArchived;
+    }
+
+    public boolean isAdded() {
+        return isAdded;
     }
 
     public void setArchived(boolean archived) {
@@ -31,6 +36,14 @@ public class Book implements Serializable {
 
     public void setBookArrayList(ArrayList<Book> bookArrayList) {
         this.bookArrayList = bookArrayList;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getIsbn() {
@@ -49,6 +62,14 @@ public class Book implements Serializable {
         this.name = name;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public String getBlurb() {
         return blurb;
     }
@@ -57,12 +78,12 @@ public class Book implements Serializable {
         this.blurb = blurb;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getYear() {
+        return year;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public int getReadSeconds() {
@@ -73,6 +94,14 @@ public class Book implements Serializable {
         this.readSeconds = readSeconds;
     }
 
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
     public boolean isCustom() {
         return isCustom;
     }
@@ -81,28 +110,8 @@ public class Book implements Serializable {
         isCustom = custom;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int id) {
-        this.ID = id;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
+    public void setAdded(boolean added) {
+        isAdded = added;
     }
 
     @Override
@@ -118,6 +127,7 @@ public class Book implements Serializable {
                 ", thumbnail='" + thumbnail + '\'' +
                 ", isCustom=" + isCustom +
                 ", isArchived=" + isArchived +
+                ", isAdded=" + isAdded +
                 ", bookArrayList=" + bookArrayList +
                 '}';
     }
