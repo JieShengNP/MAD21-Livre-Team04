@@ -361,8 +361,9 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
 
-    public boolean isBookAdded(String isbn){
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = " + isbn + " and " + BOOK_COLUMN_CUSTOM + " = 1";
+    public boolean isBookAdded(Book book){
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = " + book.isbn + " and " + BOOK_COLUMN_CUSTOM + " = " +  (book.isCustom() ? 1 : 0);
+        Log.v("aaaa", dbQuery);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.getCount() > 0){
