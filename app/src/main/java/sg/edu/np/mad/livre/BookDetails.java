@@ -1,5 +1,6 @@
 package sg.edu.np.mad.livre;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,9 +16,11 @@ import com.squareup.picasso.Picasso;
 public class BookDetails extends AppCompatActivity {
 
     DBHandler dbHandler;
-    ImageView bookImage;
+    ImageView bookImage, backtag;
     TextView bookTitle, bookDetails, bookDurationRead, bookDescription;
-    Button addToLibraryBtn, toggleArchiveBtn, startReadingBtn;
+    Button addToLibraryBtn, toggleArchiveBtn, startReadingBtn, removeBtn;
+    Book book;
+    static Boolean isFromCus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,16 @@ public class BookDetails extends AppCompatActivity {
         bookDetails = findViewById(R.id.detinfo);
         bookDurationRead = findViewById(R.id.timeSpentDet);
         bookDescription = findViewById(R.id.detDesc);
+        addToLibraryBtn = findViewById(R.id.detAddToLibBtn);
+        toggleArchiveBtn = findViewById(R.id.detToggleArcBtn);
+        startReadingBtn = findViewById(R.id.detStartBtn);
+        backtag = findViewById(R.id.detailsBackTag);
+        removeBtn = findViewById(R.id.detRemove);
+
+        backtag.setOnClickListener(v -> backClick());
+
+        bookImage.setVisibility(View.VISIBLE);
+
 
         Intent receivedIntent = getIntent();
         book = (Book) receivedIntent.getSerializableExtra("BookObject");
@@ -54,55 +67,110 @@ public class BookDetails extends AppCompatActivity {
                 .resize(135, 210)
                 .into(bookImage);
         bookTitle.setText(book.getName());
-        bookDetails.setText(book.getAuthor() +" · "+ book.getYear() +"\nISBN: " + book.getIsbn());
-        bookDurationRead.setText("Reading Time: " + CalculateTotalTime(book));
+        bookDetails.setText(book.getAuthor() +" · "+ book.getYear() +"\nISBN: " + book.getIsbn() + isCustom);
+        bookDurationRead.setText("Reading Time: " + CalculateTotalTime());
         bookDescription.setText(book.getBlurb());
 
 
-        if(startLocation == 0){
-            toggleArchiveBtn = findViewById(R.id.detToggleArcBtn);
-            startReadingBtn = findViewById(R.id.detStartBtn);
+
+        if(book.isAdded()){
             toggleArchiveBtn.setVisibility(View.VISIBLE);
+            startReadingBtn.setVisibility(View.VISIBLE);
+            addToLibraryBtn.setVisibility(View.GONE);
+            removeBtn.setVisibility(View.VISIBLE);
+
             if (book.isArchived()){
                 toggleArchiveBtn.setText("Move to Library");
             } else {
                 startReadingBtn.setVisibility(View.VISIBLE);
                 toggleArchiveBtn.setText("Move to Archive");
             }
-            toggleArchiveBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (book.isArchived()){
-                        book.setArchived(false);
-                        Toast.makeText(getBaseContext(), "Moved to Library!", Toast.LENGTH_SHORT).show();
-                        toggleArchiveBtn.setText("Move to Archive");
-                        startReadingBtn.setVisibility(View.VISIBLE);
-                    } else {
-                        book.setArchived(true);
-                        Toast.makeText(getBaseContext(), "Moved to Archive!", Toast.LENGTH_SHORT).show();
-                        toggleArchiveBtn.setText("Move to Library");
-                        startReadingBtn.setVisibility(View.GONE);
-                    }
-                    dbHandler.ToggleArchive(book);
-                }
-            });
-            startReadingBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(BookDetails.this, MainActivity.class);
-                    intent.putExtra("Isbn", book.getIsbn());
-                    startActivity(intent);
-                }
-            });
+
+            toggleArchiveBtn.setOnClickListener(v -> togArClick(dbHandler));
+            startReadingBtn.setOnClickListener(v -> startClick());
         }
-        if(startLocation == 1){
-            addToLibraryBtn = findViewById(R.id.detAddToLibBtn);
+        else{
+            toggleArchiveBtn.setVisibility(View.GONE);
+            startReadingBtn.setVisibility(View.GONE);
             addToLibraryBtn.setVisibility(View.VISIBLE);
+            removeBtn.setVisibility(View.GONE);
+
+            addToLibraryBtn.setOnClickListener(v -> addclick());
+        }
+
+        removeBtn.setOnClickListener(v-> remove(dbHandler));
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        backClick();
+    }
+
+    public void togArClick(DBHandler dbHandler){
+        if (book.isArchived()){
+            book.setArchived(false);
+            Toast.makeText(getBaseContext(), "Moved to Library!", Toast.LENGTH_SHORT).show();
+            toggleArchiveBtn.setText("Move to Archive");
+            startReadingBtn.setVisibility(View.VISIBLE);
+        } else {
+            book.setArchived(true);
+            Toast.makeText(getBaseContext(), "Moved to Archive!", Toast.LENGTH_SHORT).show();
+            toggleArchiveBtn.setText("Move to Library");
+            startReadingBtn.setVisibility(View.GONE);
+        }
+        dbHandler.ToggleArchive(book);
+    }
+
+    public void startClick(){
+        Intent intent = new Intent(BookDetails.this, MainActivity.class);
+        intent.putExtra("Isbn", book.getIsbn());
+        startActivity(intent);
+    }
+
+    public void addclick(){
+        book.setAdded(true);
+        book.setArchived(false);
+        dbHandler.AddBook(book);
+        Toast.makeText(getBaseContext(), "Added", Toast.LENGTH_SHORT).show();
+        recreate();
+    }
+
+    public void remove(DBHandler dbHandler){
+        if (book.isCustom()){
+            //alert dialogue (removing custom book)
+            AlertDialog.Builder bui = new AlertDialog.Builder(BookDetails.this);
+            bui.setMessage("If you delete this book, all your reading logs will be erased. You will have to customise this book again in order to read it.")
+                    .setCancelable(true)
+                    .setPositiveButton("Oh, delete it already!", (dialog, id) -> {
+                        //User chooses to delete custom book
+                        dbHandler.EraseLogs(book);
+                        dbHandler.RemoveBook(book);
+                        Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    //User chooses not to
+                    .setNegativeButton("Nevermind", (dialog, id) -> {return;});
+
+            //Creating dialog box
+            AlertDialog alert = bui.create();
+            //Setting the title manually
+            alert.setTitle("Are you sure?");
+            alert.show();
+
+        }
+        else{
+            dbHandler.RemoveBook(book);
+            Toast.makeText(getBaseContext(), "Removed", Toast.LENGTH_SHORT).show();
+            recreate();
         }
 
 
     }
-    public String CalculateTotalTime(Book book){
+
+    public String CalculateTotalTime(){
         int sec = book.getReadSeconds();
         int min = sec/60;
         sec = sec % 60;

@@ -124,6 +124,40 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Search for book with a string query
+     * @param query to use to look for book
+     * @return arraylist of books
+     */
+    public ArrayList<Book> searchBookQuery(String query){
+        ArrayList<Book> bookList = new ArrayList<>();
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_TITLE + " LIKE '%" + query + "%') or (" + BOOK_COLUMN_AUTHOR + " LIKE '%" + query + "%') or (" + BOOK_COLUMN_BLURB + " LIKE '%" + query + "%')";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if (cursor.moveToFirst()){
+            do {
+                Book book = new Book();
+                book.setID(cursor.getInt(0));
+                book.setIsbn(cursor.getString(1));
+                book.setAuthor(cursor.getString(2));
+                book.setYear(cursor.getString(3));
+                book.setName(cursor.getString(4));
+                book.setBlurb(cursor.getString(5));
+                book.setThumbnail(cursor.getString(6));
+                book.setReadSeconds(cursor.getInt(7));
+                book.setCustom(cursor.getInt(8) == 1);
+                book.setAdded(cursor.getInt(9) == 1);
+                book.setArchived(cursor.getInt(10) == 1);
+                bookList.add(book);
+            } while (cursor.moveToNext());
+            cursor.close();
+        } else {
+            bookList = null;
+        }
+        db.close();
+        return bookList;
+        }
+
+    /**
      * Remove of book from the Database.
      * @param book The book to be deleted
      * @return result
@@ -143,6 +177,17 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+
+    /**
+     * Remove of Logs of Book from the Database.
+     * @param book The book to erase logs for
+     */
+    public void EraseLogs(Book book){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String dbQuery = "DELETE FROM " + TABLE_LOG + " WHERE " + LOG_COLUMN_ISBN + " = \"" + book.getIsbn() + "\"";
+        db.close();
+    }
+
 
     /**
      * Gets all the books that are currently stored in the Database
@@ -312,5 +357,18 @@ public class DBHandler extends SQLiteOpenHelper {
             cursor.close();
         }
         return recordsList;
+    }
+
+
+    public boolean isBookAdded(String isbn){
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE  ISBN = " + isbn;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if (cursor.getCount() > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
