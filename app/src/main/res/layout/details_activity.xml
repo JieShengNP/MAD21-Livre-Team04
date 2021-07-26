@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
 
         <TextView
@@ -37,9 +37,12 @@
 
         <TextView
             android:id="@+id/detTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
             android:text="Title"
             android:textSize="48sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,8 +52,11 @@
 
         <TextView
             android:id="@+id/detinfo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
             android:text="detail info"
             android:textAlignment="center"
             android:textColor="@color/sage"
@@ -61,20 +67,21 @@
             app:layout_constraintTop_toBottomOf="@+id/detTitle" />
 
         <ImageView
-            android:id="@+id/detailsCatalogueTag"
+            android:id="@+id/detailsBackTag"
             android:layout_width="65dp"
             android:layout_height="107dp"
             android:layout_marginEnd="52dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/tag_catalogue" />
+            app:srcCompat="@drawable/tag_back" />
 
         <TextView
             android:id="@+id/timeSpentDet"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:gravity="center"
             android:text="detail info"
             android:textColor="@color/lightbrown"
             android:textSize="24sp"
@@ -103,7 +110,9 @@
             android:id="@+id/frame2det"
             android:layout_width="40dp"
             android:layout_height="13dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
             android:adjustViewBounds="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -127,10 +136,10 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detDesc" />
+            app:layout_constraintTop_toBottomOf="@+id/detDesc"
+            app:layout_constraintBottom_toTopOf="@+id/space"/>
 
         <Button
             android:id="@+id/detToggleArcBtn"
@@ -146,9 +155,11 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/space"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detDesc" />
+            app:layout_constraintTop_toBottomOf="@+id/detDesc"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/detStartBtn"
@@ -163,7 +174,6 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detToggleArcBtn" />
