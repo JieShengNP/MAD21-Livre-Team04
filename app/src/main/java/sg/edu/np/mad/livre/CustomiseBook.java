@@ -5,13 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -22,6 +28,8 @@ import java.util.regex.Pattern;
 public class CustomiseBook extends AppCompatActivity {
 
     DBHandler dbHandler;
+    ImageView tag;
+    TextView cusTxt;
     Button submitBtn;
     EditText customTitle, customAuthor, customPublishYear, customISBN, customBlurb;
 
@@ -106,6 +114,9 @@ public class CustomiseBook extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //check for any value in any of the strings
+        //alert user if there are
+        //finish if there aren't
         if(submitBtn.getText().toString().length() == 0){
             unsavedChangesWarning();
         }
@@ -127,6 +138,13 @@ public class CustomiseBook extends AppCompatActivity {
         else{
             finish();
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        //make changed based on orientation
+        setOrientationDifferences();
     }
 
     private void unsavedChangesWarning() {
@@ -217,5 +235,42 @@ public class CustomiseBook extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public void setOrientationDifferences(){
+        tag = findViewById(R.id.CusCatalogue);
+        cusTxt = findViewById(R.id.customiseText);
+        //if landscape
+        if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //tag
+            tag.getLayoutParams().height = Math.round(70 * Resources.getSystem().getDisplayMetrics().density);
+            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0,0,0,0);
+            tag.setRotation(270);
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tag.getLayoutParams();
+            p.setMargins(0, Math.round(20 * Resources.getSystem().getDisplayMetrics().density), Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+
+            //catalogue text
+            cusTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 42);
+            ViewGroup.MarginLayoutParams ct = (ViewGroup.MarginLayoutParams) cusTxt.getLayoutParams();
+            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(0 * Resources.getSystem().getDisplayMetrics().density),0,0);
+            cusTxt.getLayoutParams().height = Math.round(62 * Resources.getSystem().getDisplayMetrics().density);
+
+            }
+        else { //if portrait
+            //tag
+            tag.getLayoutParams().height = Math.round(107 * Resources.getSystem().getDisplayMetrics().density);
+            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0, 0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+            tag.setRotation(0);
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tag.getLayoutParams();
+            p.setMargins(0,0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+
+            //catalogue text
+            cusTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 60);
+            ViewGroup.MarginLayoutParams ct = (ViewGroup.MarginLayoutParams) cusTxt.getLayoutParams();
+            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(16 * Resources.getSystem().getDisplayMetrics().density),0,0);
+            cusTxt.getLayoutParams().height = Math.round(85 * Resources.getSystem().getDisplayMetrics().density);
+
+            }
+        tag.requestLayout();
     }
 }
