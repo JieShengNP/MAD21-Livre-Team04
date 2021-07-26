@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -12,9 +13,13 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     int sec,min,hour;
     boolean timerRunning;
     DBHandler dbHandler;
+    String isbn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +43,15 @@ public class MainActivity extends AppCompatActivity {
         timerFrame = findViewById(R.id.timerFrame);
         handler = new Handler();
         dbHandler = new DBHandler(this);
-        String isbn = getIntent().getStringExtra("Isbn");
-
+        isbn = getIntent().getStringExtra("Isbn");
+        handler.postDelayed(toastRunnable, 0);
         timerFrame.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 //timer not running
                 if (!timerRunning)
                 {
+                    handler.removeCallbacks(toastRunnable);
                     tStart = SystemClock.uptimeMillis();
                     handler.postDelayed(runnable, 0);
                     timer.start();
@@ -60,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog(isbn);
+    }
+
+    //Runnable for timer to update
     public Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -72,30 +85,53 @@ public class MainActivity extends AppCompatActivity {
             min = min % 60;
 
             timer.setText(String.format("%02d",hour) + ":" + String.format("%02d",min) + ":" + String.format("%02d",sec));
-            handler.postDelayed(this,1000);
+            handler.postDelayed(this,0);
         }
     };
 
+    // Shows toast message to remind user to press timer to start
+    public Runnable toastRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if(!timerRunning)
+            {
+                Toast.makeText(getBaseContext(), "Press the timer to begin",Toast.LENGTH_SHORT).show();
+            }
+            handler.postDelayed(this, 10000);
+        }
+    };
     public void AlertDialog(String isbn)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Are you sure?");
+        builder.setCancelable(true);
         builder.setMessage("Do you want to stop the timer?");
         builder.setPositiveButton("Yesh", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                handler.removeCallbacks(runnable);
 
-                // stop timer
-                timer.stop();
-                timerRunning = false;
+                if(!timerRunning)
+                {
+                    //stop showing of toast message if timer hasn't run yet
+                    handler.removeCallbacks(toastRunnable);
+                    Toast.makeText(getBaseContext(), "Returning to library!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    //stops timer from updating
+                    handler.removeCallbacks(runnable);
 
-                Book dbBook = dbHandler.FindBookByISBN(isbn);
-                dbBook.setReadSeconds(dbBook.getReadSeconds() + (int)(tMilliSec/1000));
+                    // stop timer
+                    timer.stop();
+                    timerRunning = false;
 
-                //Updating Database
-                dbHandler.updateLog(isbn, dbBook.getReadSeconds(),dbBook.name);
-                dbHandler.updateTotalTime(dbBook);
+                    Book dbBook = dbHandler.FindBookByISBN(isbn);
+                    dbBook.setReadSeconds(dbBook.getReadSeconds() + (int)(tMilliSec/1000));
+
+                    //Updating Database
+                    dbHandler.updateLog(isbn, dbBook.getReadSeconds(),dbBook.name);
+                    dbHandler.updateTotalTime(dbBook);
+                    Toast.makeText(getBaseContext(), "Time saved!", Toast.LENGTH_SHORT).show();
+                }
 
                 Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
                 startActivity(intent);
@@ -104,6 +140,19 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.setNegativeButton("Nah", null);
         AlertDialog alertDialog = builder.create();
+        //changing alertdialog button and text
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#6F5339"));
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#6F5339"));
+                TextView message = alertDialog.findViewById(android.R.id.message);
+                message.setTextSize(30);
+            }
+        });
+
         alertDialog.show();
+
+
     }
 }
