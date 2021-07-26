@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -151,7 +152,7 @@ public class CatalogueActivity extends AppCompatActivity {
             cusBookList = new ArrayList<>();
 
             //search for custom books
-            cusBookList = dbHandler.searchBookQuery(input.getText().toString());
+            cusBookList = dbHandler.searchCustomBookQuery(input.getText().toString());
 
             //replace spaces in input with plus, create request url
             String inputText = input.getText().toString().replace(" ", "+");
@@ -419,73 +420,80 @@ public class CatalogueActivity extends AppCompatActivity {
 
             bookList.set(b, book);
         }
-
         updateBookList();
     }
 
     public void updateBookList(){
         //combine both booklists, custom in front of api books
         //just use cusBookList if booklist is null
+        if(cusBookList == null){
+            cusBookList = new ArrayList<>();
+        }
         if (bookList != null) {
             if (bookList.size() > 0) {
                 cusBookList.addAll(bookList);
+
+                bookList = cusBookList;
+
+                //make loading indicators disappear
+                findViewById(R.id.loadLayout).setVisibility(View.GONE);
+
+                //if booklist is not empty, update catinfo and make it visible, update recyclerview
+                if (bookList.size()!=0) {
+                    ((TextView) findViewById(R.id.resNum)).setText(String.valueOf(bookList.size()));
+                    findViewById(R.id.catInfo).setVisibility(View.VISIBLE);
+
+                    //search bar
+                    View search = findViewById(R.id.catalogueSearch);
+
+                    //make EditText like search bar
+                    search.setPadding(search.getPaddingLeft(), 0,  (int) Math.round(search.getPaddingLeft() * 2.25), 0);
+                    findViewById(R.id.catsearchicon).setVisibility(View.VISIBLE);
+                    search.setEnabled(true);
+
+                    updateRecyclerView();
+                }
+                else{
+                    //if booklist is empty, show featherduster
+                    (findViewById(R.id.featherDuster)).setVisibility(View.VISIBLE);
+
+                    //250ms delay => shake featherduster => 500ms delay => levitate featherduster, alertdialogue
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+                        shake(70);
+
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            levitate(50);
+
+                            //alert dialogue (no results for query)
+                            AlertDialog.Builder bui = new AlertDialog.Builder(CatalogueActivity.this);
+                            bui.setMessage("There were no results for your query, create a custom book?")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Create Custom Book", (dialog, id) -> {
+                                        //User chooses to create custom book
+                                        Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
+                                        startActivity(intent);
+                                    })
+                                    //User chooses to stay in CatalogueActivity
+                                    .setNegativeButton("Stay Here", (dialog, id) -> recreate());
+
+                            //Creating dialog box
+                            AlertDialog alert = bui.create();
+                            //Setting the title manually
+                            alert.setTitle("No Results");
+                            alert.show();
+
+                        }, 500);
+
+                    }, 250);
+
+                }
             }
+        }else{
+            handleErrorWhileSearching("Something went wrong");
         }
-        bookList = cusBookList;
 
-        //make loading indicators disappear
-        findViewById(R.id.loadLayout).setVisibility(View.GONE);
 
-        //if booklist is not empty, update catinfo and make it visible, update recyclerview
-        if (bookList.size()!=0) {
-            ((TextView) findViewById(R.id.resNum)).setText(String.valueOf(bookList.size()));
-            findViewById(R.id.catInfo).setVisibility(View.VISIBLE);
-
-            //search bar
-            View search = findViewById(R.id.catalogueSearch);
-
-            //make EditText like search bar
-            search.setPadding(search.getPaddingLeft(), 0,  (int) Math.round(search.getPaddingLeft() * 2.25), 0);
-            findViewById(R.id.catsearchicon).setVisibility(View.VISIBLE);
-            search.setEnabled(true);
-
-            updateRecyclerView();
-        }
-        else{
-            //if booklist is empty, show featherduster
-            (findViewById(R.id.featherDuster)).setVisibility(View.VISIBLE);
-
-            //250ms delay => shake featherduster => 500ms delay => levitate featherduster, alertdialogue
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-                shake(70);
-
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    levitate(50);
-
-                    //alert dialogue (no results for query)
-                    AlertDialog.Builder bui = new AlertDialog.Builder(CatalogueActivity.this);
-                    bui.setMessage("There were no results for your query, create a custom book?")
-                            .setCancelable(false)
-                            .setPositiveButton("Create Custom Book", (dialog, id) -> {
-                                //User chooses to create custom book
-                                Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
-                                startActivity(intent);
-                            })
-                            //User chooses to stay in CatalogueActivity
-                            .setNegativeButton("Stay Here", (dialog, id) -> recreate());
-
-                    //Creating dialog box
-                    AlertDialog alert = bui.create();
-                    //Setting the title manually
-                    alert.setTitle("No Results");
-                    alert.show();
-
-                }, 500);
-
-            }, 250);
-
-        }
     }
 
     public void updateRecyclerView(){

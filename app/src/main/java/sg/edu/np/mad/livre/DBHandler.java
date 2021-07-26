@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -128,9 +129,9 @@ public class DBHandler extends SQLiteOpenHelper {
      * @param query to use to look for book
      * @return arraylist of books
      */
-    public ArrayList<Book> searchBookQuery(String query){
+    public ArrayList<Book> searchCustomBookQuery(String query){
         ArrayList<Book> bookList = new ArrayList<>();
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_TITLE + " LIKE '%" + query + "%') or (" + BOOK_COLUMN_AUTHOR + " LIKE '%" + query + "%') or (" + BOOK_COLUMN_BLURB + " LIKE '%" + query + "%')";
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE ((" + BOOK_COLUMN_TITLE + " LIKE '%" + query + "%') or (" + BOOK_COLUMN_AUTHOR + " LIKE '%" + query + "%') or (" + BOOK_COLUMN_BLURB + " LIKE '%" + query + "%')) and " + BOOK_COLUMN_CUSTOM + " = 1";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.moveToFirst()){
@@ -361,7 +362,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     public boolean isBookAdded(String isbn){
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE  ISBN = " + isbn;
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = " + isbn + " and " + BOOK_COLUMN_CUSTOM + " = 1";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.getCount() > 0){
