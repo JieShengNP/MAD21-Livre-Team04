@@ -47,7 +47,7 @@ public class BookDetails extends AppCompatActivity {
 
         Intent receivedIntent = getIntent();
         book = (Book) receivedIntent.getSerializableExtra("BookObject");
-        book.setAdded(dbHandler.isBookAdded(book.isbn));
+        book.setAdded(dbHandler.isBookAdded(book));
         isFromCus =  getIntent().getExtras().getBoolean("isFromCus");
 
 
