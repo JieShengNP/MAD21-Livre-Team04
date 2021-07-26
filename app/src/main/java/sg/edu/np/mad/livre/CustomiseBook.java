@@ -3,12 +3,10 @@ package sg.edu.np.mad.livre;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class CustomiseBook extends AppCompatActivity {
 
@@ -22,7 +20,7 @@ public class CustomiseBook extends AppCompatActivity {
         setContentView(R.layout.activity_customise_book);
 
         dbHandler = new DBHandler(this);
-        submitBtn = findViewById(R.id.customiseSubmitBtn);
+        submitBtn = findViewById(R.id.customiseDoneBtn);
         customTitle = findViewById(R.id.cusTitleEdit);
         customAuthor = findViewById(R.id.cusAuthEdit);
         customPublishYear = findViewById(R.id.cusYearEdit);
@@ -38,12 +36,14 @@ public class CustomiseBook extends AppCompatActivity {
                 book.setYear(customPublishYear.getText().toString());
                 book.setIsbn(customISBN.getText().toString());
                 book.setBlurb(customBlurb.getText().toString());
+                book.setAdded(false);
+                book.setCustom(true);
+                book.setArchived(false);
                 // Placeholder Thumbnail
-                book.setThumbnail("android.resource://" + getPackageName() + "/" + R.drawable.shelf_bust);
-                dbHandler.AddBook(book);
-                Toast.makeText(getBaseContext(), "Successfully created new book!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getBaseContext(), LibraryActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                book.setThumbnail("unavailable");
+                Intent intent = new Intent(getBaseContext(), BookDetails.class);
+                intent.putExtra("BookObject", book);
+                intent.putExtra("isFromCus", true);
                 startActivity(intent);
             }
         });
