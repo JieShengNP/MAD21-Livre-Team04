@@ -97,12 +97,12 @@ public class BookDetails extends AppCompatActivity {
         min = min % 60;
         String returnMessage = "";
         if (hour > 0){
-            returnMessage += hour + "H ";
+            returnMessage += hour + "h ";
         }
         if (min > 0){
-            returnMessage += min + "M ";
+            returnMessage += min + "m ";
         }
-        returnMessage += sec + "S";
+        returnMessage += sec + "s";
         return returnMessage;
     }
 }
