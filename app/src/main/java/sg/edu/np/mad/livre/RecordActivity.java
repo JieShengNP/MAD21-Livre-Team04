@@ -52,13 +52,13 @@ public class RecordActivity extends AppCompatActivity {
     public void setTotalTime()
     {
         int totalTimeSec = dbHandler.GetTotalReadingTimeInSec();
-        if(totalTimeSec == 0)
+        if(totalTimeSec > 0)
         {
             int min = totalTimeSec/60;
             totalTimeSec = totalTimeSec % 60;
             int hour = min / 60;
             min = min % 60;
-            totalTime.setText(String.format("%02d",hour) + ":" + String.format("%02d",min) + ":" + String.format("%02d",totalTimeSec));
+            totalTime.setText(String.format("%02d",hour) + "H " + String.format("%02d",min) + "M " + String.format("%02d",totalTimeSec) + "S");
         }
         else
         {
