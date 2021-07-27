@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                     //Updating Database
                     dbHandler.updateLog(isbn, dbBook.getReadSeconds(),dbBook.name);
                     dbHandler.updateTotalTime(dbBook);
-                    Toast.makeText(getBaseContext(), "Time saved!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Time saved!", Toast.LENGTH_SHORT).show();
                 }
 
                 Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
