@@ -29,16 +29,16 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     @Override
     public void onBindViewHolder(RecordViewHolder holder, int position) {
         Records record = recordsArrayList.get(position);
-        String imageUri = "http://covers.openlibrary.org/b/isbn/"+ record.getIsbn() +"-S.jpg";
-        Picasso.get().load(imageUri).into(holder.bookCover);
-        SimpleDateFormat sdf = new SimpleDateFormat("DD Mon yyyy HH:mm:ss");
-        holder.date.setText(sdf.format(record.getDateRead()));
+//        String imageUri = "http://covers.openlibrary.org/b/isbn/"+ record.getIsbn() +"-S.jpg";
+//        Picasso.get().load(imageUri).into(holder.bookCover);
+
+        holder.date.setText(new SimpleDateFormat("dd MMM yyyy, EEE HH:mm:ss").format(record.getDateRead()));
         holder.name.setText(record.getName());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return recordsArrayList.size();
     }
 
 
