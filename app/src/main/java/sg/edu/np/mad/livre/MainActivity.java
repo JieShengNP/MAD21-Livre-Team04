@@ -45,13 +45,14 @@ public class MainActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this);
         isbn = getIntent().getStringExtra("Isbn");
         handler.postDelayed(toastRunnable, 0);
-        timerFrame.setOnTouchListener(new View.OnTouchListener() {
+        timerFrame.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 //timer not running
                 if (!timerRunning)
                 {
                     handler.removeCallbacks(toastRunnable);
+                    Toast.makeText(MainActivity.this, "Press again to stop", Toast.LENGTH_SHORT).show();
                     tStart = SystemClock.uptimeMillis();
                     handler.postDelayed(runnable, 0);
                     timer.start();
@@ -62,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 {
                     AlertDialog(isbn);
                 }
-                return false;
             }
         });
     }
@@ -70,6 +70,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog(isbn);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // stop toast from showing when activity paused if timer not running
+        if (!timerRunning)
+        {
+            handler.removeCallbacks(toastRunnable);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //resume toast if timer was not running
+        if (!timerRunning)
+        {
+            handler.postDelayed(toastRunnable,0);
+        }
     }
 
     //Runnable for timer to update
