@@ -1,6 +1,9 @@
 package sg.edu.np.mad.livre;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
+import android.graphics.drawable.Drawable;
+
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,7 +17,6 @@ import java.util.ArrayList;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
    ArrayList<Records> recordsArrayList;
-
    public RecordAdapter(ArrayList<Records> input)
    {
        recordsArrayList = input;
@@ -29,9 +31,15 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     @Override
     public void onBindViewHolder(RecordViewHolder holder, int position) {
         Records record = recordsArrayList.get(position);
-//        String imageUri = "http://covers.openlibrary.org/b/isbn/"+ record.getIsbn() +"-S.jpg";
-//        Picasso.get().load(imageUri).into(holder.bookCover);
-
+        DBHandler dbHandler = new DBHandler(holder.bookCover.getContext());
+        String URL = dbHandler.FindBookByISBN(record.getIsbn()).getThumbnail();
+        if (URL != null){
+            Picasso.get()
+                    .load(URL)
+                    .placeholder(holder.bookCover.getContext().getResources().getDrawable(R.drawable.shelf_bust))
+                    .resize(90, 140)
+                    .into(holder.bookCover);
+        }
         holder.date.setText(new SimpleDateFormat("dd MMM yyyy, EEE HH:mm:ss").format(record.getDateRead()));
         holder.name.setText(record.getName());
     }
