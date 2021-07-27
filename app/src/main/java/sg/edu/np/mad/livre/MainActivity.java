@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     dbBook.setReadSeconds(dbBook.getReadSeconds() + (int)(tMilliSec/1000));
 
                     //Updating Database
-                    dbHandler.updateLog(isbn, dbBook.getReadSeconds(),dbBook.name);
+                    dbHandler.updateLog(isbn, (int) (tMilliSec/1000),dbBook.name);
                     dbHandler.updateTotalTime(dbBook);
                     Toast.makeText(MainActivity.this, "Time saved!", Toast.LENGTH_SHORT).show();
                 }
