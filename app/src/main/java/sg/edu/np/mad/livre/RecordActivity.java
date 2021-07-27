@@ -1,6 +1,7 @@
 package sg.edu.np.mad.livre;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,11 +41,12 @@ public class RecordActivity extends AppCompatActivity {
 
         setTotalTime();
 
-        RecordAdapter recordAdapter = new RecordAdapter(recordList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         RecyclerView recyclerView = findViewById(R.id.recordRecyclerView);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(recordAdapter);
+        RecordAdapter adapter = new RecordAdapter(recordList);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
     }

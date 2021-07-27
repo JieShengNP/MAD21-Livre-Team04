@@ -41,10 +41,11 @@ public class Records {
     }
 
     public Records(){};
-    public Records(String I, Date D, int T)
+    public Records(String I, Date D, int T, String N)
     {
-        setIsbn(I);
-        setDateRead(D);
-        setTimeReadSec(T);
+        this.setDateRead(D);
+        this.setName(N);
+        this.setTimeReadSec(T);
+        this.setIsbn(I);
     }
 }
