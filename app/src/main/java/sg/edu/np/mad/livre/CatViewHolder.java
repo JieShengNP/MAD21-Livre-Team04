@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 public class CatViewHolder extends RecyclerView.ViewHolder {
     TextView cattitle;
     TextView catauthordate;
+    TextView customtxt;
     TextView catdesc;
     ImageView catthumb;
     public CatViewHolder(View itemView) {
@@ -18,5 +19,6 @@ public class CatViewHolder extends RecyclerView.ViewHolder {
         catauthordate = itemView.findViewById(R.id.catauthorDate);
         catdesc = itemView.findViewById(R.id.catDesc);
         catthumb = itemView.findViewById(R.id.catThumb);
+        customtxt = itemView.findViewById(R.id.customTxt);
     }
 }

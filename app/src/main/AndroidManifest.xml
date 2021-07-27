@@ -3,6 +3,7 @@
     package="sg.edu.np.mad.livre">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -10,7 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Livre">
+        android:theme="@style/Theme.Livre"
+        >
         <activity android:name=".RecordActivity"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".LibraryActivity" />
@@ -18,7 +20,8 @@
         <activity android:name=".CatalogueActivity"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".BookDetails" />
-        <activity android:name=".CustomiseBook"/>
+        <activity android:name=".CustomiseBook"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
