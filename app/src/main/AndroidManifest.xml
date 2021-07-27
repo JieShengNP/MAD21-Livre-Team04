@@ -14,7 +14,8 @@
         android:theme="@style/Theme.Livre"
         >
         <activity android:name=".RecordActivity"/>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".LibraryActivity" />
         <activity android:name=".ArchiveActivity" />
         <activity android:name=".CatalogueActivity"
@@ -22,7 +23,8 @@
         <activity android:name=".BookDetails" />
         <activity android:name=".CustomiseBook"
             android:configChanges="orientation|screenSize"/>
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".SplashScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
