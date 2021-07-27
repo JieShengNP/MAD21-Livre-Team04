@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashScreenActivity">
+
+    <VideoView
+        android:id="@+id/splashscreenVid"
+        android:layout_width="122dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="146dp"
+        android:layout_marginTop="124dp"
+        android:layout_marginEnd="143dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/splashTitle"
+        android:layout_width="141dp"
+        android:layout_height="73dp"
+        android:layout_marginStart="135dp"
+        android:layout_marginEnd="135dp"
+        android:layout_marginBottom="100dp"
+        android:gravity="center"
+        android:text="Livre"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

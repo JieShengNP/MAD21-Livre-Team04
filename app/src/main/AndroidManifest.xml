@@ -23,11 +23,9 @@
         <activity android:name=".BookDetails" />
         <activity android:name=".CustomiseBook"
             android:configChanges="orientation|screenSize"/>
-        <activity android:name=".SplashScreenActivity"
-            android:screenOrientation="portrait">
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
