@@ -51,6 +51,7 @@
         android:layout_height="69dp"
         android:gravity="center"
         android:text="TextView"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/recordRecyclerView"
         app:layout_constraintEnd_toEndOf="@+id/recordFrame"
         app:layout_constraintStart_toStartOf="@+id/recordFrame"
