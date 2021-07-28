@@ -1,13 +1,20 @@
 package sg.edu.np.mad.livre;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,10 +35,11 @@ import java.util.regex.Pattern;
 public class CustomiseBook extends AppCompatActivity {
 
     DBHandler dbHandler;
-    ImageView tag;
+    ImageView tag, coverImg;
     TextView cusTxt;
-    Button submitBtn;
+    Button submitBtn, cusCoverBtn;
     EditText customTitle, customAuthor, customPublishYear, customISBN, customBlurb;
+    public static String thumbnailURI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +53,9 @@ public class CustomiseBook extends AppCompatActivity {
         customPublishYear = findViewById(R.id.cusYearEdit);
         customISBN = findViewById(R.id.cusISBNEdit);
         customBlurb = findViewById(R.id.cusSynopsisEdit);
-        tag = findViewById(R.id.CusCatalogue);
+        cusCoverBtn = findViewById(R.id.cusCoverBtn);
+        coverImg = findViewById(R.id.coverCus);
+        tag = findViewById(R.id.cusTag);
 
         Intent receivedIntent = getIntent();
         if(receivedIntent.getSerializableExtra("Title") != null) {
@@ -53,6 +63,8 @@ public class CustomiseBook extends AppCompatActivity {
         }
 
         tag.setOnClickListener(v -> back());
+
+        cusCoverBtn.setOnClickListener(v -> cusCoverClick());
 
         customAuthor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -97,17 +109,21 @@ public class CustomiseBook extends AppCompatActivity {
         submitBtn.setOnClickListener(v -> {
             //Hide keyboard
             ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(customBlurb.getWindowToken(), 0);
-            if(customTitle.getText().toString().length() == 0){
+            if(thumbnailURI == null){
+                cusCoverBtn.setError("Please set book cover");
+                return;
+            }
+            else if(customTitle.getText().toString().length() == 0){
                 customTitle.setError("Please enter a Title");
                 Toast.makeText(getBaseContext(), "Invalid!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(customBlurb.getText().toString().length() == 0){
+            else if(customBlurb.getText().toString().length() == 0){
                 customBlurb.setError("Please enter a Synopsis");
                 Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(AuthorValidation() && PubYearValidation() && ISBNValidation()){
+            else if(AuthorValidation() && PubYearValidation() && ISBNValidation()){
                 Toast.makeText(getBaseContext(), "Valid", Toast.LENGTH_SHORT).show();
                 ValidatedSubmission();
             }
@@ -128,6 +144,28 @@ public class CustomiseBook extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         //make changed based on orientation
         setOrientationDifferences();
+    }
+
+    ActivityResultLauncher<String> launcher = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri result) {
+                    if (result != null) {
+                        coverImg.setImageURI(result);
+                        thumbnailURI = result.toString();
+                    }
+                }
+            });
+
+    public void cusCoverClick(){
+        ImageView coverImg = findViewById(R.id.coverCus);
+
+
+
+
+
+        launcher.launch("image/*");
     }
 
     private void unsavedChangesWarning() {
@@ -156,7 +194,7 @@ public class CustomiseBook extends AppCompatActivity {
         book.setAdded(false);
         book.setCustom(true);
         book.setArchived(false);
-        book.setThumbnail("unavailable");
+        book.setThumbnail(thumbnailURI);
         Intent intent = new Intent(getBaseContext(), BookDetails.class);
         intent.putExtra("BookObject", book);
         intent.putExtra("isFromCus", true);
@@ -220,7 +258,7 @@ public class CustomiseBook extends AppCompatActivity {
     }
 
     public void setOrientationDifferences(){
-        tag = findViewById(R.id.CusCatalogue);
+        tag = findViewById(R.id.cusTag);
         cusTxt = findViewById(R.id.customiseText);
         //if landscape
         if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {

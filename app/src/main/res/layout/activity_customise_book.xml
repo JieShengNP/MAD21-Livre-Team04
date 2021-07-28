@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/CusCatalogue"
+        android:id="@+id/cusTag"
         android:layout_width="65dp"
         android:layout_height="107dp"
         android:layout_marginEnd="52dp"
@@ -35,12 +35,12 @@
             android:id="@+id/cusTitletext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="40dp"
             android:text="Title"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customiseText" />
+            app:layout_constraintTop_toBottomOf="@+id/cusCoverBtn" />
 
         <EditText
             android:id="@+id/cusTitleEdit"
@@ -187,11 +187,40 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cusSynopsis" />
 
+        <ImageView
+            android:id="@+id/coverCus"
+            android:layout_width="102dp"
+            android:layout_height="160dp"
+            android:background="@color/quicksand"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/customiseText"/>
+
+        <Button
+            android:id="@+id/cusCoverBtn"
+            android:layout_width="150dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/brown"
+            android:drawableRight="@drawable/icon_pen"
+            android:minHeight="48dp"
+            android:padding="-3dp"
+            android:text="Change Cover"
+            android:textAllCaps="false"
+            android:textColor="@color/cream"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coverCus" />
+
         <Button
             android:id="@+id/customiseDoneBtn"
             android:layout_width="100dp"
             android:layout_height="43dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="72dp"
             android:backgroundTint="@color/brown"
             android:drawableRight="@drawable/icon_pen"
             android:minHeight="48dp"
