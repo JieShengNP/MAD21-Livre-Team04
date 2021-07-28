@@ -76,6 +76,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/tag_back" />
 
+        <ImageView
+            android:id="@+id/editBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="60dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/thumbdet"
+            app:srcCompat="@drawable/wrench" />
+
         <TextView
             android:id="@+id/timeSpentDet"
             android:layout_width="match_parent"
@@ -122,7 +132,7 @@
             app:srcCompat="@drawable/frame2" />
 
         <Button
-            android:id="@+id/detAddToLibBtn"
+            android:id="@+id/detSingleActionBtn"
             android:layout_width="175dp"
             android:layout_height="43dp"
             android:layout_marginTop="32dp"
