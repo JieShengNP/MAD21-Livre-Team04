@@ -10,9 +10,23 @@
         android:id="@+id/recordLibraryTag"
         android:layout_width="65dp"
         android:layout_height="107dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginEnd="140dp"
+        app:layout_constraintBottom_toTopOf="@+id/recordRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/tag_library" />
+
+    <ImageView
+        android:id="@+id/recordStatTag"
+        android:layout_width="65dp"
+        android:layout_height="107dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/recordRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/tag_stat" />
 
     <TextView
         android:id="@+id/recordTitle"
@@ -38,8 +52,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recordRecyclerView"
-        android:layout_width="408dp"
-        android:layout_height="358dp"
+        android:layout_width="423dp"
+        android:layout_height="299dp"
         android:layout_marginEnd="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
