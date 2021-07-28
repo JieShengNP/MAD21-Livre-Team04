@@ -110,6 +110,51 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Retriving of Book by its ISBN number.
+     * @param book to find id of book
+     * @return id if it exists in the Database.
+     *          "not found" if it does not.
+     */
+    public String GetBookId(Book book){
+        String id = "not foundnot found";
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\"";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if (cursor.moveToFirst()){
+           id = cursor.getString(0);
+        }
+        return id;
+    }
+
+    /**
+     * Retriving of Book by its ISBN number.
+     * @param book updated version
+     * @param id id of book to update
+     * @return Book if it exists in the Database.
+     */
+    public int UpdateBook(Book book, String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(BOOK_COLUMN_ISBN, book.getIsbn());
+        values.put(BOOK_COLUMN_AUTHOR, book.getAuthor());
+        values.put(BOOK_COLUMN_TITLE, book.getName());
+        values.put(BOOK_COLUMN_YEAR, book.getYear());
+        values.put(BOOK_COLUMN_BLURB, book.getBlurb());
+        values.put(BOOK_COLUMN_THUMBNAIL, book.getThumbnail());
+        values.put(BOOK_COLUMN_READING_TIME, book.getReadSeconds());
+        values.put(BOOK_COLUMN_CUSTOM, book.isCustom()? 1: 0);
+        values.put(BOOK_COLUMN_ARCHIVED, book.isArchived()? 1: 0);
+        values.put(BOOK_COLUMN_ADDED, book.isAdded()? 1: 0);
+
+        int rowsAffected = db.update(TABLE_BOOK, values, "(" +BOOK_COLUMN_ID + " = " + id + ") and (" + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0) + ")", null);
+        db.close();
+
+        return rowsAffected;
+    }
+
+
+    /**
      * Toggling of book archival status in the Database.
      * @param book The archival status of book to be toggled
      */
@@ -364,8 +409,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     public boolean isBookAdded(Book book){
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = " + book.isbn + " and " + BOOK_COLUMN_CUSTOM + " = " +  (book.isCustom() ? 1 : 0);
-        Log.v("aaaa", dbQuery);
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_ISBN + " = " + book.isbn + ") and (" + BOOK_COLUMN_CUSTOM + " = " +  (book.isCustom() ? 1 : 0) + ")";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.getCount() > 0){
