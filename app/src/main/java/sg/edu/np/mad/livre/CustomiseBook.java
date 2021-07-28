@@ -5,18 +5,21 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ViewGroup;
@@ -27,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,7 +44,7 @@ public class CustomiseBook extends AppCompatActivity {
     TextView cusTxt;
     Button submitBtn, cusCoverBtn;
     EditText customTitle, customAuthor, customPublishYear, customISBN, customBlurb;
-    public static String thumbnailURI;
+    public static String thumbnailBM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +69,7 @@ public class CustomiseBook extends AppCompatActivity {
 
         tag.setOnClickListener(v -> back());
 
-        cusCoverBtn.setOnClickListener(v -> cusCoverClick());
+        cusCoverBtn.setOnClickListener(v -> launcher.launch("image/*"));
 
         customAuthor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -109,7 +114,7 @@ public class CustomiseBook extends AppCompatActivity {
         submitBtn.setOnClickListener(v -> {
             //Hide keyboard
             ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(customBlurb.getWindowToken(), 0);
-            if(thumbnailURI == null){
+            if(thumbnailBM == null){
                 cusCoverBtn.setError("Please set book cover");
                 return;
             }
@@ -152,20 +157,72 @@ public class CustomiseBook extends AppCompatActivity {
                 @Override
                 public void onActivityResult(Uri result) {
                     if (result != null) {
-                        coverImg.setImageURI(result);
-                        thumbnailURI = result.toString();
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                            try {
+                                Bitmap bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getApplicationContext().getContentResolver(), result));
+                                bitSet(bitmap);
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Invalid file", Toast.LENGTH_SHORT).show();
+                                thumbnailBM = "Unavailable";
+                                return;
+                            }
+                        }
+                        else {
+                            Uri imageUri = result;
+                            try {
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), imageUri);
+                                bitSet(bitmap);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Invalid file", Toast.LENGTH_SHORT).show();
+                                thumbnailBM = "Unavailable";
+                                return;
+                            }
+                        }
+
                     }
                 }
             });
 
-    public void cusCoverClick(){
-        ImageView coverImg = findViewById(R.id.coverCus);
+    public void bitSet(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        //ensure that image can be encoded and decoded in full to prevent future errors
 
+        try{
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            try{
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Invalid file", Toast.LENGTH_SHORT).show();
+                thumbnailBM = "Unavailable";
+                return;
+            }
+        }
+        try {
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            thumbnailBM = encoded;
 
+            //decode
+            byte[] decodedString = Base64.decode(thumbnailBM, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
+            coverImg.setImageBitmap(decodedByte);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Invalid file", Toast.LENGTH_SHORT).show();
+            thumbnailBM = "Unavailable";
+            return;
 
-
-        launcher.launch("image/*");
+        }
     }
 
     private void unsavedChangesWarning() {
@@ -194,7 +251,7 @@ public class CustomiseBook extends AppCompatActivity {
         book.setAdded(false);
         book.setCustom(true);
         book.setArchived(false);
-        book.setThumbnail(thumbnailURI);
+        book.setThumbnail(thumbnailBM);
         Intent intent = new Intent(getBaseContext(), BookDetails.class);
         intent.putExtra("BookObject", book);
         intent.putExtra("isFromCus", true);

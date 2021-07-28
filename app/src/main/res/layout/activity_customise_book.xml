@@ -32,10 +32,21 @@
         app:srcCompat="@drawable/tag_back" />
 
         <TextView
+            android:id="@+id/jpgpng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="JPEG/PNG"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coverCus" />
+
+        <TextView
             android:id="@+id/cusTitletext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="36dp"
             android:text="Title"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -201,9 +212,8 @@
             android:id="@+id/cusCoverBtn"
             android:layout_width="150dp"
             android:layout_height="43dp"
-            android:layout_marginTop="20dp"
             android:backgroundTint="@color/brown"
-            android:drawableRight="@drawable/icon_pen"
+            android:drawableRight="@drawable/icon_bookstack"
             android:minHeight="48dp"
             android:padding="-3dp"
             android:text="Change Cover"
@@ -214,7 +224,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coverCus" />
+            app:layout_constraintTop_toBottomOf="@+id/jpgpng" />
 
         <Button
             android:id="@+id/customiseDoneBtn"
@@ -222,7 +232,7 @@
             android:layout_height="43dp"
             android:layout_marginTop="72dp"
             android:backgroundTint="@color/brown"
-            android:drawableRight="@drawable/icon_pen"
+            android:drawableRight="@drawable/icon_tick"
             android:minHeight="48dp"
             android:padding="-3dp"
             android:text="Done"
@@ -243,6 +253,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

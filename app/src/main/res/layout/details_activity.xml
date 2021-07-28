@@ -30,10 +30,11 @@
             android:layout_width="135dp"
             android:layout_height="210dp"
             android:layout_marginTop="28dp"
+            android:background="@color/quicksand"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detailsdet"
-            app:srcCompat="@drawable/shelf_bust" />
+             />
 
         <TextView
             android:id="@+id/detTitle"

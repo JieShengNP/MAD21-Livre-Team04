@@ -2,7 +2,10 @@ package sg.edu.np.mad.livre;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -55,17 +58,25 @@ public class BookDetails extends AppCompatActivity {
         if (book.isCustom){
             isCustom = "\nCustom";
             removeBtn.setText("Delete Custom Book");
+
+            if(!(book.getThumbnail()).equals("Unavailable")){
+                byte[] decodedString = Base64.decode(book.getThumbnail(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                bookImage.setImageBitmap(decodedByte);
+            }
         }else{
             removeBtn.setText("Remove from Library");
+
+            Picasso.get()
+                    .load(book.getThumbnail())
+                    .resize(135, 210)
+                    .into(bookImage);
+
         }
 
-        if (book.getThumbnail().equals("unavailable") || book.getThumbnail() == null){
-            book.setThumbnail("android.resource://" + getPackageName() + "/" + R.drawable.shelf_bust);
-        }
-        Picasso.get()
-                .load(book.getThumbnail())
-                .resize(135, 210)
-                .into(bookImage);
+
+;
         bookTitle.setText(book.getName());
         bookDetails.setText(book.getAuthor() +" · "+ book.getYear() +"\nISBN: " + book.getIsbn() + isCustom);
         bookDurationRead.setText("Reading Time: " + CalculateTotalTime());

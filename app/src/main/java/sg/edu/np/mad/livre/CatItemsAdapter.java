@@ -1,6 +1,13 @@
 package sg.edu.np.mad.livre;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("ALL")
 public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
     ArrayList<Book> data;
 
@@ -59,10 +67,7 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
         String catauthordate = b.author + " · " + b.year;
         holder.catauthordate.setText(catauthordate);
 
-        Picasso.get()
-                .load(b.getThumbnail())
-                .resize(90, 140)
-                .into(holder.catthumb);
+
 
 
         holder.catthumb.setOnClickListener(v -> {
@@ -72,9 +77,20 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
         });
         if (b.isCustom()) {
             holder.customtxt.setVisibility(View.VISIBLE);
+
+            if(!(b.getThumbnail()).equals("Unavailable")){
+                byte[] decodedString = Base64.decode(b.getThumbnail(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                holder.catthumb.setImageBitmap(decodedByte);
+            }
         }
         else{
             holder.customtxt.setVisibility(View.GONE);
+            Picasso.get()
+                    .load(b.getThumbnail())
+                    .resize(90, 140)
+                    .into(holder.catthumb);
         }
   }
 
