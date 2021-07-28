@@ -248,11 +248,23 @@ public class CatalogueActivity extends AppCompatActivity {
                     }, error -> { //exception when calling API
                         error.printStackTrace();
                         //call method that communication exception to user
-                        handleErrorWhileSearching("This query might be causing servers to time out");
+                        handleErrorWhileSearching("This query or network issues might be causing servers to time out");
                     });
             // Access the RequestQueue through singleton class.
             ApiSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
         });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+            //load video
+            VideoView loadVid = findViewById(R.id.loadVid);
+            //setting video path
+            String uri = "android.resource://" + getPackageName() + "/" + R.raw.lanima;
+            loadVid.setVideoURI(Uri.parse(uri));
+            loadVid.start();
+            loadVid.setOnPreparedListener(mp -> mp.setLooping(true));
     }
 
     @Override
@@ -262,7 +274,7 @@ public class CatalogueActivity extends AppCompatActivity {
         setOrientationDifferences();
     }
 
-    public void detAddToLibBtnClick(View view){
+    public void detAddCus(View view){
         //when view is clicked start intent to customisebook activity
         Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
         startActivity(intent);
@@ -407,16 +419,22 @@ public class CatalogueActivity extends AppCompatActivity {
         //change loading text
         ((TextView)findViewById(R.id.changeloadText)).setText("Dotting the i's, crossing the t's...");
 
-        //if lengths of all lists are not the same, return
+       //if lengths of all lists are not the same, return
         if(bookList.size()!=descList.size() || thumbList.size()!=bookList.size()){
             return;
         }
 
         //go through every book in booklist and add the desc and thumb of same index
         for (int b = 0; b<bookList.size(); b++){
-            Book book = bookList.get(b);
-            book.blurb = descList.get(b);
-            book.thumbnail = thumbList.get(b);
+            Book book = new Book();
+            try {
+                book = bookList.get(b);
+                book.blurb = descList.get(b);
+                book.thumbnail = thumbList.get(b);
+            }
+            catch (Exception e){
+                Toast.makeText(getBaseContext(), "Error getting some content", Toast.LENGTH_SHORT).show();
+            }
 
             bookList.set(b, book);
         }
@@ -424,71 +442,79 @@ public class CatalogueActivity extends AppCompatActivity {
     }
 
     public void updateBookList(){
+
         //combine both booklists, custom in front of api books
         //just use cusBookList if booklist is null
         if(cusBookList == null){
             cusBookList = new ArrayList<>();
         }
         if (bookList != null) {
-            if (bookList.size() > 0) {
+            //make loading indicators disappear
+            findViewById(R.id.loadLayout).setVisibility(View.GONE);
+
+            //update catinfo and make it visible, update recyclerview
+            if (bookList.size()!=0) {
                 cusBookList.addAll(bookList);
 
                 bookList = cusBookList;
 
-                //make loading indicators disappear
-                findViewById(R.id.loadLayout).setVisibility(View.GONE);
+                ((TextView) findViewById(R.id.resNum)).setText(String.valueOf(bookList.size()));
+                findViewById(R.id.catInfo).setVisibility(View.VISIBLE);
 
-                //if booklist is not empty, update catinfo and make it visible, update recyclerview
-                if (bookList.size()!=0) {
-                    ((TextView) findViewById(R.id.resNum)).setText(String.valueOf(bookList.size()));
-                    findViewById(R.id.catInfo).setVisibility(View.VISIBLE);
+                //search bar
+                View search = findViewById(R.id.catalogueSearch);
 
-                    //search bar
-                    View search = findViewById(R.id.catalogueSearch);
+                //make EditText like search bar
+                search.setPadding(search.getPaddingLeft(), 0,  (int) Math.round(search.getPaddingLeft() * 2.25), 0);
+                findViewById(R.id.catsearchicon).setVisibility(View.VISIBLE);
+                search.setEnabled(true);
 
-                    //make EditText like search bar
-                    search.setPadding(search.getPaddingLeft(), 0,  (int) Math.round(search.getPaddingLeft() * 2.25), 0);
-                    findViewById(R.id.catsearchicon).setVisibility(View.VISIBLE);
-                    search.setEnabled(true);
-
-                    updateRecyclerView();
-                }
-                else{
-                    //if booklist is empty, show featherduster
-                    (findViewById(R.id.featherDuster)).setVisibility(View.VISIBLE);
-
-                    //250ms delay => shake featherduster => 500ms delay => levitate featherduster, alertdialogue
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-                        shake(70);
-
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                            levitate(50);
-
-                            //alert dialogue (no results for query)
-                            AlertDialog.Builder bui = new AlertDialog.Builder(CatalogueActivity.this);
-                            bui.setMessage("There were no results for your query, create a custom book?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Create Custom Book", (dialog, id) -> {
-                                        //User chooses to create custom book
-                                        Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
-                                        startActivity(intent);
-                                    })
-                                    //User chooses to stay in CatalogueActivity
-                                    .setNegativeButton("Stay Here", (dialog, id) -> recreate());
-
-                            //Creating dialog box
-                            AlertDialog alert = bui.create();
-                            //Setting the title manually
-                            alert.setTitle("No Results");
-                            alert.show();
-
-                        }, 500);
-
-                    }, 250);
-
-                }
+                updateRecyclerView();
             }
+            else{
+                //if booklist is empty, show featherduster
+                (findViewById(R.id.featherDuster)).setVisibility(View.VISIBLE);
+
+                //250ms delay => shake featherduster => 500ms delay => levitate featherduster, alertdialogue
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+                    shake(70);
+
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        levitate(50);
+
+                        //alert dialogue (no results for query)
+                        AlertDialog.Builder bui = new AlertDialog.Builder(CatalogueActivity.this);
+                        bui.setMessage("There were no results for your query, create a custom book?")
+                                .setCancelable(false)
+                                .setPositiveButton("Create Custom Book", (dialog, id) -> {
+                                    //User chooses to create custom book
+
+                                    //create intent and get input
+                                    Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
+                                    intent.putExtra("Title", String.valueOf(((EditText)findViewById(R.id.catalogueSearch)).getText()));
+
+                                    //recreate activity
+                                    recreate();
+
+                                    //go to customise book activity
+                                    startActivity(intent);
+                                })
+                                //User chooses to stay in CatalogueActivity
+                                .setNegativeButton("Stay Here", (dialog, id) -> recreate());
+
+                        //Creating dialog box
+                        AlertDialog alert = bui.create();
+                        //Setting the title manually
+                        alert.setTitle("No Results");
+                        alert.show();
+
+                    }, 500);
+
+                }, 250);
+
+            }
+
         }else{
             handleErrorWhileSearching("Something went wrong");
         }
@@ -525,7 +551,7 @@ public class CatalogueActivity extends AppCompatActivity {
 
     public void shake (float X){
         //Levitation animation in one direction (left/right)
-        final long yourDuration = 50; //duration of one diretion
+        final long yourDuration = 50; //duration of one direction
         final TimeInterpolator yourInterpolator = new DecelerateInterpolator();
         findViewById(R.id.featherDuster).animate().
                 translationXBy(X).
@@ -615,7 +641,20 @@ public class CatalogueActivity extends AppCompatActivity {
 
         bui.setMessage(s)
                 .setCancelable(false)
-                .setPositiveButton("Got it", (dialog, id) -> {
+                .setPositiveButton("Create Custom Book", (dialog, id) -> {
+                    //User chooses to create custom book
+
+                    //create intent and get input
+                    Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
+                    intent.putExtra("Title", String.valueOf(((EditText)findViewById(R.id.catalogueSearch)).getText()));
+
+                    //recreate activity
+                    recreate();
+
+                    //go to customise book activity
+                    startActivity(intent);
+                })
+                .setNegativeButton("Got it", (dialog, id) -> {
                     //if there are not custom books (no books found at all) recreate
                     if (cusBookList == null){
                         recreate();
@@ -624,6 +663,7 @@ public class CatalogueActivity extends AppCompatActivity {
                         updateBookList();
                     }
                 });
+
         //Creating dialog box
         AlertDialog alert = bui.create();
         //Setting the title manually

@@ -45,6 +45,12 @@ public class CustomiseBook extends AppCompatActivity {
         customPublishYear = findViewById(R.id.cusYearEdit);
         customISBN = findViewById(R.id.cusISBNEdit);
         customBlurb = findViewById(R.id.cusSynopsisEdit);
+        tag = findViewById(R.id.CusCatalogue);
+
+        Intent receivedIntent = getIntent();
+        if(receivedIntent.getSerializableExtra("Title") != null) {
+            customTitle.setText(receivedIntent.getSerializableExtra("Title").toString());
+        }
 
         customAuthor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -108,8 +114,6 @@ public class CustomiseBook extends AppCompatActivity {
             }
 
         });
-
-
     }
 
     @Override
@@ -117,27 +121,29 @@ public class CustomiseBook extends AppCompatActivity {
         //check for any value in any of the strings
         //alert user if there are
         //finish if there aren't
-        if(submitBtn.getText().toString().length() == 0){
+        if(customTitle.getText().toString().length() != 0){
             unsavedChangesWarning();
         }
-        else if(customTitle.getText().toString().length() == 0){
+        else if(customAuthor.getText().toString().length() != 0){
             unsavedChangesWarning();
         }
-        else if(customAuthor.getText().toString().length() == 0){
+        else if(customPublishYear.getText().toString().length() != 0){
             unsavedChangesWarning();
         }
-        else if(customPublishYear.getText().toString().length() == 0){
+        else if(customISBN.getText().toString().length() != 0){
             unsavedChangesWarning();
         }
-        else if(customISBN.getText().toString().length() == 0){
-            unsavedChangesWarning();
-        }
-        else if(customBlurb.getText().toString().length() == 0){
+        else if(customBlurb.getText().toString().length() != 0){
             unsavedChangesWarning();
         }
         else{
             finish();
         }
+
+        tag.setOnClickListener(v -> {
+            Intent intent = new Intent(CustomiseBook.this, CatalogueActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
@@ -226,7 +232,6 @@ public class CustomiseBook extends AppCompatActivity {
         b.setCustom(true);
         b.setIsbn(customISBN.getText().toString());
         if(b.getIsbn().length() != 13){
-            Log.v("test", "test");
             customISBN.setError("Invalid ISBN-13!");
         }else if (dbHandler.isBookAdded(b)){
             customISBN.setError("Custom book exists with this ISBN");
