@@ -373,4 +373,111 @@ public class DBHandler extends SQLiteOpenHelper {
             return false;
         }
     }
+
+    //Get Total Number of Books in Library
+    public int GetTotalBooksInLibrary()
+    {
+        String dbQuery = "SELECT COUNT(*) FROM " + TABLE_BOOK;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if (cursor.moveToFirst())
+        {
+            int count = cursor.getInt(0);
+            cursor.close();
+            db.close();
+            return count;
+        }
+        cursor.close();
+        db.close();
+        return 0;
+    }
+
+    //Get Total Number of Books Read
+    public int GetTotalBooksRead()
+    {
+        String dbQuery = "SELECT COUNT(*) FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_READING_TIME + " > 0";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if (cursor.moveToFirst())
+        {
+            int count = cursor.getInt(0);
+            cursor.close();
+            db.close();
+            return count;
+        }
+        cursor.close();
+        db.close();
+        return 0;
+    }
+
+    public int GetAvgTimePerSession()
+    {
+        String dbQuery = "SELECT AVG(" + LOG_COLUMN_SECOND +") FROM " + TABLE_LOG;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if (cursor.moveToFirst())
+        {
+            int count = cursor.getInt(0);
+            cursor.close();
+            db.close();
+            return count;
+        }
+        cursor.close();
+        db.close();
+        return 0;
+    }
+
+    public Book GetBookMostTimeSpent()
+    {
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " ORDER BY " + BOOK_COLUMN_READING_TIME + " DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if (cursor.moveToFirst())
+        {
+            if (cursor.getInt(7) == 0)
+            {
+                cursor.close();
+                db.close();
+                return null;
+            }
+            else
+            {
+                Book book = new Book();
+                book.setID(cursor.getInt(0));
+                book.setIsbn(cursor.getString(1));
+                book.setAuthor(cursor.getString(2));
+                book.setYear(cursor.getString(3));
+                book.setName(cursor.getString(4));
+                book.setBlurb(cursor.getString(5));
+                book.setThumbnail(cursor.getString(6));
+                book.setReadSeconds(cursor.getInt(7));
+                book.setCustom(cursor.getInt(8) == 1? true: false);
+                book.setAdded(cursor.getInt(9) == 1? true: false);
+                book.setArchived(cursor.getInt(10) == 1? true: false);
+
+                cursor.close();
+                db.close();
+                return book;
+            }
+        }
+        cursor.close();
+        db.close();
+        return null;
+    }
+
+    public String GetFavouriteAuthor()
+    {
+        String dbQuery = "SELECT " +BOOK_COLUMN_AUTHOR+" ,COUNT(*) FROM " + TABLE_BOOK + " GROUP BY "
+                + BOOK_COLUMN_AUTHOR + " ORDER BY COUNT(*) DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if(cursor.moveToFirst())
+        {
+            String bookAuthor = cursor.getString(0);
+            cursor.close();
+            db.close();
+            return bookAuthor;
+        }
+        return "None";
+    }
 }
