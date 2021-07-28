@@ -116,11 +116,12 @@ public class CustomiseBook extends AppCompatActivity {
             ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(customBlurb.getWindowToken(), 0);
             if(thumbnailBM == null){
                 cusCoverBtn.setError("Please set book cover");
+                Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
             else if(customTitle.getText().toString().length() == 0){
                 customTitle.setError("Please enter a Title");
-                Toast.makeText(getBaseContext(), "Invalid!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
             else if(customBlurb.getText().toString().length() == 0){
@@ -227,7 +228,7 @@ public class CustomiseBook extends AppCompatActivity {
         }
     }
 
-    private void unsavedChangesWarning() {
+    public void unsavedChangesWarning() {
         //alert dialogue (removing custom book)
         AlertDialog.Builder bui = new AlertDialog.Builder(CustomiseBook.this);
         bui.setMessage("Delete unsaved changes?")
@@ -256,7 +257,7 @@ public class CustomiseBook extends AppCompatActivity {
         book.setThumbnail(thumbnailBM);
         Intent intent = new Intent(getBaseContext(), BookDetails.class);
         intent.putExtra("BookObject", book);
-        intent.putExtra("isFromCus", true);
+        intent.putExtra("prev", "Cus");
         startActivity(intent);
     }
 
