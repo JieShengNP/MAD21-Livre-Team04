@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class RecordActivity extends AppCompatActivity {
-    ImageView libraryTag;
+    ImageView libraryTag, statTag;
     TextView totalTime;
     DBHandler dbHandler;
     ArrayList<Records> recordList;
@@ -25,6 +25,7 @@ public class RecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
         libraryTag = findViewById(R.id.recordLibraryTag);
+        statTag = findViewById(R.id.recordStatTag);
         totalTime = findViewById(R.id.recordTotalTime);
         dbHandler = new DBHandler(this);
         recordList = dbHandler.GetAllRecords();
@@ -35,6 +36,14 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, LibraryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        statTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RecordActivity.this, StatActivity.class);
                 startActivity(intent);
             }
         });
