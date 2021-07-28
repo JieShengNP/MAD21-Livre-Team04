@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,18 +19,20 @@ import com.squareup.picasso.Picasso;
 
 public class BookDetails extends AppCompatActivity {
 
-    DBHandler dbHandler;
-    ImageView bookImage, backtag;
+    static DBHandler dbHandler;
+    ImageView bookImage, backtag, editBook;
     TextView bookTitle, bookDetails, bookDurationRead, bookDescription;
-    Button addToLibraryBtn, toggleArchiveBtn, startReadingBtn, removeBtn;
+    Button SingleActionBtn, toggleArchiveBtn, startReadingBtn, removeBtn;
     Book book;
+    String id;
     static Boolean isFromCus;
+    static Boolean isFromEdit;
+    static Boolean wasChanged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_activity);
-
         dbHandler = new DBHandler(this);
 
         bookImage = findViewById(R.id.thumbdet);
@@ -37,25 +40,65 @@ public class BookDetails extends AppCompatActivity {
         bookDetails = findViewById(R.id.detinfo);
         bookDurationRead = findViewById(R.id.timeSpentDet);
         bookDescription = findViewById(R.id.detDesc);
-        addToLibraryBtn = findViewById(R.id.detAddToLibBtn);
+        SingleActionBtn = findViewById(R.id.detSingleActionBtn);
         toggleArchiveBtn = findViewById(R.id.detToggleArcBtn);
         startReadingBtn = findViewById(R.id.detStartBtn);
         backtag = findViewById(R.id.detailsBackTag);
         removeBtn = findViewById(R.id.detRemove);
+        editBook = findViewById(R.id.editBtn);
+
+
+        Intent receivedIntent = getIntent();
+        try {
+            book = (Book) receivedIntent.getSerializableExtra("BookObject");
+            book.setAdded(dbHandler.isBookAdded(book));
+            isFromEdit = false;
+            isFromCus = false;
+            if(getIntent().getStringExtra("prev") != null){
+                if(getIntent().getStringExtra("prev").equals("Cus")){
+                    isFromCus = true;
+                    isFromEdit = false;
+                }
+                else if (getIntent().getStringExtra("prev").equals("Edit")){
+                    isFromEdit = true;
+                    isFromCus = false;
+                    id = getIntent().getStringExtra("EditId");
+                }
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(BookDetails.this, "Error", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        if(wasChanged == null){
+            wasChanged = false;
+        }
+
+        Log.v("WC", String.valueOf(wasChanged));
+        Log.v("isFCus", String.valueOf(isFromCus));
+        Log.v("isedit", String.valueOf(isFromEdit));
+        Log.v("isadded", String.valueOf(book.isAdded()));
+        Log.v("iscustom", String.valueOf(book.isCustom()));
+
 
         backtag.setOnClickListener(v -> backClick());
+
+        editBook.setOnClickListener(v -> editBookClick());
 
         bookImage.setVisibility(View.VISIBLE);
 
 
-        Intent receivedIntent = getIntent();
-        book = (Book) receivedIntent.getSerializableExtra("BookObject");
-        book.setAdded(dbHandler.isBookAdded(book));
-        isFromCus =  getIntent().getExtras().getBoolean("isFromCus");
-
-
         String isCustom = "";
-        if (book.isCustom){
+        if (book.isCustom()){
+            if((book.isAdded() && isFromEdit && wasChanged) || (book.isAdded() && !isFromEdit)) {
+                editBook.setVisibility(View.VISIBLE);
+            }
+            else{
+                editBook.setVisibility(View.GONE);
+            }
+
             isCustom = "\nCustom";
             removeBtn.setText("Delete Custom Book");
 
@@ -66,6 +109,7 @@ public class BookDetails extends AppCompatActivity {
                 bookImage.setImageBitmap(decodedByte);
             }
         }else{
+            editBook.setVisibility(View.GONE);
             removeBtn.setText("Remove from Library");
 
             Picasso.get()
@@ -75,8 +119,6 @@ public class BookDetails extends AppCompatActivity {
 
         }
 
-
-;
         bookTitle.setText(book.getName());
         bookDetails.setText(book.getAuthor() +" · "+ book.getYear() +"\nISBN: " + book.getIsbn() + isCustom);
         bookDurationRead.setText("Reading Time: " + CalculateTotalTime());
@@ -84,10 +126,10 @@ public class BookDetails extends AppCompatActivity {
 
 
 
-        if(book.isAdded()){
+        if((book.isCustom() && book.isAdded() && isFromCus)|| (book.isCustom() && isFromEdit && wasChanged) || (book.isCustom() && !isFromCus && !isFromEdit) || (!book.isCustom && book.isAdded())){
             toggleArchiveBtn.setVisibility(View.VISIBLE);
             startReadingBtn.setVisibility(View.VISIBLE);
-            addToLibraryBtn.setVisibility(View.GONE);
+            SingleActionBtn.setVisibility(View.GONE);
             removeBtn.setVisibility(View.VISIBLE);
 
             if (book.isArchived()){
@@ -97,21 +139,51 @@ public class BookDetails extends AppCompatActivity {
                 toggleArchiveBtn.setText("Move to Archive");
             }
 
-            toggleArchiveBtn.setOnClickListener(v -> togArClick(dbHandler));
-            startReadingBtn.setOnClickListener(v -> startClick());
+         toggleArchiveBtn.setOnClickListener(v -> togArClick(dbHandler));
+           startReadingBtn.setOnClickListener(v -> startClick());
+
+
         }
         else{
+            if (book.isCustom() && isFromEdit){
+                SingleActionBtn.setText("Save Changes");
+                SingleActionBtn.setOnClickListener(v -> saveClick(id));
+            }
+            else{
+                SingleActionBtn.setText("Add to Library");
+                SingleActionBtn.setOnClickListener(v -> addclick());
+            }
+
+
+
             toggleArchiveBtn.setVisibility(View.GONE);
             startReadingBtn.setVisibility(View.GONE);
-            addToLibraryBtn.setVisibility(View.VISIBLE);
+            SingleActionBtn.setVisibility(View.VISIBLE);
             removeBtn.setVisibility(View.GONE);
 
-            addToLibraryBtn.setOnClickListener(v -> addclick());
         }
 
         removeBtn.setOnClickListener(v-> remove(dbHandler));
 
 
+   }
+
+    public void saveClick(String id) {
+        int rowsAffected = dbHandler.UpdateBook(book, id);
+        if (rowsAffected == 0){
+            Toast.makeText(getBaseContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        Toast.makeText(getBaseContext(), "Saved", Toast.LENGTH_SHORT).show();
+        wasChanged = true;
+        recreate();
+
+    }
+
+    public void editBookClick() {
+        Intent editIntent = new Intent(getApplicationContext(), EditBook.class);
+        editIntent.putExtra("BookObject", book);
+        startActivity(editIntent);
     }
 
     @Override
@@ -160,7 +232,7 @@ public class BookDetails extends AppCompatActivity {
                         dbHandler.EraseLogs(book);
                         dbHandler.RemoveBook(book);
                         Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                        finish();
+                        backClick();
                     })
                     //User chooses not to
                     .setNegativeButton("Nevermind", (dialog, id) -> {return;});
@@ -181,7 +253,8 @@ public class BookDetails extends AppCompatActivity {
     }
 
     public void backClick() {
-        if (book.isCustom() && book.isAdded() && isFromCus) {
+
+        if ((book.isCustom() && book.isAdded() && isFromCus) || wasChanged) {
             Intent intent = new Intent(BookDetails.this, LibraryActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
