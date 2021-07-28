@@ -15,6 +15,7 @@
         android:theme="@style/Theme.Livre"
         >
         <activity android:name=".RecordActivity"/>
+        <activity android:name=".StatActivity" />
         <activity android:name=".MainActivity"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".LibraryActivity" />
