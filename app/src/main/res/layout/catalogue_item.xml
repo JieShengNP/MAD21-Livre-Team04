@@ -77,13 +77,12 @@
     <TextView
         android:id="@+id/customTxt"
         android:layout_width="102dp"
-        android:layout_height="20dp"
+        android:layout_height="35dp"
         android:background="@color/cream"
-        android:visibility="gone"
         android:text="Custom"
         android:textAlignment="center"
-        android:alpha = ".7"
-        android:textSize="16sp"
+        android:alpha = ".8"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="@+id/catThumb"
         app:layout_constraintEnd_toEndOf="@+id/catThumb"
         app:layout_constraintStart_toStartOf="@+id/catThumb" />
