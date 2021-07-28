@@ -330,6 +330,7 @@ public class DBHandler extends SQLiteOpenHelper {
             totalTime = cursor.getInt(0);
         }
 
+        cursor.close();
         db.close();
         return  totalTime;
     }
@@ -355,8 +356,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 records.setTimeReadSec(cursor.getInt(4));
                 recordsList.add(records);
             } while (cursor.moveToNext());
-            cursor.close();
         }
+        cursor.close();
+        db.close();
         return recordsList;
     }
 
@@ -367,9 +369,13 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.getCount() > 0){
+            cursor.close();
+            db.close();
             return true;
         }
         else{
+            cursor.close();
+            db.close();
             return false;
         }
     }
@@ -478,6 +484,8 @@ public class DBHandler extends SQLiteOpenHelper {
             db.close();
             return bookAuthor;
         }
+        cursor.close();
+        db.close();
         return "None";
     }
 }
