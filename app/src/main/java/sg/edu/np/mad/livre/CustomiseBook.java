@@ -129,13 +129,12 @@ public class CustomiseBook extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
-            else if(AuthorValidation() && PubYearValidation() && ISBNValidation()){
-                Toast.makeText(getBaseContext(), "Valid", Toast.LENGTH_SHORT).show();
-                ValidatedSubmission();
-            }
-            else{
+            else if(!(AuthorValidation() && PubYearValidation() && ISBNValidation())){
                 Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
+                return;
             }
+            Toast.makeText(getBaseContext(), "Valid", Toast.LENGTH_SHORT).show();
+            ValidatedSubmission();
 
         });
     }
@@ -359,19 +358,7 @@ public class CustomiseBook extends AppCompatActivity {
         //check for any value in any of the strings
         //alert user if there are
         //finish if there aren't
-        if(customTitle.getText().toString().length() != 0){
-            unsavedChangesWarning();
-        }
-        else if(customAuthor.getText().toString().length() != 0){
-            unsavedChangesWarning();
-        }
-        else if(customPublishYear.getText().toString().length() != 0){
-            unsavedChangesWarning();
-        }
-        else if(customISBN.getText().toString().length() != 0){
-            unsavedChangesWarning();
-        }
-        else if(customBlurb.getText().toString().length() != 0){
+        if(customTitle.getText().toString().length() != 0 || customAuthor.getText().toString().length() != 0 || customPublishYear.getText().toString().length() != 0 || customISBN.getText().toString().length() != 0 || customBlurb.getText().toString().length() != 0){
             unsavedChangesWarning();
         }
         else{
