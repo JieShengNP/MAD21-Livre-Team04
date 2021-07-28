@@ -160,6 +160,7 @@ public class CustomiseBook extends AppCompatActivity {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
                             try {
                                 Bitmap bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getApplicationContext().getContentResolver(), result));
+                                bitmap = Bitmap.createScaledBitmap(bitmap, 102, 160, false);
                                 bitSet(bitmap);
 
                             } catch (IOException e) {
@@ -173,6 +174,7 @@ public class CustomiseBook extends AppCompatActivity {
                             Uri imageUri = result;
                             try {
                                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), imageUri);
+                                bitmap = Bitmap.createScaledBitmap(bitmap, 102, 160, false);
                                 bitSet(bitmap);
                             } catch (IOException e) {
                                 e.printStackTrace();
