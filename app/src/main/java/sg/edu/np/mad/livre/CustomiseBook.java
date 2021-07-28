@@ -52,6 +52,8 @@ public class CustomiseBook extends AppCompatActivity {
             customTitle.setText(receivedIntent.getSerializableExtra("Title").toString());
         }
 
+        tag.setOnClickListener(v -> back());
+
         customAuthor.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -118,32 +120,7 @@ public class CustomiseBook extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //check for any value in any of the strings
-        //alert user if there are
-        //finish if there aren't
-        if(customTitle.getText().toString().length() != 0){
-            unsavedChangesWarning();
-        }
-        else if(customAuthor.getText().toString().length() != 0){
-            unsavedChangesWarning();
-        }
-        else if(customPublishYear.getText().toString().length() != 0){
-            unsavedChangesWarning();
-        }
-        else if(customISBN.getText().toString().length() != 0){
-            unsavedChangesWarning();
-        }
-        else if(customBlurb.getText().toString().length() != 0){
-            unsavedChangesWarning();
-        }
-        else{
-            finish();
-        }
-
-        tag.setOnClickListener(v -> {
-            Intent intent = new Intent(CustomiseBook.this, CatalogueActivity.class);
-            startActivity(intent);
-        });
+        back();
     }
 
     @Override
@@ -277,5 +254,30 @@ public class CustomiseBook extends AppCompatActivity {
 
             }
         tag.requestLayout();
+    }
+
+    public void back(){
+
+        //check for any value in any of the strings
+        //alert user if there are
+        //finish if there aren't
+        if(customTitle.getText().toString().length() != 0){
+            unsavedChangesWarning();
+        }
+        else if(customAuthor.getText().toString().length() != 0){
+            unsavedChangesWarning();
+        }
+        else if(customPublishYear.getText().toString().length() != 0){
+            unsavedChangesWarning();
+        }
+        else if(customISBN.getText().toString().length() != 0){
+            unsavedChangesWarning();
+        }
+        else if(customBlurb.getText().toString().length() != 0){
+            unsavedChangesWarning();
+        }
+        else{
+            finish();
+        }
     }
 }
