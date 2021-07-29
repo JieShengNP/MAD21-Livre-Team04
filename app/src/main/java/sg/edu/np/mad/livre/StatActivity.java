@@ -32,6 +32,7 @@ public class StatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StatActivity.this, LibraryActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -39,8 +40,7 @@ public class StatActivity extends AppCompatActivity {
         recordTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StatActivity.this, RecordActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
