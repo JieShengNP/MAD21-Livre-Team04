@@ -1,5 +1,6 @@
 package sg.edu.np.mad.livre;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LibraryActivity extends AppCompatActivity {
+public class LibraryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ImageView archiveImage, catalogueImage, recordTag;
     DBHandler dbHandler;
@@ -55,6 +58,7 @@ public class LibraryActivity extends AppCompatActivity {
         });
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         View nView = navigationView.getHeaderView(0);
         navImage = nView.findViewById(R.id.nav_header_image);
         navUsername = nView.findViewById(R.id.nav_header_username);
@@ -140,37 +144,66 @@ public class LibraryActivity extends AppCompatActivity {
         }
     }
 
-    public void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        switch(menuItem.getItemId()) {
+//    public void selectDrawerItem(MenuItem menuItem) {
+//        // Create a new fragment and specify the fragment to show based on nav item clicked
+//        switch(menuItem.getItemId()) {
+//            case R.id.nav_popularbook:
+//
+//                break;
+//            case R.id.nav_logout:
+//                FirebaseAuth.getInstance().signOut();
+//                SharedPreferences.Editor editor = getSharedPreferences("Firebase", MODE_PRIVATE).edit();
+//                editor.remove("FirebaseUser");
+//                editor.remove("FirebaseEmail");
+//                editor.apply();
+//                Toast.makeText(LibraryActivity.this, "You have successfully logged out!", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(LibraryActivity.this, SignInActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                startActivity(intent);
+//                break;
+//        }
+//
+//        getLayoutInflater().inflate(R.layout.activity_drawer, findViewById(R.id.fragment_container));
+//
+//        // Highlight the selected item has been done by NavigationView
+//        menuItem.setChecked(true);
+//        // Set action bar title
+//        setTitle(menuItem.getTitle());
+//        // Close the navigation drawer
+//        drawer.closeDrawers();
+//        drawer.setVisibility(View.VISIBLE);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // The action bar home/up action should open or close the drawer.
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                drawer.openDrawer(GravityCompat.START);
+//                return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.nav_popularbook:
 
                 break;
             case R.id.nav_logout:
-
+                FirebaseAuth.getInstance().signOut();
+                SharedPreferences.Editor editor = getSharedPreferences("Firebase", MODE_PRIVATE).edit();
+                editor.remove("FirebaseUser");
+                editor.remove("FirebaseEmail");
+                editor.apply();
+                Toast.makeText(LibraryActivity.this, "You have successfully logged out!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LibraryActivity.this, SignInActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 break;
         }
-
-        getLayoutInflater().inflate(R.layout.activity_drawer, findViewById(R.id.fragment_container));
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        drawer.closeDrawers();
-        drawer.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawer.openDrawer(GravityCompat.START);
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }
