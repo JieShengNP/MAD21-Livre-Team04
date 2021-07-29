@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,10 +59,17 @@ public class SplashScreenActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 sharedPreferences = getSharedPreferences(SignInActivity.sharedPrefName, MODE_PRIVATE);
                 String userID = sharedPreferences.getString("FirebaseUser", "");
-                if (userID.equals(user.getUid())) {
-                    Intent intent = new Intent(SplashScreenActivity.this, LibraryActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+                if (user != null) {
+                    if (userID.equals(user.getUid())) {
+                        Intent intent = new Intent(SplashScreenActivity.this, LibraryActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SplashScreenActivity.this, "Please sign in again!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SplashScreenActivity.this, SignInActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
                 } else {
                     Intent intent = new Intent(SplashScreenActivity.this, SignUpActivity.class);
                     startActivity(intent);
