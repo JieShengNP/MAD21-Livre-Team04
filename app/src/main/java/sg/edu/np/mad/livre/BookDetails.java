@@ -128,7 +128,6 @@ public class BookDetails extends AppCompatActivity {
 
         if((book.isCustom() && book.isAdded() && isFromCus)|| (book.isCustom() && isFromEdit && wasChanged) || (book.isCustom() && !isFromCus && !isFromEdit) || (!book.isCustom && book.isAdded())){
             toggleArchiveBtn.setVisibility(View.VISIBLE);
-            startReadingBtn.setVisibility(View.VISIBLE);
             SingleActionBtn.setVisibility(View.GONE);
             removeBtn.setVisibility(View.VISIBLE);
 
