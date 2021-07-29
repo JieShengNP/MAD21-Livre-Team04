@@ -17,7 +17,9 @@ import java.util.ArrayList;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
    ArrayList<Records> recordsArrayList;
-   public RecordAdapter(ArrayList<Records> input)
+    private int hour;
+
+    public RecordAdapter(ArrayList<Records> input)
    {
        recordsArrayList = input;
    }
@@ -40,8 +42,29 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
                     .resize(90, 140)
                     .into(holder.bookCover);
         }
+        int readTime = record.getTimeReadSec();
+        String Time = "   Read Time: ";
+        //less than 1 minute
+        if (readTime < 60) {
+            Time += String.format("%02d", readTime) + " S";
+        }
+        //more than 1 hour
+        else if (readTime >= 3600) {
+            int min = readTime / 60;
+            readTime = readTime % 60;
+            int hour = min / 60;
+            min = min % 60;
+            Time += String.format("%02d", hour) + " H " + String.format("%02d", min) + " M " + String.format("%02d", readTime) + " S";
+        }
+        //less than 1 hour , more than 1 minute
+        else {
+            int min = readTime / 60;
+            readTime = readTime % 60;
+            Time += String.format("%02d", min) + " M " + String.format("%02d", readTime) + " S";
+        }
         holder.date.setText(new SimpleDateFormat("dd MMM yyyy, EEE HH:mm:ss").format(record.getDateRead()));
         holder.name.setText(record.getName());
+        holder.readTime.setText(Time);
     }
 
     @Override

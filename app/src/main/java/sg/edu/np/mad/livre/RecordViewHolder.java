@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class RecordViewHolder extends RecyclerView.ViewHolder {
     ImageView bookCover;
-    TextView date,name;
+    TextView date,name,readTime;
 
     public RecordViewHolder(View itemView)
     {
@@ -16,5 +16,6 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
         bookCover = itemView.findViewById(R.id.recordBookCover);
         date = itemView.findViewById(R.id.recordDate);
         name = itemView.findViewById(R.id.recordName);
+        readTime = itemView.findViewById(R.id.recordReadTime);
     }
 }
