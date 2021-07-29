@@ -15,8 +15,11 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,9 @@ public class LibraryActivity extends AppCompatActivity {
     ImageView archiveImage, catalogueImage, recordTag;
     DBHandler dbHandler;
 
+    //Navigation Drawer
+    ImageView navImage;
+    TextView navUsername, navEmail;
     private DrawerLayout drawer;
 
     @Override
@@ -35,6 +41,7 @@ public class LibraryActivity extends AppCompatActivity {
 
         dbHandler = new DBHandler(this);
 
+        // Start of Navigation Drawer
         drawer = findViewById(R.id.drawer_layout);
 
         CustomDrawerButton customDrawerButton = findViewById(R.id.navHamburgerImg);
@@ -46,6 +53,24 @@ public class LibraryActivity extends AppCompatActivity {
                 customDrawerButton.changeState();
             }
         });
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View nView = navigationView.getHeaderView(0);
+        navImage = nView.findViewById(R.id.nav_header_image);
+        navUsername = nView.findViewById(R.id.nav_header_username);
+        navEmail = nView.findViewById(R.id.nav_header_email);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user.getPhotoUrl() != null){
+            navImage.setImageURI(user.getPhotoUrl());
+        }
+        if (user.getDisplayName() != null){
+        navUsername.setText(user.getDisplayName());
+        } else {
+            navUsername.setText("");
+        }
+        navEmail.setText(user.getEmail());
+
+        // End of Navigation Drawer
 
         //Set the Archive Image to send user back to Archive Activity
         archiveImage = findViewById(R.id.libraryArchiveImage);
