@@ -1,14 +1,22 @@
 package sg.edu.np.mad.livre;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +26,26 @@ public class LibraryActivity extends AppCompatActivity {
     ImageView archiveImage, catalogueImage, recordTag;
     DBHandler dbHandler;
 
+    private DrawerLayout drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
 
         dbHandler = new DBHandler(this);
+
+        drawer = findViewById(R.id.drawer_layout);
+
+        CustomDrawerButton customDrawerButton = findViewById(R.id.navHamburgerImg);
+        customDrawerButton.setDrawerLayout( drawer );
+        customDrawerButton.getDrawerLayout().addDrawerListener( customDrawerButton );
+        customDrawerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDrawerButton.changeState();
+            }
+        });
 
         //Set the Archive Image to send user back to Archive Activity
         archiveImage = findViewById(R.id.libraryArchiveImage);
@@ -81,5 +103,49 @@ public class LibraryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(libraryAdapter);
         libraryAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+            drawer.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        switch(menuItem.getItemId()) {
+            case R.id.nav_popularbook:
+
+                break;
+            case R.id.nav_logout:
+
+                break;
+        }
+
+        getLayoutInflater().inflate(R.layout.activity_drawer, findViewById(R.id.fragment_container));
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        drawer.closeDrawers();
+        drawer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawer.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
