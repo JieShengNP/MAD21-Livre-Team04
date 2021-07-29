@@ -1,5 +1,6 @@
 package sg.edu.np.mad.livre;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -40,6 +41,20 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run(){
+                FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            String userId = firebaseUser.getUid();
+                            String userEmail = firebaseUser.getEmail();
+                            SharedPreferences.Editor editor = getSharedPreferences(SignInActivity.sharedPrefName, MODE_PRIVATE).edit();
+                            editor.putString("FirebaseUser", userId);
+                            editor.putString("FirebaseEmail", userEmail);
+                            editor.commit();
+                        }
+                    }
+                };
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 sharedPreferences = getSharedPreferences(SignInActivity.sharedPrefName, MODE_PRIVATE);
                 String userID = sharedPreferences.getString("FirebaseUser", "");
