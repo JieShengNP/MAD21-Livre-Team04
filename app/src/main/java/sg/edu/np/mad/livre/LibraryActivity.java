@@ -144,55 +144,16 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
         }
     }
 
-//    public void selectDrawerItem(MenuItem menuItem) {
-//        // Create a new fragment and specify the fragment to show based on nav item clicked
-//        switch(menuItem.getItemId()) {
-//            case R.id.nav_popularbook:
-//
-//                break;
-//            case R.id.nav_logout:
-//                FirebaseAuth.getInstance().signOut();
-//                SharedPreferences.Editor editor = getSharedPreferences("Firebase", MODE_PRIVATE).edit();
-//                editor.remove("FirebaseUser");
-//                editor.remove("FirebaseEmail");
-//                editor.apply();
-//                Toast.makeText(LibraryActivity.this, "You have successfully logged out!", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(LibraryActivity.this, SignInActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                startActivity(intent);
-//                break;
-//        }
-//
-//        getLayoutInflater().inflate(R.layout.activity_drawer, findViewById(R.id.fragment_container));
-//
-//        // Highlight the selected item has been done by NavigationView
-//        menuItem.setChecked(true);
-//        // Set action bar title
-//        setTitle(menuItem.getTitle());
-//        // Close the navigation drawer
-//        drawer.closeDrawers();
-//        drawer.setVisibility(View.VISIBLE);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // The action bar home/up action should open or close the drawer.
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                drawer.openDrawer(GravityCompat.START);
-//                return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_popularbook:
-
+            case R.id.nav_popularbook: {
+                Intent intent = new Intent(LibraryActivity.this, PopularBookActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 break;
-            case R.id.nav_logout:
+            }
+            case R.id.nav_logout: {
                 FirebaseAuth.getInstance().signOut();
                 SharedPreferences.Editor editor = getSharedPreferences("Firebase", MODE_PRIVATE).edit();
                 editor.remove("FirebaseUser");
@@ -203,6 +164,7 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 break;
+            }
         }
         return true;
     }
