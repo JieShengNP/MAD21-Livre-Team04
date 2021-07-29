@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "74059253185",
+    "firebase_url": "https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "livre-46ac7",
+    "storage_bucket": "livre-46ac7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74059253185:android:8976f3ee4aabe6dbb05b40",
+        "android_client_info": {
+          "package_name": "sg.edu.np.mad.livre"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74059253185-b1hcgivfp0mngselukvc4kg0h5vb8rq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXpRCw2m3wFMhc24k5x3y5fGYf0zwuLgA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74059253185-b1hcgivfp0mngselukvc4kg0h5vb8rq3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
