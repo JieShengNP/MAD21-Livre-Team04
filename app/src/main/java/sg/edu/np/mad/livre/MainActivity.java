@@ -24,6 +24,9 @@ import org.w3c.dom.Text;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final long INTERVAL_MS = 1000;
@@ -40,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/");
+//        Usage of Firebase Database
+//        DatabaseReference myRef = database.getReference("Key");
+//        myRef.setValue("Value");
         timer = findViewById(R.id.timerText);
         timerFrame = findViewById(R.id.timerFrame);
         handler = new Handler();
@@ -174,6 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
         alertDialog.show();
 
-
+        
     }
 }
