@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ArchiveActivity extends AppCompatActivity {
 
-    ImageView libraryImage;
+    ImageView libraryImage, catalogueImage;
     DBHandler dbHandler;
 
     @Override
@@ -33,7 +33,15 @@ public class ArchiveActivity extends AppCompatActivity {
             }
         });
 
-
+        //Set the Catalogue Image to send user back to Catalogue Activity
+        catalogueImage = findViewById(R.id.archiveCatalogueImage);
+        catalogueImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ArchiveActivity.this, CatalogueActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
