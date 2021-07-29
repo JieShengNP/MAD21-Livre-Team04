@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/catalogueConLay"
+    >
+
+    <ImageView
+        android:id="@+id/catalogueLibraryTag"
+        android:layout_width="65dp"
+        android:layout_height="107dp"
+        android:layout_marginRight="52dp"
+        android:onClick="LibraryTagClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tag_library" />
+
+    <EditText
+        android:id="@+id/catalogueSearch"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/rounded_edittext"
+        android:hint="What would you like to find?"
+        android:imeOptions="actionSearch"
+        android:inputType="textCapWords|textNoSuggestions"
+        android:maxLines="1"
+        android:paddingLeft="20dp"
+        android:paddingRight="45dp"
+        android:textColor="@color/offwhite"
+        android:textSize="27sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/catalogueText" />
+
+    <TextView
+        android:id="@+id/catalogueText"
+        android:layout_width="wrap_content"
+        android:layout_height="85dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="16dp"
+        android:text="Catalogue"
+        android:textColor="@color/sage"
+        android:textSize="60sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/catRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frame2cat"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/frame2cat"
+        android:layout_width="40dp"
+        android:layout_height="13dp"
+        android:layout_marginTop="24dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/catInfo"
+        app:srcCompat="@drawable/frame2" />
+
+    <ImageView
+        android:id="@+id/catsearchicon"
+        android:layout_width="39dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:scrollbarSize="30dp"
+        app:layout_constraintEnd_toEndOf="@+id/catalogueSearch"
+        app:layout_constraintTop_toTopOf="@+id/catalogueSearch"
+        app:srcCompat="@drawable/search" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/loadLayout"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/catRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/catRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/catRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/frame2cat">
+
+        <VideoView
+            android:id="@+id/loadVid"
+            android:layout_width="61dp"
+            android:layout_height="62dp"
+            android:layout_gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/catRecyclerView" />
+
+        <TextView
+            android:id="@+id/changeloadText"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Scouring..."
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/catRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loadVid" />
+
+        <TextView
+            android:id="@+id/loadText"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginBottom="16dp"
+            android:text="This might take a while."
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/catRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loadVid" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/catInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/catalogueSearch"
+        tools:layout_editor_absoluteX="-52dp">
+
+        <TextView
+            android:id="@+id/resNum"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginStart="28dp"
+            android:text="0"
+            android:textAlignment="center"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:id="@+id/res"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="\tResults"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/resNum" />
+
+        <TextView
+            android:id="@+id/poweredBy"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginEnd="28dp"
+            android:text="Powered by Open Library APIs"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/featherDuster"
+        android:layout_width="129dp"
+        android:layout_height="114dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/catRecyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/catRecyclerView"
+        app:srcCompat="@drawable/featherduster" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

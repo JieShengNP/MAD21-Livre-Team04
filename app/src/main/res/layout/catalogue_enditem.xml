@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/catThumb"
+        android:layout_width="102dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/quicksand"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/sym_def_app_icon" />
+
+    <TextView
+        android:id="@+id/catTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/gabriola"
+        android:text="TgxtVihrllo hrl u uew"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:layout_gravity="left"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/catThumb"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/catauthorDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:translationY="-20dp"
+        android:text="TegtVienw"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/catThumb"
+        app:layout_constraintTop_toBottomOf="@+id/catTitle" />
+
+    <TextView
+        android:id="@+id/catDesc"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:text="lorem ipsum dolor sit amet consectetuer adipiscing elit sed diam nonummy nibh lorem ipsum dolor sit amet consectetuer adipiscing elit sed diam nonummy nibh"
+        android:textSize="20sp"
+        android:translationY="-20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/catThumb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/catThumb"
+        app:layout_constraintTop_toBottomOf="@+id/catauthorDate"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/frame2cat"
+        android:layout_width="40dp"
+        android:layout_height="13dp"
+        android:layout_marginTop="15dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/catThumb"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/frame2" />
+
+
+    <ImageView
+        android:id="@+id/catIcon"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="84dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frame2cat"
+        app:srcCompat="@drawable/icon_bookstack" />
+
+    <TextView
+        android:id="@+id/authorDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Scouring complete. Not here?
+"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/catIcon" />
+
+    <Button
+        android:id="@+id/addCusBook"
+        android:layout_width="175dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/brown"
+        android:drawableRight="@drawable/icon_pen"
+        android:minHeight="48dp"
+        android:padding="-3dp"
+        android:text="Add Custom Book"
+        android:onClick="detAddCus"
+        android:textAllCaps="false"
+        android:textColor="@color/cream"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/authorDate" />
+
+    <TextView
+        android:id="@+id/customTxt"
+        android:layout_width="102dp"
+        android:layout_height="35dp"
+        android:background="@color/cream"
+        android:text="Custom"
+        android:textAlignment="center"
+        android:alpha = ".8"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/catThumb"
+        app:layout_constraintEnd_toEndOf="@+id/catThumb"
+        app:layout_constraintStart_toStartOf="@+id/catThumb" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

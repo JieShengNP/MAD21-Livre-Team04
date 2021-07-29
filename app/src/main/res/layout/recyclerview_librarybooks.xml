@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_weight="0"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/recyclerViewBook1"
+                android:layout_width="90dp"
+                android:layout_height="140dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/shelf_bust" />
+
+            <ImageView
+                android:id="@+id/recyclerViewBook2"
+                android:layout_width="90dp"
+                android:layout_height="140dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/shelf_bust" />
+
+            <ImageView
+                android:id="@+id/recyclerViewBook3"
+                android:layout_width="90dp"
+                android:layout_height="140dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/shelf_bust" />
+
+            <ImageView
+                android:id="@+id/recyclerViewBook4"
+                android:layout_width="90dp"
+                android:layout_height="140dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/shelf_bust" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/recyclerViewShelf"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            app:srcCompat="@drawable/shelf1" />
+    </LinearLayout>
+
+</LinearLayout>
