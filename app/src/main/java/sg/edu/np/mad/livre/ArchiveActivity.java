@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ArchiveActivity extends AppCompatActivity {
 
-    ImageView libraryImage, catalogueImage;
+    ImageView libraryImage, catalogueImage, recordTag;
     DBHandler dbHandler;
 
     @Override
@@ -39,6 +39,14 @@ public class ArchiveActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ArchiveActivity.this, CatalogueActivity.class);
+                startActivity(intent);
+            }
+        });
+        recordTag = findViewById(R.id.archiveRecordTag);
+        recordTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ArchiveActivity.this, RecordActivity.class);
                 startActivity(intent);
             }
         });
