@@ -39,8 +39,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
         android:text="Email: "
-        android:textSize="36sp"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signInTextView"
         tools:text="Email:" />
@@ -52,31 +53,35 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="Password: "
-        android:textSize="36sp"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signinEmailText"
         tools:text="Password" />
 
     <EditText
         android:id="@+id/signinEmailEditText"
-        android:layout_width="256dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
+        android:layout_marginEnd="16dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/signinEmailText"
         app:layout_constraintTop_toBottomOf="@+id/signInTextView" />
 
     <EditText
         android:id="@+id/signinPasswordEditText"
-        android:layout_width="256dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:ems="10"
         android:inputType="textPassword"
         android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/signinEmailText"
         app:layout_constraintTop_toBottomOf="@+id/signinEmailEditText" />
 
