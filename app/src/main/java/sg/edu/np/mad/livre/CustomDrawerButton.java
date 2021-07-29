@@ -27,29 +27,26 @@ public class CustomDrawerButton extends androidx.appcompat.widget.AppCompatButto
             mDrawerLayout.closeDrawer(GravityCompat.START);
             Log.v("State", "TRUE");
         }else{
+            setVisibility(GONE);
             mDrawerLayout.setVisibility(VISIBLE);
             mDrawerLayout.openDrawer(GravityCompat.START);
             Log.v("State", "FALSE");
-
         }
     }
 
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
-        Log.e("BUTTOM DRAWER: ", "onDrawerSlide");
     }
     @Override
     public void onDrawerOpened(View drawerView) {
-        Log.e("BUTTOM DRAWER: ", "onDrawerOpened");
     }
     @Override
     public void onDrawerClosed(View drawerView) {
-        Log.e("BUTTOM DRAWER: ", "onDrawerClosed");
+        setVisibility(VISIBLE);
         mDrawerLayout.setVisibility(GONE);
     }
     @Override
     public void onDrawerStateChanged(int newState) {
-        Log.e("BUTTOM DRAWER: ", "onDrawerStateChanged");
     }
 
     public DrawerLayout getDrawerLayout() {
