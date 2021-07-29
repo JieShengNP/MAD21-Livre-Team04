@@ -16,7 +16,7 @@
         <item name="android:fontFamily">@font/stxingka</item>
         <item name="fontFamily">@font/stxingka</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">20sp</item>
 
     </style>
 
