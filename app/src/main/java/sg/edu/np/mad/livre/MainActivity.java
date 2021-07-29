@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private static final long INTERVAL_MS = 1000;
     ImageView recordsTag,libraryChain, timerFrame;
     Chronometer timer;
     Handler handler;
@@ -45,6 +46,21 @@ public class MainActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this);
         isbn = getIntent().getStringExtra("Isbn");
         handler.postDelayed(toastRunnable, 0);
+
+        timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                tMilliSec += INTERVAL_MS;
+                sec = (int) (tMilliSec/1000);
+                min = sec/60;
+                sec = sec % 60;
+                hour = min/60;
+                min = min % 60;
+
+                timer.setText(String.format("%02d",hour) + ":" + String.format("%02d",min) + ":" + String.format("%02d",sec));
+            }
+        });
+
         timerFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                     handler.removeCallbacks(toastRunnable);
                     Toast.makeText(MainActivity.this, "Press again to stop", Toast.LENGTH_SHORT).show();
                     tStart = SystemClock.uptimeMillis();
-                    handler.postDelayed(runnable, 0);
+
                     timer.start();
                     timerRunning = true;
                 }
@@ -90,22 +106,9 @@ public class MainActivity extends AppCompatActivity {
         {
             handler.postDelayed(toastRunnable,0);
         }
-    }
-
-    //Runnable for timer to update
-    public Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
+        else
+        {
             tMilliSec = SystemClock.uptimeMillis() - tStart;
-            //Converting milliseconds into Hour Min Sec
-            sec = (int) (tMilliSec/1000);
-            min = sec/60;
-            sec = sec % 60;
-            hour = min/60;
-            min = min % 60;
-
-            timer.setText(String.format("%02d",hour) + ":" + String.format("%02d",min) + ":" + String.format("%02d",sec));
-            handler.postDelayed(this,0);
         }
     };
 
@@ -120,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
             handler.postDelayed(this, 10000);
         }
     };
+
     public void AlertDialog(String isbn)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -137,9 +141,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    //stops timer from updating
-                    handler.removeCallbacks(runnable);
-
                     // stop timer
                     timer.stop();
                     timerRunning = false;
