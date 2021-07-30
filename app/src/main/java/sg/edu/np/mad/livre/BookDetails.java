@@ -83,9 +83,6 @@ public class BookDetails extends AppCompatActivity {
             }
 
 
-        Log.v("hello", book.toString());
-        Log.v("hey", String.valueOf(wasChanged) + String.valueOf(isFromEdit) + String.valueOf(isFromCus));
-
         //set waschanged (if book came from edit has has been changed), to false if null
         if(wasChanged == null){
             wasChanged = false;
@@ -256,9 +253,18 @@ public class BookDetails extends AppCompatActivity {
         //user wants to start reading
 
         //user wants to start reading, start activity and pass isbn
-        Intent intent = new Intent(BookDetails.this, MainActivity.class);
-        intent.putExtra("Isbn", book.getIsbn());
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(BookDetails.this, MainActivity.class);
+            intent.putExtra("Isbn", book.getIsbn());
+            book = null;
+            startActivity(intent);
+        }
+        catch (Exception e){
+            Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(BookDetails.this, LibraryActivity.class);
+            book = null;
+            startActivity(intent);
+        }
     }
 
     public void addclick(){

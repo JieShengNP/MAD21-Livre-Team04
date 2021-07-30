@@ -259,7 +259,8 @@ public class EditBook extends AppCompatActivity {
                                 return;
                             }
                         }
-
+                        //remove error
+                        editCoverBtn.setError(null);
                     }
                 }
             });

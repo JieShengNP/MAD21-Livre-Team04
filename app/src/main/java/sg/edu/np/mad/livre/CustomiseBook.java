@@ -203,7 +203,8 @@ public class CustomiseBook extends AppCompatActivity {
                                 return;
                             }
                         }
-
+                        //remove error
+                        cusCoverBtn.setError(null);
                     }
                 }
             });
