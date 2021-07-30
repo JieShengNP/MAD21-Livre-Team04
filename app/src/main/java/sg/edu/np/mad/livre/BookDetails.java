@@ -1,11 +1,13 @@
 package sg.edu.np.mad.livre;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,14 +18,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class BookDetails extends AppCompatActivity {
 
     static DBHandler dbHandler;
     ImageView bookImage, backtag, editBook;
     TextView bookTitle, bookDetails, bookDurationRead, bookDescription;
     Button SingleActionBtn, toggleArchiveBtn, startReadingBtn, removeBtn;
-    Book book;
     String id;
+    static Book book;
     static Boolean isFromCus;
     static Boolean isFromEdit;
     static Boolean wasChanged;
@@ -49,32 +53,34 @@ public class BookDetails extends AppCompatActivity {
 
         //get intent and get book object.
         //find out which view user came from
-        Intent receivedIntent = getIntent();
-        try {
-            book = (Book) receivedIntent.getSerializableExtra("BookObject");
-            //set added of book
-            book.setAdded(dbHandler.isBookAdded(book));
-            isFromEdit = false;
-            isFromCus = false;
-            if(getIntent().getStringExtra("prev") != null){
-                if(getIntent().getStringExtra("prev").equals("Cus")){
-                    isFromCus = true;
-                    isFromEdit = false;
+
+            Intent receivedIntent = getIntent();
+            try {
+                isFromEdit = false;
+                isFromCus = false;
+                if (getIntent().getStringExtra("prev") != null) {
+                    if (getIntent().getStringExtra("prev").equals("Cus")) {
+                        isFromCus = true;
+                        isFromEdit = false;
+                    } else if (getIntent().getStringExtra("prev").equals("Edit")) {
+                        isFromEdit = true;
+                        isFromCus = false;
+                        //get id of book if user came from edit
+                        id = getIntent().getStringExtra("EditId");
+                    }
                 }
-                else if (getIntent().getStringExtra("prev").equals("Edit")){
-                    isFromEdit = true;
-                    isFromCus = false;
-                    //get id of book if user came from edit
-                    id = getIntent().getStringExtra("EditId");
+
+                if (book == null) {
+                    book = (Book) receivedIntent.getSerializableExtra("BookObject");
+                    //set added of book
+                    book.setAdded(dbHandler.isBookAdded(book));
                 }
+            } catch (Exception e) {
+                //finish if there is an error
+                e.printStackTrace();
+                Toast.makeText(BookDetails.this, "Error", Toast.LENGTH_SHORT).show();
+                finish();
             }
-        }
-        catch (Exception e){
-            //finish if there is an error
-            e.printStackTrace();
-            Toast.makeText(BookDetails.this, "Error", Toast.LENGTH_SHORT).show();
-            finish();
-        }
 
         //set waschanged (if book came from edit has has been changed), to false if null
         if(wasChanged == null){
@@ -161,6 +167,7 @@ public class BookDetails extends AppCompatActivity {
          startReadingBtn.setOnClickListener(v -> startClick());
 
 
+
         }
         else{
             //something (edit/add) is pending for the book
@@ -208,7 +215,9 @@ public class BookDetails extends AppCompatActivity {
         //user wants to edit book, open editbook class and pass book object
 
         Intent editIntent = new Intent(getApplicationContext(), EditBook.class);
-        editIntent.putExtra("BookObject", book);
+        editIntent.putExtra("BookObjectForEdit", book);
+
+        book = null;
         startActivity(editIntent);
     }
 
@@ -243,9 +252,18 @@ public class BookDetails extends AppCompatActivity {
         //user wants to start reading
 
         //user wants to start reading, start activity and pass isbn
-        Intent intent = new Intent(BookDetails.this, MainActivity.class);
-        intent.putExtra("Isbn", book.getIsbn());
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(BookDetails.this, MainActivity.class);
+            intent.putExtra("Isbn", book.getIsbn());
+            book = null;
+            startActivity(intent);
+        }
+        catch (Exception e){
+            Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(BookDetails.this, LibraryActivity.class);
+            book = null;
+            startActivity(intent);
+        }
     }
 
     public void addclick(){
@@ -254,8 +272,8 @@ public class BookDetails extends AppCompatActivity {
         book.setAdded(true);
         book.setArchived(false);
         dbHandler.AddBook(book);
-        Toast.makeText(getBaseContext(), "Added", Toast.LENGTH_SHORT).show();
         recreate();
+        Toast.makeText(getBaseContext(), "Added" , Toast.LENGTH_SHORT).show();
     }
 
     public void remove(DBHandler dbHandler){
@@ -272,8 +290,8 @@ public class BookDetails extends AppCompatActivity {
                         //User chooses to delete custom book and erase logs, exit activity
                         dbHandler.EraseLogs(book);
                         dbHandler.RemoveBook(book);
-                        Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT).show();
                         backClick();
+                        Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT).show();
                     })
                     //User chooses not to
                     .setNegativeButton("Nevermind", (dialog, id) -> {return;});
@@ -287,9 +305,10 @@ public class BookDetails extends AppCompatActivity {
         }
         else{
             //if book is not custom, remove it immediately (user can add book again easily) and recreate
+            book.setAdded(false);
             dbHandler.RemoveBook(book);
-            Toast.makeText(getBaseContext(), "Removed", Toast.LENGTH_SHORT).show();
             recreate();
+            Toast.makeText(getBaseContext(), "Removed", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -297,12 +316,34 @@ public class BookDetails extends AppCompatActivity {
     public void backClick() {
         //to exit activity
         //is book is is from cus or edit and was just added/saved, go to library and clear queue
+
         if ((book.isCustom() && book.isAdded() && isFromCus) || wasChanged) {
+            //set waschanged to false to
+            wasChanged = false;
+            book = null;
+
+            //intent
             Intent intent = new Intent(BookDetails.this, LibraryActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         } else {
-            finish();
+            book = null;
+
+            //if activity is last one in stack, go to library
+            ActivityManager mngr = (ActivityManager) getSystemService( ACTIVITY_SERVICE );
+
+            List<ActivityManager.RunningTaskInfo> taskList = mngr.getRunningTasks(10);
+
+            if(taskList.get(0).numActivities == 1 &&
+                    taskList.get(0).topActivity.getClassName().equals(this.getClass().getName())) {
+                Intent intent = new Intent(BookDetails.this, LibraryActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+            else {
+
+                finish();
+            }
         }
     }
 

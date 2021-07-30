@@ -62,6 +62,10 @@ public class CustomiseBook extends AppCompatActivity {
         coverImg = findViewById(R.id.coverCus);
         tag = findViewById(R.id.cusTag);
 
+        if(customBlurb.getText().toString().length() == 0){
+            thumbnailBM = null;
+        }
+
         //check if intent has title, set if have
         Intent receivedIntent = getIntent();
         if(receivedIntent.getSerializableExtra("Title") != null) {
@@ -123,24 +127,24 @@ public class CustomiseBook extends AppCompatActivity {
             //no errors -> submit
             if(thumbnailBM == null){
                 cusCoverBtn.setError("Please set book cover");
-                Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
             else if(customTitle.getText().toString().length() == 0){
                 customTitle.setError("Please enter a Title");
-                Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
             else if(customBlurb.getText().toString().length() == 0){
                 customBlurb.setError("Please enter a Synopsis");
-                Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
             else if(!(AuthorValidation() && PubYearValidation() && ISBNValidation())){
-                Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Toast.makeText(getBaseContext(), "Valid", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Valid", Toast.LENGTH_SHORT).show();
             ValidatedSubmission();
         });
     }
@@ -199,7 +203,8 @@ public class CustomiseBook extends AppCompatActivity {
                                 return;
                             }
                         }
-
+                        //remove error
+                        cusCoverBtn.setError(null);
                     }
                 }
             });

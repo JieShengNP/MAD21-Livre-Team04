@@ -82,7 +82,7 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
                     .into(navImage);
         }
         if (user.getDisplayName() != null){
-        navUsername.setText(user.getDisplayName());
+            navUsername.setText(user.getDisplayName());
         } else {
             navUsername.setText("");
         }

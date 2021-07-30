@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Book implements Serializable {
-    private int ID;
-    private String isbn;
-    private String name;
-    private String author;
-    private String blurb;
-    private String year;
-    private int readSeconds;
-    private String thumbnail;
-    private boolean isCustom;
-    private boolean isArchived;
-    private boolean isAdded;
+    public int ID;
+    public String isbn;
+    public String name;
+    public String author;
+    public String blurb;
+    public String year;
+    public int readSeconds;
+    public String thumbnail;
+    public boolean isCustom;
+    public boolean isArchived;
+    public boolean isAdded;
 
     public boolean isArchived() {
         return isArchived;
@@ -26,6 +26,16 @@ public class Book implements Serializable {
 
     public void setArchived(boolean archived) {
         isArchived = archived;
+    }
+
+    public ArrayList<Book> bookArrayList;
+
+    public ArrayList<Book> getBookArrayList() {
+        return bookArrayList;
+    }
+
+    public void setBookArrayList(ArrayList<Book> bookArrayList) {
+        this.bookArrayList = bookArrayList;
     }
 
     public int getID() {
@@ -114,10 +124,10 @@ public class Book implements Serializable {
                 ", blurb='" + blurb + '\'' +
                 ", year='" + year + '\'' +
                 ", readSeconds=" + readSeconds +
-                ", thumbnail='" + thumbnail + '\'' +
                 ", isCustom=" + isCustom +
                 ", isArchived=" + isArchived +
                 ", isAdded=" + isAdded +
+                ", thumbnail='" + thumbnail + '\'' +
                 '}';
     }
 }
