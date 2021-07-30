@@ -28,16 +28,6 @@ public class Book implements Serializable {
         isArchived = archived;
     }
 
-    public ArrayList<Book> bookArrayList;
-
-    public ArrayList<Book> getBookArrayList() {
-        return bookArrayList;
-    }
-
-    public void setBookArrayList(ArrayList<Book> bookArrayList) {
-        this.bookArrayList = bookArrayList;
-    }
-
     public int getID() {
         return ID;
     }
@@ -128,7 +118,6 @@ public class Book implements Serializable {
                 ", isCustom=" + isCustom +
                 ", isArchived=" + isArchived +
                 ", isAdded=" + isAdded +
-                ", bookArrayList=" + bookArrayList +
                 '}';
     }
 }
