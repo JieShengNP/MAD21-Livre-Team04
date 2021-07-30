@@ -82,7 +82,6 @@ public class BookDetails extends AppCompatActivity {
                 finish();
             }
 
-
         //set waschanged (if book came from edit has has been changed), to false if null
         if(wasChanged == null){
             wasChanged = false;
@@ -273,8 +272,8 @@ public class BookDetails extends AppCompatActivity {
         book.setAdded(true);
         book.setArchived(false);
         dbHandler.AddBook(book);
-        Toast.makeText(getBaseContext(), "Added", Toast.LENGTH_SHORT).show();
         recreate();
+        Toast.makeText(getBaseContext(), "Added" , Toast.LENGTH_SHORT).show();
     }
 
     public void remove(DBHandler dbHandler){
@@ -291,8 +290,8 @@ public class BookDetails extends AppCompatActivity {
                         //User chooses to delete custom book and erase logs, exit activity
                         dbHandler.EraseLogs(book);
                         dbHandler.RemoveBook(book);
-                        Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT).show();
                         backClick();
+                        Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT).show();
                     })
                     //User chooses not to
                     .setNegativeButton("Nevermind", (dialog, id) -> {return;});
@@ -306,9 +305,10 @@ public class BookDetails extends AppCompatActivity {
         }
         else{
             //if book is not custom, remove it immediately (user can add book again easily) and recreate
+            book.setAdded(false);
             dbHandler.RemoveBook(book);
-            Toast.makeText(getBaseContext(), "Removed", Toast.LENGTH_SHORT).show();
             recreate();
+            Toast.makeText(getBaseContext(), "Removed", Toast.LENGTH_SHORT).show();
         }
 
     }
