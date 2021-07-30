@@ -55,13 +55,12 @@
         android:id="@+id/libraryArchiveImage"
         android:layout_width="122dp"
         android:layout_height="128dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/libraryRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/libraryFooterLayout"
-        app:srcCompat="@drawable/library_archive" />
+        app:srcCompat="@drawable/archive_library" />
 
     <ImageView
         android:id="@+id/libraryCatalogueImage"
