@@ -92,10 +92,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Scouring complete. Not here?
-"
-        android:textSize="15sp"
+        android:text="Scouringcomplete.\nNot here?"
+        android:textSize="25sp"
         android:textStyle="bold"
+        android:textColor="@color/lightbrown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,14 +105,13 @@
         android:id="@+id/addCusBook"
         android:layout_width="175dp"
         android:layout_height="43dp"
-        android:layout_marginTop="28dp"
         android:layout_marginBottom="24dp"
         android:backgroundTint="@color/brown"
         android:drawableRight="@drawable/icon_pen"
         android:minHeight="48dp"
+        android:onClick="detAddCus"
         android:padding="-3dp"
         android:text="Add Custom Book"
-        android:onClick="detAddCus"
         android:textAllCaps="false"
         android:textColor="@color/cream"
         android:textSize="15sp"
@@ -120,7 +119,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/authorDate" />
+        app:layout_constraintTop_toBottomOf="@+id/authorDate"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/customTxt"
