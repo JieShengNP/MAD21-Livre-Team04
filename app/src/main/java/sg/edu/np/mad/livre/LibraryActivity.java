@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,9 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
         navEmail = nView.findViewById(R.id.nav_header_email);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user.getPhotoUrl() != null){
-            navImage.setImageURI(user.getPhotoUrl());
+            Picasso.get()
+                    .load(user.getPhotoUrl())
+                    .into(navImage);
         }
         if (user.getDisplayName() != null){
         navUsername.setText(user.getDisplayName());
