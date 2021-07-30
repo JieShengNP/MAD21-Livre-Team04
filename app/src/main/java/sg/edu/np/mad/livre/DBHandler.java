@@ -109,14 +109,42 @@ public class DBHandler extends SQLiteOpenHelper {
         return book;
     }
 
+
     /**
-     * Retriving of Book by its ISBN number.
+     * Retrieving of Book by its ISBN number.
+     * @param id ISBN of the book
+     * @return Book if it exists in the Database.
+     */
+    public Book FindBookByID(String id){
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ID + " = \"" + id +"\"";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        Book book = new Book();
+        if (cursor.moveToFirst()){
+            book.setIsbn(cursor.getString(1));
+            book.setAuthor(cursor.getString(2));
+            book.setYear(cursor.getString(3));
+            book.setName(cursor.getString(4));
+            book.setBlurb(cursor.getString(5));
+            book.setThumbnail(cursor.getString(6));
+            book.setReadSeconds(cursor.getInt(7));
+            book.setCustom(cursor.getInt(8) == 1);
+            book.setAdded(cursor.getInt(9) == 1);
+            book.setArchived(cursor.getInt(10) == 1);
+        } else {
+            book = null;
+        }
+        return book;
+    }
+
+    /**
+     * retrieving of Book by its ISBN number.
      * @param book to find id of book
      * @return id if it exists in the Database.
      *          "not found" if it does not.
      */
     public String GetBookId(Book book){
-        String id = "not foundnot found";
+        String id = "not found";
         String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\"";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);

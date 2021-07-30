@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -45,6 +46,7 @@ public class EditBook extends AppCompatActivity {
     EditText editTitle, editAuthor, editPublishYear, editISBN, editBlurb;
     public static String thumbnailBM;
     public static Book book;
+    public static String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +65,22 @@ public class EditBook extends AppCompatActivity {
         coverImg = findViewById(R.id.coverEdit);
         tag = findViewById(R.id.editTag);
 
+
+
         //check if intent has title, set if have
         Intent receivedIntent = getIntent();
         try {
-            book = (Book) receivedIntent.getSerializableExtra("BookObject");
+            book = (Book) receivedIntent.getSerializableExtra("BookObjectForEdit");
+
+            //find id of book, finish if error
+            String idnew = dbHandler.GetBookId(book);
+            if(idnew.equals("not found")) {
+                Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            id = idnew;
+
             editTitle.setText(book.getName());
             editAuthor.setText(book.getAuthor());
             editPublishYear.setText(book.getYear());
@@ -89,6 +103,8 @@ public class EditBook extends AppCompatActivity {
             Toast.makeText(EditBook.this, "Error", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+
 
         //set onclick for tag
         tag.setOnClickListener(v -> back());
@@ -144,7 +160,7 @@ public class EditBook extends AppCompatActivity {
             //check for missing values, toast and error if there are
             //no errors -> submit
             if(!isChanged()){
-                Toast.makeText(getBaseContext(), "No changes to save", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "No changes to save", Toast.LENGTH_SHORT).show();
                 return;
             }
             else if(thumbnailBM == null){
@@ -153,21 +169,40 @@ public class EditBook extends AppCompatActivity {
             }
             else if(editTitle.getText().toString().length() == 0){
                 editTitle.setError("Please enter a Title");
-                Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
             else if(editBlurb.getText().toString().length() == 0){
                 editBlurb.setError("Please enter a Synopsis");
-                Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
             else if(!(AuthorValidation() && PubYearValidation() && ISBNValidation())){
-                Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Toast.makeText(getBaseContext(), "Valid", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Valid", Toast.LENGTH_SHORT).show();
             ValidatedEdit();
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //reset original book from database
+        if(id !=null && book !=null){
+            //find id of book, finish if error
+            String idnew = dbHandler.GetBookId(book);
+            if(idnew.equals("not found")) {
+                Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            id = idnew;
+
+            //create copy of original
+            book = dbHandler.FindBookByID(idnew);
+        }
     }
 
     @Override
@@ -275,7 +310,23 @@ public class EditBook extends AppCompatActivity {
         AlertDialog.Builder bui = new AlertDialog.Builder(EditBook.this);
         bui.setMessage("Delete unsaved changes?")
                 .setCancelable(true)
-                .setPositiveButton("Sure", (dialog, id) -> finish())
+                .setPositiveButton("Sure", (dialog, id) -> {
+
+                    //find id of book, finish if error
+                    String idnew = dbHandler.GetBookId(book);
+                    if(idnew.equals("not found")) {
+                        Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+                    //get book from database
+                    book = dbHandler.FindBookByID(idnew);
+
+                    Intent bookDetailsIntent = new Intent(getApplicationContext(), BookDetails.class);
+                    bookDetailsIntent.putExtra("BookObject", book);
+                    bookDetailsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(bookDetailsIntent);
+                })
                 //User chooses not to
                 .setNegativeButton("No", (dialog, id) -> {return;});
 
@@ -290,25 +341,18 @@ public class EditBook extends AppCompatActivity {
         //for valid edits
         //create book object and set values
 
-        //find id of book, finish if error
-        String id = dbHandler.GetBookId(book);
-        if(id.equals("not found")){
-            Toast.makeText(getBaseContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        Book newBook = new Book();
+
+        Book newBook = book;
         newBook.setName(editTitle.getText().toString());
         newBook.setAuthor(editAuthor.getText().toString());
         newBook.setYear(editPublishYear.getText().toString());
         newBook.setIsbn(editISBN.getText().toString());
         newBook.setBlurb(editBlurb.getText().toString());
-        newBook.setAdded(false);
         newBook.setCustom(true);
-        newBook.setArchived(false);
         newBook.setThumbnail(thumbnailBM);
 
         //create intents and set putextras, start intent -> go to bookdetails
-        Intent intent = new Intent(getBaseContext(), BookDetails.class);
+        Intent intent = new Intent(getApplicationContext(), BookDetails.class);
         intent.putExtra("BookObject", newBook);
         intent.putExtra("prev", "Edit");
         intent.putExtra("EditId", id);
@@ -426,7 +470,20 @@ public class EditBook extends AppCompatActivity {
             unsavedChangesWarning();
         }
         else{
-            finish();
+            //find id of book, finish if error
+            String idnew = dbHandler.GetBookId(book);
+            if(idnew.equals("not found")) {
+                Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            //get book from database
+            book = dbHandler.FindBookByID(idnew);
+
+            Intent bookDetailsIntent = new Intent(getApplicationContext(), BookDetails.class);
+            bookDetailsIntent.putExtra("BookObject", book);
+            bookDetailsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(bookDetailsIntent);
         }
     }
 

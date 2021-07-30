@@ -124,11 +124,11 @@ public class Book implements Serializable {
                 ", blurb='" + blurb + '\'' +
                 ", year='" + year + '\'' +
                 ", readSeconds=" + readSeconds +
-                ", thumbnail='" + thumbnail + '\'' +
                 ", isCustom=" + isCustom +
                 ", isArchived=" + isArchived +
                 ", isAdded=" + isAdded +
                 ", bookArrayList=" + bookArrayList +
+                ", thumbnail='" + thumbnail + '\'' +
                 '}';
     }
 }
