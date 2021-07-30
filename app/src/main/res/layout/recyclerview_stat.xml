@@ -13,35 +13,37 @@
             android:id="@+id/statFrame"
             android:layout_width="323dp"
             android:layout_height="27dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="44dp"
+            app:layout_constraintBottom_toTopOf="@+id/statName"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.202"
             app:srcCompat="@drawable/frame2" />
 
         <TextView
             android:id="@+id/statName"
-            android:layout_width="158dp"
-            android:layout_height="75dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="51dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="56dp"
             android:gravity="center"
             android:text="TextView"
             android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/statFrame" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/statValue"
+            app:layout_constraintHorizontal_bias="0.488"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/statValue"
-            android:layout_width="158dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="51dp"
-            android:layout_marginEnd="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="56dp"
             android:gravity="center"
             android:text="TextView"
             android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/statFrame" />
+            app:layout_constraintStart_toEndOf="@+id/statName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
