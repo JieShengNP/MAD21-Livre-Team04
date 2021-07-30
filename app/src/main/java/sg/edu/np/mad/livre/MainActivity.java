@@ -53,10 +53,9 @@ public class MainActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this);
         isbn = getIntent().getStringExtra("Isbn");
 
-        //initial toast
-        Toast.makeText(getBaseContext(), "Press the timer to begin",Toast.LENGTH_SHORT).show();
+
         //start recurring toast
-        handler.postDelayed(toastRunnable, 10000);
+        handler.postDelayed(toastRunnable,0);
 
         timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
@@ -139,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if(!timerRunning)
             {
+                handler.removeCallbacks(toastRunnable);
                 Toast.makeText(getBaseContext(), "Press the timer to begin",Toast.LENGTH_SHORT).show();
             }
             handler.postDelayed(this, 10000);
