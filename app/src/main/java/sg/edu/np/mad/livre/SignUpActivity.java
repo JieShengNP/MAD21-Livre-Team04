@@ -29,6 +29,9 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.shobhitpuri.custombuttons.GoogleSignInButton;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -42,6 +45,7 @@ public class SignUpActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "SignUp";
     private static final int RC_SIGN_IN = 9001;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,9 +136,8 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Notify user of success and move to Sign In page
                             Toast.makeText(SignUpActivity.this, "Signed up successfully! Please sign in!", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                            String userId = mAuth.getCurrentUser().getUid();
+                            CreateDataInFirebase(userId, email, "SignUp");
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -194,10 +197,11 @@ public class SignUpActivity extends AppCompatActivity {
                                 editor.putString("FirebaseUser", userId);
                                 editor.putString("FirebaseEmail", userEmail);
                                 editor.apply();
-                                progressDialog.dismiss();
-                                Intent intent = new Intent(SignUpActivity.this, LibraryActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                                if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                                    CreateDataInFirebase(userId, userEmail, "Google");
+                                } else {
+                                    LoadDataFromFirebase(userId, userEmail);
+                                }
                             }
                         } else {
                             // If sign in fails, display a message to the user.
@@ -207,4 +211,52 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
+    public void CreateDataInFirebase(String userID, String userEmail, String mode) {
+        User user = new User(userID, userEmail);
+        mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users/" + userID);
+        mDatabase.getRef().setValue(user);
+        progressDialog.dismiss();
+        if (mode.equals("Google")) {
+            Intent intent = new Intent(SignUpActivity.this, LibraryActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        else if (mode.equals("SignUp")){
+            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    }
+
+    public void LoadDataFromFirebase(String userID, String userEmail) {
+        User user = new User(userID, userEmail);
+        mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
+        mDatabase.child("users").child(userID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                } else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    User user = task.getResult().getValue(User.class);
+                    if (user != null) {
+                        DBHandler dbHandler = new DBHandler(SignUpActivity.this);
+                        dbHandler.DeleteDatabase(SignUpActivity.this);
+                        if (user.bookList != null) {
+                            dbHandler.AddFirebaseBookToDB(user.bookList);
+                        }
+                        if (user.records != null) {
+                            dbHandler.AddFirebaseRecordToDB(user.records);
+                        }
+                        progressDialog.dismiss();
+                        Intent intent = new Intent(SignUpActivity.this, LibraryActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SignUpActivity.this, "An error has occurred.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
 }

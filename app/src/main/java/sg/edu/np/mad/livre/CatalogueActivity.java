@@ -214,10 +214,10 @@ public class CatalogueActivity extends AppCompatActivity {
 
                                 //create new instance of Book object
                                 Book b = new Book();
-                                b.name = titl;
-                                b.author = auth;
-                                b.year = firpub;
-                                b.isbn = isbn;
+                                b.setName(titl);
+                                b.setAuthor(auth);
+                                b.setYear(firpub);
+                                b.setIsbn(isbn);
                                 b.setCustom(false);
 
                                 //add Book object to booklist and first seed to seedlist
@@ -285,7 +285,7 @@ public class CatalogueActivity extends AppCompatActivity {
         //get thumbnail for every book in booklist
         for (int b = 0; b < bookList.size(); b++)  {
             //create request utl
-            String requrl = "https://openlibrary.org/api/books?bibkeys=ISBN:" + bookList.get(b).isbn + "&format=json";
+            String requrl = "https://openlibrary.org/api/books?bibkeys=ISBN:" + bookList.get(b).getIsbn() + "&format=json";
             //Create JsonObjectRequest object
             JsonObjectRequest reqObj = new JsonObjectRequest
                     (Request.Method.GET, requrl, null, response -> {
@@ -424,8 +424,8 @@ public class CatalogueActivity extends AppCompatActivity {
             Book book = new Book();
             try {
                 book = bookList.get(b);
-                book.blurb = descList.get(b);
-                book.thumbnail = thumbList.get(b);
+                book.setBlurb(descList.get(b));
+                book.setThumbnail(thumbList.get(b));
             }
             catch (Exception e){
                 Toast.makeText(getBaseContext(), "Error getting some content", Toast.LENGTH_SHORT).show();
