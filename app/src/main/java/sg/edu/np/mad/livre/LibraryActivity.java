@@ -186,9 +186,8 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         if (!task.isSuccessful()) {
-                            Log.e("firebase", "Error getting data", task.getException());
+                            Toast.makeText(LibraryActivity.this, "An error occurred while retrieving data.", Toast.LENGTH_SHORT).show();
                         } else {
-                            Log.d("firebase", String.valueOf(task.getResult().getValue()));
                             User user = task.getResult().getValue(User.class);
                             if (user != null) {
                                 dbHandler.DeleteDatabase(LibraryActivity.this);

@@ -19,6 +19,9 @@
 
         <item name="android:textSize">20sp</item>
 
+        <!--remove animations-->
+        <item name="android:windowAnimationStyle">@null</item>
+
     </style>
 
 </resources>

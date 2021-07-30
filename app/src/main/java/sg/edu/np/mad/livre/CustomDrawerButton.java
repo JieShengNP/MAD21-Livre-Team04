@@ -25,12 +25,10 @@ public class CustomDrawerButton extends androidx.appcompat.widget.AppCompatButto
     public void changeState(){
         if ( mDrawerLayout.isDrawerOpen(GravityCompat.START)){
             mDrawerLayout.closeDrawer(GravityCompat.START);
-            Log.v("State", "TRUE");
         }else{
             setVisibility(GONE);
             mDrawerLayout.setVisibility(VISIBLE);
             mDrawerLayout.openDrawer(GravityCompat.START);
-            Log.v("State", "FALSE");
         }
     }
 

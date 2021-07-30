@@ -140,7 +140,6 @@ public class SignInActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
                             Toast.makeText(SignInActivity.this, "Successfully signed in.", Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
@@ -155,7 +154,6 @@ public class SignInActivity extends AppCompatActivity {
                             }
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 Toast.makeText(SignInActivity.this, "Incorrect Email or Password.", Toast.LENGTH_SHORT).show();
                             } else {
@@ -180,13 +178,10 @@ public class SignInActivity extends AppCompatActivity {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 progressDialog.dismiss();
                 Toast.makeText(SignInActivity.this, "Google Sign In Failed.", Toast.LENGTH_SHORT).show();
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
             }
         }
     }
@@ -199,7 +194,6 @@ public class SignInActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
                                 String userId = user.getUid();
@@ -215,8 +209,8 @@ public class SignInActivity extends AppCompatActivity {
                                 }
                             }
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            progressDialog.dismiss();
+                            Toast.makeText(SignInActivity.this, "An error occurred, please try again.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -229,9 +223,8 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
+                    Toast.makeText(SignInActivity.this, "An error occurred while retrieving data.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
                     User user = task.getResult().getValue(User.class);
                     if (user != null) {
                         DBHandler dbHandler = new DBHandler(SignInActivity.this);
