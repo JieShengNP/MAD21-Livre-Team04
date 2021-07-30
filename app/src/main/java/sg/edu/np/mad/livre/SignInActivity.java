@@ -208,7 +208,11 @@ public class SignInActivity extends AppCompatActivity {
                                 editor.putString("FirebaseUser", userId);
                                 editor.putString("FirebaseEmail", userEmail);
                                 editor.apply();
-                                LoadDataFromFirebase(userId, userEmail);
+                                if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                                    CreateDataInFirebase(userId, userEmail);
+                                } else {
+                                    LoadDataFromFirebase(userId, userEmail);
+                                }
                             }
                         } else {
                             // If sign in fails, display a message to the user.
@@ -247,6 +251,16 @@ public class SignInActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void CreateDataInFirebase(String userID, String userEmail) {
+        User user = new User(userID, userEmail);
+        mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users/" + userID);
+        mDatabase.getRef().setValue(user);
+        progressDialog.dismiss();
+        Intent intent = new Intent(SignInActivity.this, LibraryActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
 }
