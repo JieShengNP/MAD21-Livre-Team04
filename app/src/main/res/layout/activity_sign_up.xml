@@ -41,6 +41,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="Email: "
+        android:textColor="@color/sage"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpTextView"
@@ -53,6 +54,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="Password: "
+        android:textColor="@color/sage"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signupEmailText"
@@ -60,27 +62,31 @@
 
     <EditText
         android:id="@+id/signupEmailEditText"
-        android:layout_width="256dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/sage"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:text=""
+        android:textColor="@color/sage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/signupEmailText"
         app:layout_constraintTop_toBottomOf="@+id/signUpTextView" />
 
     <EditText
         android:id="@+id/signupPasswordEditText"
-        android:layout_width="256dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/sage"
         android:ems="10"
         android:inputType="textPassword"
         android:text=""
+        android:textColor="@color/sage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/signupEmailText"
         app:layout_constraintTop_toBottomOf="@+id/signupEmailEditText" />
@@ -91,6 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Existing User? Tap here."
+        android:textColor="@color/sage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signupGoogle" />
@@ -100,12 +107,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign Up"
+        android:textColor="@color/sage"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <com.google.android.gms.common.SignInButton
+    <com.shobhitpuri.custombuttons.GoogleSignInButton
         android:id="@+id/signupGoogle"
         android:layout_width="175dp"
         android:layout_height="43dp"

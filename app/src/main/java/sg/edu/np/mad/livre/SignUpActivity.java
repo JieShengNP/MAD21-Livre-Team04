@@ -19,7 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.shobhitpuri.custombuttons.GoogleSignInButton;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -38,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     Button signupBtn;
     TextView haveAccount;
     ProgressDialog progressDialog;
-    SignInButton googleBtn;
+    GoogleSignInButton googleBtn;
     GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "SignUp";
     private static final int RC_SIGN_IN = 9001;
@@ -158,6 +158,10 @@ public class SignUpActivity extends AppCompatActivity {
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+            progressDialog.setTitle("Signing In");
+            progressDialog.setMessage("Retriving Data... Please hold on.");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -165,6 +169,8 @@ public class SignUpActivity extends AppCompatActivity {
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
+                progressDialog.dismiss();
+                Toast.makeText(SignUpActivity.this, "Google Sign In Failed.", Toast.LENGTH_SHORT).show();
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
             }
@@ -188,6 +194,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 editor.putString("FirebaseUser", userId);
                                 editor.putString("FirebaseEmail", userEmail);
                                 editor.apply();
+                                progressDialog.dismiss();
                                 Intent intent = new Intent(SignUpActivity.this, LibraryActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
