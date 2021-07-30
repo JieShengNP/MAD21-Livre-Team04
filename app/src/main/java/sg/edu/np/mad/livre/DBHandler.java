@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
 
@@ -31,11 +32,11 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String BOOK_COLUMN_ADDED = "ADDED";
     public static final String BOOK_COLUMN_ARCHIVED = "ARCHIVED";
     public static final String TABLE_LOG = "Log";
+    public static final String LOG_COLUMN_ID = "_id";
+    public static final String LOG_COLUMN_NAME = "Name";
     public static final String LOG_COLUMN_ISBN = "Isbn";
     public static final String LOG_COLUMN_DATE = "Date";
     public static final String LOG_COLUMN_SECOND = "Time";
-    public static final String LOG_COLUMN_ID = "_id";
-    public static final String LOG_COLUMN_NAME = "Name";
 
     public DBHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -531,5 +532,42 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return "None";
+    }
+
+    public void AddFirebaseBookToDB(List<Book> bookList){
+        SQLiteDatabase db = this.getWritableDatabase();
+        for(Book book : bookList) {
+            ContentValues values = new ContentValues();
+            values.put(BOOK_COLUMN_ID, book.getID());
+            values.put(BOOK_COLUMN_ISBN, book.getIsbn());
+            values.put(BOOK_COLUMN_AUTHOR, book.getAuthor());
+            values.put(BOOK_COLUMN_TITLE, book.getName());
+            values.put(BOOK_COLUMN_YEAR, book.getYear());
+            values.put(BOOK_COLUMN_BLURB, book.getBlurb());
+            values.put(BOOK_COLUMN_THUMBNAIL, book.getThumbnail());
+            values.put(BOOK_COLUMN_READING_TIME, book.getReadSeconds());
+            values.put(BOOK_COLUMN_CUSTOM, book.isCustom() ? 1 : 0);
+            values.put(BOOK_COLUMN_ARCHIVED, book.isArchived() ? 1 : 0);
+            values.put(BOOK_COLUMN_ADDED, book.isAdded() ? 1 : 0);
+
+            db.insert(TABLE_BOOK, null, values);
+        }
+        db.close();
+    }
+
+    public void AddFirebaseRecordToDB(List<Records> recordsList){
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SQLiteDatabase db = this.getWritableDatabase();
+        for (Records record : recordsList) {
+            ContentValues values = new ContentValues();
+            values.put(LOG_COLUMN_ID, record.get_id());
+            values.put(LOG_COLUMN_NAME, record.getName());
+            values.put(LOG_COLUMN_ISBN, record.getIsbn());
+            values.put(LOG_COLUMN_DATE, formatter.format(Calendar.getInstance().getTime()));
+            values.put(LOG_COLUMN_SECOND, record.getTimeReadSec());
+            db.insert(TABLE_LOG, null, values);
+        }
+        db.close();
     }
 }
