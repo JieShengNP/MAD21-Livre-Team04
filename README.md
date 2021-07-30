@@ -39,25 +39,25 @@ All tags look like the one above, with different text representing what it does.
 <img src="https://user-images.githubusercontent.com/72980567/127614329-7c791051-02b0-481a-a7b1-5a6376b2c898.png" width="600" >
 (Library can be replace with archive in most circumstances. For example, clicking catalogue while in achive then clicking back would bring one back to archive. However, this does not apply to scenarios B, C, and D in **12**. They will redirect to Library no matter what.)
 
-
+<br/>
 **1**
 <br/>
 User clicks the catalogue button in the library and redirects to catalogue. <br/>
 <img src="https://user-images.githubusercontent.com/72980567/127615065-8ada1373-efd0-4777-9570-b1b4007d36f0.png" width="200" >
-
+<br/>
 **2**
 <br/>
 User clicks library tag/button or back button from Catalogue, bringing them to Library
-
+<br/>
 **4**
 <br/>
 User chooses to Customise a book while in Catalogue (their search ended up with no queries, the search did not have the book they wanted, or an error occured with searching) <br/>
 <img src="https://user-images.githubusercontent.com/72980567/127615722-950e3d84-55bb-4893-8882-d1976cd42fad.png" width="200" >
-
+<br/>
 **3,5**
 <br/>
 User clicks back (button or tag) when in Customise (and confirmed to delete any unsaved changes) or in Book Details respectively, and get brought back to Catalogue.
-
+<br/>
 **6,8**
 <br/>
 User selects a book in Catalogue or clicks done in Customise (and passed validation) respectively and is brought to book details where the details of their book is displayed (no updated to db at this point). Button to add book is shown while the rest are hidden.
@@ -80,13 +80,13 @@ Clicking move to archive would update the database and stay on the same activity
 **7**
 <br/>
 User is viewing a custom made book that they have not added yet and decided to go back, Bringing them to the customise page with the details still input, ideal for further edits.
-
+<br/>
 **10**
 <br/>
 User edits a Custom book and clicks done (and passed validation) and is brought to book details where the details of their edited book is displayed (db has not been updated).
 Book details would show buttons meant for books that are pending a confirmation to save edits.
 <img src="https://user-images.githubusercontent.com/72980567/127622511-9fea1028-84ea-4c7d-9afd-3b1deee1d2cf.png" width="200" >
-
+<br/>
 **9**
 <br/>
 *SCENARIO A*<br/>
@@ -98,7 +98,7 @@ Saving changes would display update bookdetails and DB, and the activity will lo
 <br/>
 *SCENARIO B*<br/>
 User, while on edit page decided to go back and confirms to delete unsaved changes (if any), user would be brought back to bookdetails with book unchanged.
-
+<br/>
 **11**
 <br/>
 *SCENARIO A*<br/>
@@ -112,7 +112,7 @@ User deletes custom book or saves changes to custom book and decides to go back.
 
 *SCENARIO D*<br/>
 User ends up in Bookdetails with no other activities below the stack, going back would redirect the user to Library.
-
+<br/>
 **12**
 <br/>
 User clicks on book in Library, catalogue button in the library and redirects to Book details showing information about to book.
