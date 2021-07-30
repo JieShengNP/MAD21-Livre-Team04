@@ -55,10 +55,11 @@
         android:id="@+id/archiveArchiveImage"
         android:layout_width="122dp"
         android:layout_height="128dp"
-        android:layout_marginStart="64dp"
         android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/archiveRecyclerView"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="@+id/archiveRecyclerView"
         app:layout_constraintTop_toTopOf="@+id/archiveFooterLayout"
         app:srcCompat="@drawable/library_archive2" />
 
@@ -66,10 +67,11 @@
         android:id="@+id/archiveCatalogueImage"
         android:layout_width="122dp"
         android:layout_height="87dp"
-        android:layout_marginEnd="64dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="@+id/archiveFooterLayout"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/archiveRecyclerView"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="@+id/archiveRecyclerView"
         app:layout_constraintTop_toTopOf="@+id/archiveFooterLayout"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/library_catalogue" />
