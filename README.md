@@ -71,6 +71,7 @@ User clicks back (button or tag) when in Customise (and confirmed to delete any 
 User selects a book in Catalogue or clicks done in Customise (and passed validation) respectively and is brought to book details where the details of their book is displayed (no updated to db at this point). Button to add book is shown while the rest are hidden.
 <img src="https://user-images.githubusercontent.com/72980567/127618246-092b7ec7-8a47-4f07-bec7-fdeee4bd51a8.png" width="200" >
 <img src="https://user-images.githubusercontent.com/72980567/127620153-3cf548b8-8ad2-4812-8dd4-a509090a916b.png" width="200" >
+<br/>
 Results that are custom books appear as this at the top of of the recyclerview, with an overlay saying "Custom"
 
 <img src="https://user-images.githubusercontent.com/72980567/127618710-057aa75f-f16a-413a-8ca2-f5ec4c01fd7b.png" width="200" >
@@ -81,6 +82,7 @@ If user decides to add the book, DB is updated, book details will look like this
 <br/>
 
 it will look like this for added custom books:
+<br/>
 <img src="https://user-images.githubusercontent.com/72980567/127620509-4a4e04b4-fa9f-4b61-a7fb-6824751385f2.png" width="200" >
 <br/>
 
@@ -89,10 +91,12 @@ The wrench at the top right is to edit the custom book.
 Clicking move to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11**.
 
 <br/>
+
 **7**
 <br/>
 User is viewing a custom made book that they have not added yet and decided to go back, Bringing them to the customise page with the details still input, ideal for further edits.
 <br/>
+
 **10**
 <br/>
 User edits a Custom book and clicks done (and passed validation) and is brought to book details where the details of their edited book is displayed (db has not been updated).
@@ -112,6 +116,7 @@ Saving changes would display update bookdetails and DB, and the activity will lo
 *SCENARIO B*<br/>
 User, while on edit page decided to go back and confirms to delete unsaved changes (if any), user would be brought back to bookdetails with book unchanged.
 <br/>
+
 **11**
 <br/>
 *SCENARIO A*<br/>
@@ -126,6 +131,7 @@ User deletes custom book or saves changes to custom book and decides to go back.
 *SCENARIO D*<br/>
 User ends up in Bookdetails with no other activities below the stack, going back would redirect the user to Library.
 <br/>
+
 **12**
 <br/>
 User clicks on book in Library, catalogue button in the library and redirects to Book details showing information about to book.
