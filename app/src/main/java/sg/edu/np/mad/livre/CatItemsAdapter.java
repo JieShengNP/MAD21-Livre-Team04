@@ -58,9 +58,9 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
     public void onBindViewHolder(@NonNull CatViewHolder holder, int position) {
         //get position and set text to views
         Book b = data.get(position);
-        holder.cattitle.setText(b.name);
-        holder.catdesc.setText(b.blurb);
-        String catauthordate = b.author + " · " + b.year;
+        holder.cattitle.setText(b.getName());
+        holder.catdesc.setText(b.getBlurb());
+        String catauthordate = b.getAuthor() + " · " + b.getYear();
         holder.catauthordate.setText(catauthordate);
 
 

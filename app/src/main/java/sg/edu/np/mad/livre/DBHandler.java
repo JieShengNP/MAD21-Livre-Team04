@@ -294,7 +294,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(BOOK_COLUMN_READING_TIME, book.getReadSeconds());
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.update(TABLE_BOOK, values, BOOK_COLUMN_ISBN + " = ?",new String[]{book.isbn});
+        db.update(TABLE_BOOK, values, BOOK_COLUMN_ISBN + " = ?",new String[]{book.getIsbn()});
         db.close();
     }
 
@@ -410,7 +410,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     public boolean isBookAdded(Book book){
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_ISBN + " = " + book.isbn + ") and (" + BOOK_COLUMN_CUSTOM + " = " +  (book.isCustom() ? 1 : 0) + ")";
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_ISBN + " = " + book.getIsbn() + ") and (" + BOOK_COLUMN_CUSTOM + " = " +  (book.isCustom() ? 1 : 0) + ")";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.getCount() > 0){
