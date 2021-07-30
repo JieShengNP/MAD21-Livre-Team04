@@ -10,28 +10,19 @@
         android:id="@+id/splashscreenVid"
         android:layout_width="122dp"
         android:layout_height="124dp"
-        android:layout_marginStart="146dp"
-        android:layout_marginTop="300dp"
-        android:layout_marginEnd="143dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/splashTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/splashTitle"
         android:layout_width="141dp"
         android:layout_height="73dp"
-        android:layout_marginStart="135dp"
-        android:layout_marginEnd="135dp"
-        android:layout_marginBottom="288dp"
         android:gravity="center"
         android:text="Livre"
         android:textSize="35sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/splashscreenVid" />
 </androidx.constraintlayout.widget.ConstraintLayout>

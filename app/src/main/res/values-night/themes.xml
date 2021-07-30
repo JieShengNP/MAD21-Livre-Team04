@@ -13,8 +13,9 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/cream</item>
-        <item name="android:fontFamily">@font/stxingka</item>
-        <item name="fontFamily">@font/stxingka</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+        <item name="android:fontFamily">@font/gabriola</item>
+        <item name="fontFamily">@font/gabriola</item>
+        <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
         <item name="android:textSize">20sp</item>
 

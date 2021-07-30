@@ -149,7 +149,6 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
         switch (item.getItemId()) {
             case R.id.nav_popularbook: {
                 Intent intent = new Intent(LibraryActivity.this, PopularBookActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 break;
             }

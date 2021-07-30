@@ -26,6 +26,9 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
@@ -48,6 +51,7 @@ public class EditBook extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_book);
 
+        //find views
         dbHandler = new DBHandler(this);
         submitBtn = findViewById(R.id.editDoneBtn);
         editTitle = findViewById(R.id.editTitle);
@@ -59,6 +63,7 @@ public class EditBook extends AppCompatActivity {
         coverImg = findViewById(R.id.coverEdit);
         tag = findViewById(R.id.editTag);
 
+        //check if intent has title, set if have
         Intent receivedIntent = getIntent();
         try {
             book = (Book) receivedIntent.getSerializableExtra("BookObject");
@@ -85,10 +90,13 @@ public class EditBook extends AppCompatActivity {
             finish();
         }
 
+        //set onclick for tag
         tag.setOnClickListener(v -> back());
 
+        //open app for user to select image onclick
         editCoverBtn.setOnClickListener(v -> launcher.launch("image/*"));
 
+        //text changed listeners, validate when triggered
         editAuthor.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -128,10 +136,13 @@ public class EditBook extends AppCompatActivity {
             }
         });
 
-
+        //when submit button is clicked
         submitBtn.setOnClickListener(v -> {
             //Hide keyboard
             ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(editBlurb.getWindowToken(), 0);
+
+            //check for missing values, toast and error if there are
+            //no errors -> submit
             if(!isChanged()){
                 Toast.makeText(getBaseContext(), "No changes to save", Toast.LENGTH_SHORT).show();
                 return;
@@ -161,26 +172,34 @@ public class EditBook extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //overwrite default onbackpressed
         back();
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         //make changed based on orientation
         setOrientationDifferences();
     }
 
+    //open app for user to select images and get result
     ActivityResultLauncher<String> launcher = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
                 @Override
                 public void onActivityResult(Uri result) {
                     if (result != null) {
+                        //if result is not null
+
+                        //Based on buld version, decode image to bitmap and resize to not crash app with big sizes
+                        //error if process reaches exception
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
                             try {
                                 Bitmap bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getApplicationContext().getContentResolver(), result));
                                 bitmap = Bitmap.createScaledBitmap(bitmap, 102, 160, false);
+
+                                //set resized bitmap
                                 bitSet(bitmap);
 
                             } catch (IOException e) {
@@ -191,10 +210,12 @@ public class EditBook extends AppCompatActivity {
                             }
                         }
                         else {
-                            Uri imageUri = result;
+                            //older version
                             try {
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), imageUri);
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), result);
                                 bitmap = Bitmap.createScaledBitmap(bitmap, 102, 160, false);
+
+                                //set resized bitmap
                                 bitSet(bitmap);
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -210,8 +231,8 @@ public class EditBook extends AppCompatActivity {
 
     public void bitSet(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        //ensure that image can be encoded and decoded in full to prevent future errors
 
+        //try to compress with png, if it fails, use jpg, show error message if both fail
         try{
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         }
@@ -227,10 +248,11 @@ public class EditBook extends AppCompatActivity {
                 return;
             }
         }
+
+        //ensure that image can be encoded and decoded in full to prevent future errors
         try {
             byte[] byteArray = byteArrayOutputStream.toByteArray();
-            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            thumbnailBM = encoded;
+            thumbnailBM = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
             //decode
             byte[] decodedString = Base64.decode(thumbnailBM, Base64.DEFAULT);
@@ -239,6 +261,7 @@ public class EditBook extends AppCompatActivity {
             coverImg.setImageBitmap(decodedByte);
         }
         catch (Exception e){
+            //decode
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Invalid file", Toast.LENGTH_SHORT).show();
             thumbnailBM = "Unavailable";
@@ -252,7 +275,7 @@ public class EditBook extends AppCompatActivity {
         AlertDialog.Builder bui = new AlertDialog.Builder(EditBook.this);
         bui.setMessage("Delete unsaved changes?")
                 .setCancelable(true)
-                .setPositiveButton("Sure", (dialog, id) -> {finish();})
+                .setPositiveButton("Sure", (dialog, id) -> finish())
                 //User chooses not to
                 .setNegativeButton("No", (dialog, id) -> {return;});
 
@@ -264,12 +287,15 @@ public class EditBook extends AppCompatActivity {
     }
 
     public void ValidatedEdit(){
+        //for valid edits
+        //create book object and set values
+
+        //find id of book, finish if error
         String id = dbHandler.GetBookId(book);
         if(id.equals("not found")){
             Toast.makeText(getBaseContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
             finish();
         }
-
         Book newBook = new Book();
         newBook.setName(editTitle.getText().toString());
         newBook.setAuthor(editAuthor.getText().toString());
@@ -280,6 +306,8 @@ public class EditBook extends AppCompatActivity {
         newBook.setCustom(true);
         newBook.setArchived(false);
         newBook.setThumbnail(thumbnailBM);
+
+        //create intents and set putextras, start intent -> go to bookdetails
         Intent intent = new Intent(getBaseContext(), BookDetails.class);
         intent.putExtra("BookObject", newBook);
         intent.putExtra("prev", "Edit");
@@ -288,6 +316,9 @@ public class EditBook extends AppCompatActivity {
     }
 
     public Boolean AuthorValidation(){
+        //author's validation
+
+        //regex that return true for any numbers in string
         Pattern p = Pattern.compile(".*\\d+.*");
 
         if(editAuthor.getText().toString().length() == 0){
@@ -306,6 +337,8 @@ public class EditBook extends AppCompatActivity {
     }
 
     public Boolean PubYearValidation(){
+        //validation for year that works for API 19
+        //create date object out of input
         String newDateStr = "01/"+"01/"+editPublishYear.getText();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -316,6 +349,7 @@ public class EditBook extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //check length of input and validity of date object
         if(editPublishYear.getText().length() > 4 || editPublishYear.getText().length() < 1){
             editPublishYear.setError("Invalid Year!");
         }
@@ -329,6 +363,7 @@ public class EditBook extends AppCompatActivity {
     }
 
     public Boolean ISBNValidation(){
+        //create book object and validate
         Book b = new Book();
         b.setCustom(true);
         b.setIsbn(editISBN.getText().toString());
@@ -378,10 +413,15 @@ public class EditBook extends AppCompatActivity {
             editTxt.getLayoutParams().height = Math.round(85 * Resources.getSystem().getDisplayMetrics().density);
 
         }
+        //ensure changes are applied
         tag.requestLayout();
     }
 
     public void back(){
+
+        //check for any value in any of the strings
+        //alert user if there are
+        //finish if there aren't
         if(isChanged()){
             unsavedChangesWarning();
         }
@@ -391,9 +431,7 @@ public class EditBook extends AppCompatActivity {
     }
 
     public Boolean isChanged(){
-        if(editTitle.getText().toString().equals(book.name) && editAuthor.getText().toString().equals(book.getAuthor()) && editPublishYear.getText().toString().equals(book.getYear()) && editISBN.getText().toString().equals(book.getIsbn()) && editBlurb.getText().toString().equals(book.getBlurb()) && thumbnailBM.equals(book.getThumbnail())){
-            return false;
-        }
-        return true;
+        //return true if anything has been changed, false if no
+        return !editTitle.getText().toString().equals(book.name) || !editAuthor.getText().toString().equals(book.getAuthor()) || !editPublishYear.getText().toString().equals(book.getYear()) || !editISBN.getText().toString().equals(book.getIsbn()) || !editBlurb.getText().toString().equals(book.getBlurb()) || !thumbnailBM.equals(book.getThumbnail());
     }
 }

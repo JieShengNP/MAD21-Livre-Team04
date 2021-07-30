@@ -30,6 +30,7 @@
             android:layout_width="135dp"
             android:layout_height="210dp"
             android:layout_marginTop="8dp"
+            android:contentDescription="Book cover"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.062"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +72,7 @@
             android:layout_height="101dp"
             android:layout_marginTop="8dp"
             android:rotation="270"
+            android:contentDescription="Back button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/tag_back" />
@@ -96,7 +98,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
-            android:text="I have an XML layout file, but the text is more than fits into the screen size. What do I need to do in order to make a I have an XML layout file, but the text is more than fits into the screen size. What do I need to do in order to make a I have an XML layout file, but the text is more than fits into the screen size. What do I need to do in order to make a"
+            android:text="Desciption Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam blandit, leo ac cursus venenatis, est metus rutrum leo, quis convallis arcu arcu sit amet nibh. Mauris pharetra nulla id ante euismod congue nec at justo. Curabitur sed sem tristique mi malesuada gravida vel ut nisl.\n\nSuspendisse mi urna, gravida nec tortor rutrum, lacinia ultrices turpis. Morbi tincidunt pellentesque enim. Fusce non nunc aliquet, gravida erat vitae, gravida sem. Nam sollicitudin nulla a augue pulvinar aliquam."
             android:textColor="@color/brown"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -201,6 +203,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="60dp"
+            android:contentDescription="Edit Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/detTitle"
             app:srcCompat="@drawable/wrench" />
