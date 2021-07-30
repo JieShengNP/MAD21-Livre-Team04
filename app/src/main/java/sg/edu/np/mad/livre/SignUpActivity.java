@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.shobhitpuri.custombuttons.GoogleSignInButton;
@@ -196,7 +197,11 @@ public class SignUpActivity extends AppCompatActivity {
                                 editor.putString("FirebaseUser", userId);
                                 editor.putString("FirebaseEmail", userEmail);
                                 editor.apply();
-                                CreateDataInFirebase(userId, userEmail, "Google");
+                                if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                                    CreateDataInFirebase(userId, userEmail, "Google");
+                                } else {
+                                    LoadDataFromFirebase(userId, userEmail);
+                                }
                             }
                         } else {
                             // If sign in fails, display a message to the user.
@@ -223,4 +228,34 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    public void LoadDataFromFirebase(String userID, String userEmail) {
+        User user = new User(userID, userEmail);
+        mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
+        mDatabase.child("users").child(userID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                } else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    User user = task.getResult().getValue(User.class);
+                    if (user != null) {
+                        DBHandler dbHandler = new DBHandler(SignUpActivity.this);
+                        if (user.bookList != null) {
+                            dbHandler.AddFirebaseBookToDB(user.bookList);
+                        }
+                        if (user.records != null) {
+                            dbHandler.AddFirebaseRecordToDB(user.records);
+                        }
+                        progressDialog.dismiss();
+                        Intent intent = new Intent(SignUpActivity.this, LibraryActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SignUpActivity.this, "An error has occurred.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
 }
