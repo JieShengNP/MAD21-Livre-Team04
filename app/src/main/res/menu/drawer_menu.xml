@@ -13,6 +13,19 @@
     <item android:title="Account">
         <menu>
             <item
+                android:id="@+id/nav_saveCloud"
+                android:icon="@drawable/ic_baseline_cloud_upload_24"
+                android:title="Save to Cloud" />
+            <item
+                android:id="@+id/nav_downloadCloud"
+                android:icon="@drawable/ic_baseline_cloud_download_24"
+                android:title="Download from Cloud" />
+            <!-- Testing code -->
+            <item
+                android:id="@+id/nav_clearDatabase"
+                android:icon="@drawable/icon_pen"
+                android:title="Delete Local Data" />
+            <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_baseline_exit_to_app_24"
                 android:title="Logout" />
