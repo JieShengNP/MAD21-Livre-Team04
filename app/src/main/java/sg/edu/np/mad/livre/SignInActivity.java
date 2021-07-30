@@ -28,7 +28,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.shobhitpuri.custombuttons.GoogleSignInButton;
+
+import java.util.ArrayList;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -42,6 +47,7 @@ public class SignInActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "SignIn";
     private static final int RC_SIGN_IN = 9001;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +83,9 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = emailText.getText().toString();
                 String password = passwordText.getText().toString();
-                if (email.isEmpty()){
+                if (email.isEmpty()) {
                     Toast.makeText(SignInActivity.this, "Please enter an email!", Toast.LENGTH_SHORT).show();
-                } else if (password.isEmpty()){
+                } else if (password.isEmpty()) {
                     Toast.makeText(SignInActivity.this, "Please enter a password!", Toast.LENGTH_SHORT).show();
                 } else {
                     progressDialog.setTitle("Signing In");
@@ -122,7 +128,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        if (currentUser != null) {
         }
     }
 
@@ -144,15 +150,14 @@ public class SignInActivity extends AppCompatActivity {
                                 editor.putString("FirebaseUser", userId);
                                 editor.putString("FirebaseEmail", userEmail);
                                 editor.apply();
-                                Intent intent = new Intent(SignInActivity.this, LibraryActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                                LoadDataFromFirebase(userId, userEmail);
+
                             }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException){
-                                    Toast.makeText(SignInActivity.this, "Incorrect Email or Password.", Toast.LENGTH_SHORT).show();
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                Toast.makeText(SignInActivity.this, "Incorrect Email or Password.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(SignInActivity.this, "Error Signing In.", Toast.LENGTH_SHORT).show();
                             }
@@ -203,10 +208,7 @@ public class SignInActivity extends AppCompatActivity {
                                 editor.putString("FirebaseUser", userId);
                                 editor.putString("FirebaseEmail", userEmail);
                                 editor.apply();
-                                progressDialog.dismiss();
-                                Intent intent = new Intent(SignInActivity.this, LibraryActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                                LoadDataFromFirebase(userId, userEmail);
                             }
                         } else {
                             // If sign in fails, display a message to the user.
@@ -214,6 +216,37 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void LoadDataFromFirebase(String userID, String userEmail) {
+        User user = new User(userID, userEmail);
+        mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
+        mDatabase.child("users").child(userID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                } else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    User user = task.getResult().getValue(User.class);
+                    if (user != null) {
+                        DBHandler dbHandler = new DBHandler(SignInActivity.this);
+                        if (user.bookList != null) {
+                            dbHandler.AddFirebaseBookToDB(user.bookList);
+                        }
+                        if (user.records != null) {
+                            dbHandler.AddFirebaseRecordToDB(user.records);
+                        }
+                        progressDialog.dismiss();
+                        Intent intent = new Intent(SignInActivity.this, LibraryActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SignInActivity.this, "An error has occurred.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
     }
 
 }
