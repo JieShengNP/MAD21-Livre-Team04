@@ -1,5 +1,3 @@
-
-
 # MAD21-Livre-Team04
 
 ## Team Members
@@ -23,6 +21,10 @@ Livre is an app for readers, tracking their reading habits by logging the length
 | Chow Yun Cong | role | placeholder |
 
 ## Other
+
+### App Logo
+![Livre Logo](https://user-images.githubusercontent.com/72980567/127664867-c130a866-27ee-44c5-a5c5-2770f68ce1c0.png)
+
 
 ### Colour Scheme
 
@@ -111,7 +113,7 @@ User edits a Custom book and clicks done (and passed validation) and is brought 
 Book details would show buttons meant for books that are pending a confirmation to save edits.
 <img src="https://user-images.githubusercontent.com/72980567/127622511-9fea1028-84ea-4c7d-9afd-3b1deee1d2cf.png"  width="200">
 
-Saving changes would display update bookdetails and DB, and the activity will look like "it will look like this for added custom books:" under **6, 8**.Clicking moving to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11**. Clicking move to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11** .
+Saving changes would display update bookdetails and DB, and the activity will look like "it will look like this for added custom books:" under **6, 8**.Clicking moving to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11**. Clicking move to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11** scanario C.
 <br/>
 *SCENARIO B*<br/>
 User, while on edit page decided to go back and confirms to delete unsaved changes (if any), user would be brought back to bookdetails with book unchanged.
@@ -135,3 +137,19 @@ User ends up in Bookdetails with no other activities below the stack, going back
 **12**
 <br/>
 User clicks on book in Library, catalogue button in the library and redirects to Book details showing information about to book.
+
+### Credits
+All music tracks used are Royalty Free and are licensed under Creative Commons License.
+All music tracks used belong to Ron Gelinas
+Another Day (Original Mix)
+Beacon of Light Original Mix)
+Easy (Original Mix)
+Endeavour (Original Mix)
+Equinox (Original Mix)
+Evening Out (Original Mix)
+Far Away (Original Mix)
+New Direction (Instrumental) - (Original Mix)
+The Art of Healing (Original Mix)
+Windsurfing (Original Mix)
+SoundCloud : https://soundcloud.com/atmospheric-music-portal
+Youtube: Ron Gelinas Chillout Lounge
