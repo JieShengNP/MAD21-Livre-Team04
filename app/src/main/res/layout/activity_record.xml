@@ -40,10 +40,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recordRecyclerView"
-        android:layout_width="408dp"
-        android:layout_height="358dp"
+        android:layout_width="406dp"
+        android:layout_height="375dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/recordTotalTime"

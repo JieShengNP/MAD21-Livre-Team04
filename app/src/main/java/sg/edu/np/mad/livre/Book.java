@@ -127,7 +127,6 @@ public class Book implements Serializable {
                 ", isCustom=" + isCustom +
                 ", isArchived=" + isArchived +
                 ", isAdded=" + isAdded +
-                ", bookArrayList=" + bookArrayList +
                 ", thumbnail='" + thumbnail + '\'' +
                 '}';
     }

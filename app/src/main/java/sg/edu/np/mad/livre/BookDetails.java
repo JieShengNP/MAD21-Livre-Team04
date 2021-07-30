@@ -152,7 +152,7 @@ public class BookDetails extends AppCompatActivity {
         //if book is not custom but is added
         //or if book is from custom and just got added
         //or is from edit and was just changed
-        if((book.isCustom() && book.isAdded() && isFromCus)|| (book.isCustom() && isFromEdit && wasChanged) || (book.isCustom() && !isFromCus && !isFromEdit) || (!book.isCustom && book.isAdded())){
+        if((book.isCustom() && book.isAdded() && isFromCus)|| (book.isCustom() && isFromEdit && wasChanged) || (book.isCustom() && !isFromCus && !isFromEdit) || (!book.isCustom() && book.isAdded())){
             //show buttons meant for edited book with no edits or creation pending
             toggleArchiveBtn.setVisibility(View.VISIBLE);
             SingleActionBtn.setVisibility(View.GONE);

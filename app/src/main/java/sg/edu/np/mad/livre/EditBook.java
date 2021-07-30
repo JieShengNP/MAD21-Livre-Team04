@@ -489,6 +489,6 @@ public class EditBook extends AppCompatActivity {
 
     public Boolean isChanged(){
         //return true if anything has been changed, false if no
-        return !editTitle.getText().toString().equals(book.name) || !editAuthor.getText().toString().equals(book.getAuthor()) || !editPublishYear.getText().toString().equals(book.getYear()) || !editISBN.getText().toString().equals(book.getIsbn()) || !editBlurb.getText().toString().equals(book.getBlurb()) || !thumbnailBM.equals(book.getThumbnail());
+        return !editTitle.getText().toString().equals(book.getName()) || !editAuthor.getText().toString().equals(book.getAuthor()) || !editPublishYear.getText().toString().equals(book.getYear()) || !editISBN.getText().toString().equals(book.getIsbn()) || !editBlurb.getText().toString().equals(book.getBlurb()) || !thumbnailBM.equals(book.getThumbnail());
     }
 }
