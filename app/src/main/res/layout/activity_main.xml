@@ -22,15 +22,14 @@
         android:id="@+id/timerFrame"
         android:layout_width="383dp"
         android:layout_height="451dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="121dp"
         android:contentDescription="Timer frame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timerTitle"
+        app:layout_constraintVertical_bias="0.02"
         app:srcCompat="@drawable/frame1" />
 
     <Chronometer
