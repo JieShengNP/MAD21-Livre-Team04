@@ -135,9 +135,8 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Notify user of success and move to Sign In page
                             Toast.makeText(SignUpActivity.this, "Signed up successfully! Please sign in!", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                            String userId = mAuth.getCurrentUser().getUid();
+                            CreateDataInFirebase(userId, email, "SignUp");
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -197,11 +196,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 editor.putString("FirebaseUser", userId);
                                 editor.putString("FirebaseEmail", userEmail);
                                 editor.apply();
-                                CreateDataInFirebase(userId, userEmail);
-                                progressDialog.dismiss();
-                                Intent intent = new Intent(SignUpActivity.this, LibraryActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                                CreateDataInFirebase(userId, userEmail, "Google");
                             }
                         } else {
                             // If sign in fails, display a message to the user.
@@ -211,10 +206,21 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-    public void CreateDataInFirebase(String userID, String userEmail) {
+    public void CreateDataInFirebase(String userID, String userEmail, String mode) {
         User user = new User(userID, userEmail);
         mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users/" + userID);
         mDatabase.getRef().setValue(user);
+        progressDialog.dismiss();
+        if (mode.equals("Google")) {
+            Intent intent = new Intent(SignUpActivity.this, LibraryActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        else if (mode.equals("SignUp")){
+            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
     }
 
 }
