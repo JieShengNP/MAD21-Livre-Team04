@@ -139,17 +139,17 @@ User ends up in Bookdetails with no other activities below the stack, going back
 User clicks on book in Library, catalogue button in the library and redirects to Book details showing information about to book.
 
 ### Credits
-All music tracks used are Royalty Free and are licensed under Creative Commons License.
-All music tracks used belong to Ron Gelinas
-Another Day (Original Mix)
-Beacon of Light Original Mix)
-Easy (Original Mix)
-Endeavour (Original Mix)
-Equinox (Original Mix)
-Evening Out (Original Mix)
-Far Away (Original Mix)
-New Direction (Instrumental) - (Original Mix)
-The Art of Healing (Original Mix)
-Windsurfing (Original Mix)
-SoundCloud : https://soundcloud.com/atmospheric-music-portal
-Youtube: Ron Gelinas Chillout Lounge
+All music tracks used are Royalty Free and are licensed under Creative Commons License. <br />
+All music tracks used belong to Ron Gelinas <br />
+Another Day (Original Mix) <br />
+Beacon of Light Original Mix) <br />
+Easy (Original Mix) <br /> 
+Endeavour (Original Mix) <br />
+Equinox (Original Mix) <br /> 
+Evening Out (Original Mix) <br /> 
+Far Away (Original Mix) <br /> 
+New Direction (Instrumental) - (Original Mix) <br /> 
+The Art of Healing (Original Mix) <br />
+Windsurfing (Original Mix) <br /> 
+SoundCloud : <a href = "https://soundcloud.com/atmospheric-music-portal">Ron Gelinas Chillout Lounge</a> <br /> 
+Youtube: <a href = "https://www.youtube.com/user/iamRottenRon">Ron Gelinas Chillout Lounge</a>
