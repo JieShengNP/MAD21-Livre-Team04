@@ -38,39 +38,42 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
         Records record = recordsArrayList.get(position);
         DBHandler dbHandler = new DBHandler(holder.bookCover.getContext());
         Book book = dbHandler.FindBookByISBN(record.getIsbn());
-//        if (URL != null){
-//            Picasso.get()
-//                    .load(URL)
-//                    .placeholder(holder.bookCover.getContext().getResources().getDrawable(R.drawable.shelf_bust))
-//                    .resize(90, 140)
-//                    .into(holder.bookCover);
-//        }
 
-        if ((book.getThumbnail() != null))
+        // If book can be found in library
+        if (book != null)
         {
-            if (book.isCustom())
-            {
-                if(book.getThumbnail().equals("Unavailable"))
+                if (book.isCustom())
                 {
-                    holder.bookCover.setImageDrawable(holder.bookCover.getContext()
-                            .getResources().getDrawable(R.drawable.shelf_bust));
+                    if(book.getThumbnail().equals("Unavailable"))
+                    {
+                        holder.bookCover.setImageDrawable(holder.bookCover.getContext()
+                                .getResources().getDrawable(R.drawable.shelf_bust));
+                    }
+                    else
+                    {
+                        byte[] decodedString = Base64.decode(book.getThumbnail(), Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        holder.bookCover.setImageBitmap(decodedByte);
+                    }
                 }
                 else
                 {
-                    byte[] decodedString = Base64.decode(book.getThumbnail(), Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    holder.bookCover.setImageBitmap(decodedByte);
+                    if (book.getThumbnail() != "Unavailable")
+                    {
+                        Picasso.get()
+                                .load(book.getThumbnail())
+                                .placeholder(holder.bookCover.getContext().getResources().getDrawable(R.drawable.shelf_bust))
+                                .resize(90, 140)
+                                .into(holder.bookCover);
+                    }
+                    else
+                    {
+                        holder.bookCover.setImageDrawable(holder.bookCover.getContext()
+                                .getResources().getDrawable(R.drawable.shelf_bust));
+                    }
                 }
-            }
-            else
-            {
-                Picasso.get()
-                        .load(book.getThumbnail())
-                        .placeholder(holder.bookCover.getContext().getResources().getDrawable(R.drawable.shelf_bust))
-                        .resize(90, 140)
-                        .into(holder.bookCover);
-            }
         }
+        //if image not available possibly due to no set thumbnail or deletion of book from library
         else
         {
             holder.bookCover.setImageDrawable(holder.bookCover.getContext()
