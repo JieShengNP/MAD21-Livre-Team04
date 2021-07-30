@@ -1,11 +1,9 @@
 package sg.edu.np.mad.livre;
 
-import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +18,6 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -29,6 +26,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -51,6 +50,7 @@ public class CustomiseBook extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customise_book);
 
+        //find views
         dbHandler = new DBHandler(this);
         submitBtn = findViewById(R.id.customiseDoneBtn);
         customTitle = findViewById(R.id.cusTitleEdit);
@@ -62,15 +62,19 @@ public class CustomiseBook extends AppCompatActivity {
         coverImg = findViewById(R.id.coverCus);
         tag = findViewById(R.id.cusTag);
 
+        //check if intent has title, set if have
         Intent receivedIntent = getIntent();
         if(receivedIntent.getSerializableExtra("Title") != null) {
             customTitle.setText(receivedIntent.getSerializableExtra("Title").toString());
         }
 
+        //set onclick for tag
         tag.setOnClickListener(v -> back());
 
+        //open app for user to select image onclick
         cusCoverBtn.setOnClickListener(v -> launcher.launch("image/*"));
 
+        //text changed listeners, validate when triggered
         customAuthor.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -110,10 +114,13 @@ public class CustomiseBook extends AppCompatActivity {
             }
         });
 
-
+        //when submit button is clicked
         submitBtn.setOnClickListener(v -> {
             //Hide keyboard
             ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(customBlurb.getWindowToken(), 0);
+
+            //check for missing values, toast and error if there are
+            //no errors -> submit
             if(thumbnailBM == null){
                 cusCoverBtn.setError("Please set book cover");
                 Toast.makeText(getBaseContext(), "Invalid", Toast.LENGTH_SHORT).show();
@@ -135,32 +142,39 @@ public class CustomiseBook extends AppCompatActivity {
             }
             Toast.makeText(getBaseContext(), "Valid", Toast.LENGTH_SHORT).show();
             ValidatedSubmission();
-
         });
     }
 
     @Override
     public void onBackPressed() {
+        //overwrite default onbackpressed
         back();
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         //make changed based on orientation
         setOrientationDifferences();
     }
 
+    //open app for user to select images and get result
     ActivityResultLauncher<String> launcher = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
                 @Override
                 public void onActivityResult(Uri result) {
                     if (result != null) {
+                        //if result is not null
+
+                        //Based on buld version, decode image to bitmap and resize to not crash app with big sizes
+                        //error if process reaches exception
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
                             try {
                                 Bitmap bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getApplicationContext().getContentResolver(), result));
                                 bitmap = Bitmap.createScaledBitmap(bitmap, 102, 160, false);
+
+                                //set resized bitmap
                                 bitSet(bitmap);
 
                             } catch (IOException e) {
@@ -171,10 +185,12 @@ public class CustomiseBook extends AppCompatActivity {
                             }
                         }
                         else {
-                            Uri imageUri = result;
+                            //older version
                             try {
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), imageUri);
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), result);
                                 bitmap = Bitmap.createScaledBitmap(bitmap, 102, 160, false);
+
+                                //set resized bitmap
                                 bitSet(bitmap);
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -190,8 +206,8 @@ public class CustomiseBook extends AppCompatActivity {
 
     public void bitSet(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        //ensure that image can be encoded and decoded in full to prevent future errors
 
+        //try to compress with png, if it fails, use jpg, show error message if both fail
         try{
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         }
@@ -207,10 +223,11 @@ public class CustomiseBook extends AppCompatActivity {
                 return;
             }
         }
+
+        //ensure that image can be encoded and decoded in full to prevent future errors
         try {
             byte[] byteArray = byteArrayOutputStream.toByteArray();
-            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            thumbnailBM = encoded;
+            thumbnailBM = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
             //decode
             byte[] decodedString = Base64.decode(thumbnailBM, Base64.DEFAULT);
@@ -219,6 +236,7 @@ public class CustomiseBook extends AppCompatActivity {
             coverImg.setImageBitmap(decodedByte);
         }
         catch (Exception e){
+            //error is fails
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Invalid file", Toast.LENGTH_SHORT).show();
             thumbnailBM = "Unavailable";
@@ -232,7 +250,7 @@ public class CustomiseBook extends AppCompatActivity {
         AlertDialog.Builder bui = new AlertDialog.Builder(CustomiseBook.this);
         bui.setMessage("Delete unsaved changes?")
                 .setCancelable(true)
-                .setPositiveButton("Sure", (dialog, id) -> {finish();})
+                .setPositiveButton("Sure", (dialog, id) -> finish())
                 //User chooses not to
                 .setNegativeButton("No", (dialog, id) -> {return;});
 
@@ -244,6 +262,8 @@ public class CustomiseBook extends AppCompatActivity {
     }
 
     public void ValidatedSubmission(){
+        //for valid submissions
+        //create book object and set values
         Book book = new Book();
         book.setName(customTitle.getText().toString());
         book.setAuthor(customAuthor.getText().toString());
@@ -254,6 +274,8 @@ public class CustomiseBook extends AppCompatActivity {
         book.setCustom(true);
         book.setArchived(false);
         book.setThumbnail(thumbnailBM);
+
+        //create intents and set putextras, start intent -> go to bookdetails
         Intent intent = new Intent(getBaseContext(), BookDetails.class);
         intent.putExtra("BookObject", book);
         intent.putExtra("prev", "Cus");
@@ -261,6 +283,9 @@ public class CustomiseBook extends AppCompatActivity {
     }
 
     public Boolean AuthorValidation(){
+        //author's validation
+
+        //regex that return true for any numbers in string
         Pattern p = Pattern.compile(".*\\d+.*");
 
         if(customAuthor.getText().toString().length() == 0){
@@ -279,6 +304,8 @@ public class CustomiseBook extends AppCompatActivity {
     }
 
     public Boolean PubYearValidation(){
+        //validation for year that works for API 19
+        //create date object out of input
         String newDateStr = "01/"+"01/"+customPublishYear.getText();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -287,8 +314,10 @@ public class CustomiseBook extends AppCompatActivity {
             strDate = sdf.parse(newDateStr);
         } catch (ParseException e) {
             e.printStackTrace();
+            return false;
         }
 
+        //check length of input and validity of date object
         if(customPublishYear.getText().length() > 4 || customPublishYear.getText().length() < 1){
             customPublishYear.setError("Invalid Year!");
         }
@@ -302,6 +331,7 @@ public class CustomiseBook extends AppCompatActivity {
     }
 
     public Boolean ISBNValidation(){
+        //create book object and validate
         Book b = new Book();
         b.setCustom(true);
         b.setIsbn(customISBN.getText().toString());
@@ -350,6 +380,7 @@ public class CustomiseBook extends AppCompatActivity {
             cusTxt.getLayoutParams().height = Math.round(85 * Resources.getSystem().getDisplayMetrics().density);
 
             }
+        //ensure changes are applied
         tag.requestLayout();
     }
 

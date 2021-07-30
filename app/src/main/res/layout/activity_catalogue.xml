@@ -15,7 +15,8 @@
         android:onClick="LibraryTagClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tag_library" />
+        app:srcCompat="@drawable/tag_library"
+        android:contentDescription="Tag for Library" />
 
     <EditText
         android:id="@+id/catalogueSearch"
@@ -76,7 +77,8 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/catInfo"
-        app:srcCompat="@drawable/frame2" />
+        app:srcCompat="@drawable/frame2"
+        />
 
     <ImageView
         android:id="@+id/catsearchicon"
@@ -87,7 +89,8 @@
         android:scrollbarSize="30dp"
         app:layout_constraintEnd_toEndOf="@+id/catalogueSearch"
         app:layout_constraintTop_toTopOf="@+id/catalogueSearch"
-        app:srcCompat="@drawable/search" />
+        app:srcCompat="@drawable/search"
+        android:contentDescription="Search button" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -189,7 +192,8 @@
         app:layout_constraintEnd_toEndOf="@+id/catRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/catRecyclerView"
-        app:srcCompat="@drawable/featherduster" />
+        app:srcCompat="@drawable/featherduster"
+        android:contentDescription="Fether duster" />
 
 
 
