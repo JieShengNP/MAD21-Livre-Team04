@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -298,8 +299,10 @@ public class BookDetails extends AppCompatActivity {
         //to exit activity
         //is book is is from cus or edit and was just added/saved, go to library and clear queue
         if ((book.isCustom() && book.isAdded() && isFromCus) || wasChanged) {
+            Log.v("was changed", String.valueOf(wasChanged));
             Intent intent = new Intent(BookDetails.this, LibraryActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            wasChanged = false;
             startActivity(intent);
         } else {
             finish();
