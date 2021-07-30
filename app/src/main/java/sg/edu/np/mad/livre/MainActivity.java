@@ -52,7 +52,11 @@ public class MainActivity extends AppCompatActivity {
         handler = new Handler();
         dbHandler = new DBHandler(this);
         isbn = getIntent().getStringExtra("Isbn");
-        handler.postDelayed(toastRunnable, 0);
+
+        //initial toast
+        Toast.makeText(getBaseContext(), "Press the timer to begin",Toast.LENGTH_SHORT).show();
+        //start recurring toast
+        handler.postDelayed(toastRunnable, 10000);
 
         timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
@@ -92,7 +96,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog(isbn);
+        if (timerRunning)
+        {
+            AlertDialog(isbn);
+        }
+        else
+        {
+            Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
+            startActivity(intent);
+            Toast.makeText(MainActivity.this, "Returning to library",Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     @Override
