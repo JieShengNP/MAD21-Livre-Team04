@@ -3,10 +3,19 @@ package sg.edu.np.mad.livre;
 import java.util.Date;
 
 public class Records {
+    private int _id;
     private String isbn;
     private Date dateRead;
     private int timeReadSec;
     private String name;
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
 
     public String getName() {
         return name;
