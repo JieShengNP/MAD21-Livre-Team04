@@ -25,7 +25,7 @@ Livre is an app for readers, tracking their reading habits by logging the length
 ### Colour Scheme
 
 <img src="https://user-images.githubusercontent.com/72980567/127611667-19a48fb0-dba0-4dff-a1d2-33d1da013c7f.png" width="600" >
-- Comforting, not alarming
+- Comforting, not alarming<br/>
 - Associated with nurturement & academia
 
 ### Some Common, Repeated Elements
@@ -42,7 +42,7 @@ All tags look like the one above, with different text representing what it does.
 
 **1**
 <br/>
-User clicks the catalogue button in the library and redirects to catalogue.
+User clicks the catalogue button in the library and redirects to catalogue. <br/>
 <img src="https://user-images.githubusercontent.com/72980567/127615065-8ada1373-efd0-4777-9570-b1b4007d36f0.png" width="200" >
 
 **2**
@@ -51,7 +51,7 @@ User clicks library tag/button or back button from Catalogue, bringing them to L
 
 **4**
 <br/>
-User chooses to Customise a book while in Catalogue (their search ended up with no queries, the search did not have the book they wanted, or an error occured with searching)
+User chooses to Customise a book while in Catalogue (their search ended up with no queries, the search did not have the book they wanted, or an error occured with searching) <br/>
 <img src="https://user-images.githubusercontent.com/72980567/127615722-950e3d84-55bb-4893-8882-d1976cd42fad.png" width="200" >
 
 **3,5**
@@ -69,16 +69,14 @@ Results that are custom books appear as this at the top of of the recyclerview, 
 <img src="https://user-images.githubusercontent.com/72980567/127618710-057aa75f-f16a-413a-8ca2-f5ec4c01fd7b.png" width="200" >
 <br/>
 Book details for books not added
-<br/><br/>
 If user decides to add the book, DB is updated, book details will look like this for added non custom books:
 <img src="https://user-images.githubusercontent.com/72980567/127619905-64187ad2-0196-42ad-8dcf-0ca3aafa60c2.png" width="200" >
 it will look like this for added custom books:
 <img src="https://user-images.githubusercontent.com/72980567/127620509-4a4e04b4-fa9f-4b61-a7fb-6824751385f2.png" width="200" >
-<br/>
 The wrench at the top right is to edit the custom book.
 <br/>
-Clicking moving to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11**.
-
+Clicking move to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11** .
+<br/>
 **7**
 <br/>
 User is viewing a custom made book that they have not added yet and decided to go back, Bringing them to the customise page with the details still input, ideal for further edits.
@@ -96,9 +94,7 @@ User edits a Custom book and clicks done (and passed validation) and is brought 
 Book details would show buttons meant for books that are pending a confirmation to save edits.
 <img src="https://user-images.githubusercontent.com/72980567/127622511-9fea1028-84ea-4c7d-9afd-3b1deee1d2cf.png"  width="200">
 
-Saving changes would display update bookdetails and DB, and the activity will look like "it will look like this for added custom books:" under **6, 8**.Clicking moving to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11**.
-
-Clicking moving to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11** .
+Saving changes would display update bookdetails and DB, and the activity will look like "it will look like this for added custom books:" under **6, 8**.Clicking moving to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11**. Clicking move to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11** .
 <br/>
 *SCENARIO B*<br/>
 User, while on edit page decided to go back and confirms to delete unsaved changes (if any), user would be brought back to bookdetails with book unchanged.
