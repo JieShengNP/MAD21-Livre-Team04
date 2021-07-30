@@ -235,6 +235,7 @@ public class SignInActivity extends AppCompatActivity {
                     User user = task.getResult().getValue(User.class);
                     if (user != null) {
                         DBHandler dbHandler = new DBHandler(SignInActivity.this);
+                        dbHandler.DeleteDatabase(SignInActivity.this);
                         if (user.bookList != null) {
                             dbHandler.AddFirebaseBookToDB(user.bookList);
                         }

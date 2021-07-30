@@ -570,4 +570,9 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         db.close();
     }
+
+    public static void DeleteDatabase(Context context){
+        context.deleteDatabase(DATABASE_NAME);
+    }
+
 }
