@@ -41,7 +41,7 @@ All tags look like the one above, with different text representing what it does.
 
 **1**
 User clicks the catalogue button in the library and redirects to catalogue.
-![Catalogue Activity](https://user-images.githubusercontent.com/72980567/127615065-8ada1373-efd0-4777-9570-b1b4007d36f0.png)
+![Catalogue Activity](https://user-images.githubusercontent.com/72980567/127615065-8ada1373-efd0-4777-9570-b1b4007d36f0.png){:height="20%" width="20%"}
 
 **2**
 User clicks library tag/button or back button from Catalogue, bringing them to Library
