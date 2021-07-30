@@ -23,7 +23,7 @@ Livre is an app for readers, tracking their reading habits by logging the length
 ##Other
 
 ### Colour Scheme
-![Colour Scheme](https://user-images.githubusercontent.com/72980567/127611667-19a48fb0-dba0-4dff-a1d2-33d1da013c7f.png)
+![Colour Scheme](https://user-images.githubusercontent.com/72980567/127611667-19a48fb0-dba0-4dff-a1d2-33d1da013c7f.pngv=4&s=200)
 - Comforting, not alarming
 - Associated with nurturement & academia
 
