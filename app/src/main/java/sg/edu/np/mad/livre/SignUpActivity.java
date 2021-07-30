@@ -19,7 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.shobhitpuri.custombuttons.GoogleSignInButton;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -38,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     Button signupBtn;
     TextView haveAccount;
     ProgressDialog progressDialog;
-    SignInButton googleBtn;
+    GoogleSignInButton googleBtn;
     GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "SignUp";
     private static final int RC_SIGN_IN = 9001;
