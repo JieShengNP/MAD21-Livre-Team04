@@ -167,6 +167,10 @@ public class SignInActivity extends AppCompatActivity {
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+            progressDialog.setTitle("Signing In");
+            progressDialog.setMessage("Retriving Data... Please hold on.");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -197,6 +201,7 @@ public class SignInActivity extends AppCompatActivity {
                                 editor.putString("FirebaseUser", userId);
                                 editor.putString("FirebaseEmail", userEmail);
                                 editor.apply();
+                                progressDialog.dismiss();
                                 Intent intent = new Intent(SignInActivity.this, LibraryActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
