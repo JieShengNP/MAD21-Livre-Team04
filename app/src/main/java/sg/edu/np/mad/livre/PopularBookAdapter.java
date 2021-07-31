@@ -26,12 +26,24 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
 
     @Override
     public PopularBookViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_popularbooks, parent, false);
-        return new PopularBookViewHolder(itemView);
+        switch (viewType) {
+            case 1: {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_popularbooks_end, parent, false);
+                return new PopularBookViewHolder(itemView);
+            }
+            case 0:
+            default:{
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_popularbooks, parent, false);
+                return new PopularBookViewHolder(itemView);
+            }
+        }
     }
 
     @Override
     public void onBindViewHolder(PopularBookViewHolder holder, int position) {
+        if (position == bookList.size()){
+            return;
+        }
         Drawable defaultImage = holder.bookThumbnail.getContext().getResources().getDrawable(R.drawable.shelf_bust);
         holder.bookTitle.setText(bookList.get(position).title);
         Picasso.get()
@@ -66,7 +78,12 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return (position == bookList.size()) ? 1 : 0;
+    }
+
+    @Override
     public int getItemCount() {
-        return bookList.size();
+        return bookList.size() + 1;
     }
 }
