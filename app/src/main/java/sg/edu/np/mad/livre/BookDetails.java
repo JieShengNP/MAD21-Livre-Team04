@@ -253,7 +253,7 @@ public class BookDetails extends AppCompatActivity {
         //user wants to start reading, start activity and pass isbn
         try {
             Intent intent = new Intent(BookDetails.this, MainActivity.class);
-            intent.putExtra("Isbn", book.getID());
+            intent.putExtra("Isbn", dbHandler.GetBookId(book));
             book = null;
             startActivity(intent);
         }

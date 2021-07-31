@@ -126,7 +126,7 @@ public class DBHandler extends SQLiteOpenHelper {
      * @return Book if it exists in the Database.
      */
     public Book FindBookByID(int id){
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ID + " = \"" + String.valueOf(id) +"\"";
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ID + " = " + id;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         Book book = new Book();
