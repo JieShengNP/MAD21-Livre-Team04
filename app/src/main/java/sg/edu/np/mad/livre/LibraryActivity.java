@@ -14,8 +14,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -90,6 +94,12 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
             navUsername.setText("");
         }
         navEmail.setText(user.getEmail());
+
+        Menu menu = navigationView.getMenu();
+        MenuItem tools = menu.findItem(R.id.menu_account);
+        SpannableString s = new SpannableString(tools.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.AccountTitle), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tools.setTitle(s);
 
         // End of Navigation Drawer
 

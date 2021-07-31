@@ -4,4 +4,8 @@
         <item name="android:textSize">24sp</item>
         <item name="android:listPreferredItemHeightSmall">48dp</item>
     </style>
+    <style name="AccountTitle">
+        <item name="android:textColor">@color/brown</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
