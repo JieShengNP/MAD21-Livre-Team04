@@ -52,12 +52,12 @@ public class StatActivity extends AppCompatActivity {
     public void InitializeHashKeyList()
     {
         hashKeys = new ArrayList<>();
-        hashKeys.add("Total Books in Library");
-        hashKeys.add("Total Books Read");
-        hashKeys.add("Total Time Spent Reading");
-        hashKeys.add("Average Time Read Per Session");
-        hashKeys.add("Book Most Time Spent On");
-        hashKeys.add("Time Spent on Book");
+        hashKeys.add("Number of Added books");
+        hashKeys.add("Number of Books Read");
+        hashKeys.add("Total Reading Time");
+        hashKeys.add("Average Reading Time Per Sitting");
+        hashKeys.add("Most Read Book");
+        hashKeys.add("Total Time Spent Reading ");
         hashKeys.add("Favourite Author");
     }
 
