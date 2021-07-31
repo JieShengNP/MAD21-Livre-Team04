@@ -102,9 +102,11 @@ public class SignInActivity extends AppCompatActivity {
         noAccount.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
                 return true;
             }
         });
@@ -112,21 +114,23 @@ public class SignInActivity extends AppCompatActivity {
         resetPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (emailText.getText().toString().isEmpty()){
-                    Toast.makeText(SignInActivity.this, "Enter the email in the field above and tap again!", Toast.LENGTH_SHORT).show();
-                } else {
-                    FirebaseAuth auth = FirebaseAuth.getInstance();
-                    String email = emailText.getText().toString();
-                    auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                Toast.makeText(SignInActivity.this, "Successfully sent a reset email!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(SignInActivity.this, "An error occurred while sending a reset email.", Toast.LENGTH_SHORT).show();
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (emailText.getText().toString().isEmpty()) {
+                        Toast.makeText(SignInActivity.this, "Enter the email in the field above and tap again!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        String email = emailText.getText().toString();
+                        auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(SignInActivity.this, "Successfully sent a reset email!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(SignInActivity.this, "An error occurred while sending a reset email.", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
                 return true;
             }

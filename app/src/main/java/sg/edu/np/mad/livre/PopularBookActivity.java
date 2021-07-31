@@ -52,7 +52,9 @@ public class PopularBookActivity extends AppCompatActivity {
         backText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                finish();
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    finish();
+                }
                 return true;
             }
         });
