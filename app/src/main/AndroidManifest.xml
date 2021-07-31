@@ -17,9 +17,8 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".RecordActivity" />
         <activity android:name=".StatActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|screenSize" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".LibraryActivity" />
         <activity android:name=".ArchiveActivity" />
         <activity
