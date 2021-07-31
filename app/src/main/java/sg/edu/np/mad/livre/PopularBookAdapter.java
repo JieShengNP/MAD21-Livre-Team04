@@ -1,5 +1,6 @@
 package sg.edu.np.mad.livre;
 
+import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -14,6 +15,8 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHolder> {
 
@@ -30,6 +33,10 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
                 View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_popularbooks_end, parent, false);
                 return new PopularBookViewHolder(itemView);
             }
+            case 2: {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_popularbooks_start, parent, false);
+                return new PopularBookViewHolder(itemView);
+            }
             case 0:
             default:{
                 View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_popularbooks, parent, false);
@@ -40,9 +47,45 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
 
     @Override
     public void onBindViewHolder(PopularBookViewHolder holder, int position) {
-        if (position == bookList.size()){
+        if (position == bookList.size() + 1){
             return;
         }
+        if (position == 0){
+            Context context = holder.pageTitle.getContext();
+            if (bookList.size() > 0) {
+                if (bookList.size() == 1) {
+                    holder.pageTitle.setText(context.getString(R.string.popularTitleSingle));
+                    holder.pageDesc.setText(context.getString(R.string.popularDescSingle));
+                } else {
+                    holder.pageTitle.setText(context.getString(R.string.popularTitle, bookList.size()));
+                    holder.pageDesc.setText(context.getString(R.string.popularDesc, bookList.size()));
+                    //Sort by Readers and Time
+                    Collections.sort(bookList, new Comparator() {
+
+                        public int compare(Object o1, Object o2) {
+
+                            Integer reader1 = ((PopularBook) o1).getTotalReaders();
+                            Integer reader2 = ((PopularBook) o2).getTotalReaders();
+                            int sComp = reader1.compareTo(reader2);
+
+                            if (sComp != 0) {
+                                return sComp;
+                            }
+
+                            Integer time1 = ((PopularBook) o1).totalTime;
+                            Integer time2 = ((PopularBook) o2).totalTime;
+                            return time1.compareTo(time2);
+                        }});
+                    Collections.reverse(bookList);
+                }
+            } else {
+                holder.pageTitle.setText(context.getString(R.string.popularTitleNone));
+                holder.pageDesc.setText(context.getString(R.string.popularDescNone));
+            }
+            return;
+        }
+        // Offset Position
+        position -= 1;
         holder.bookTitle.setText(bookList.get(position).title);
         Picasso.get()
                 .load(bookList.get(position).thumbnail)
@@ -76,11 +119,22 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
 
     @Override
     public int getItemViewType(int position) {
-        return (position == bookList.size()) ? 1 : 0;
+        // End Item
+        if (position == bookList.size() + 1){
+            return 1;
+        }
+
+        // Start Item
+        if (position == 0){
+            return 2;
+        }
+
+        // Everything Else
+        return 0;
     }
 
     @Override
     public int getItemCount() {
-        return bookList.size() + 1;
+        return bookList.size() + 2;
     }
 }

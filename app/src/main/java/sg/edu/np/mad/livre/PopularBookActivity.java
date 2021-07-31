@@ -42,9 +42,6 @@ public class PopularBookActivity extends AppCompatActivity {
         pageDesc = findViewById(R.id.popularDesc);
         bookList = new ArrayList<>();
 
-        pageTitle.setText("Loading...");
-        pageDesc.setText("Loading...");
-
         // Set text to return to Library Activity
         backText.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -69,36 +66,7 @@ public class PopularBookActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 if (progressDialog != null && !progressDialog.isShowing()) {
                     // Update items when firebase finishes loading
-                    if (bookList.size() > 0) {
-                        if (bookList.size() == 1) {
-                            pageTitle.setText(getString(R.string.popularTitleSingle));
-                            pageDesc.setText(getString(R.string.popularDescSingle));
-                        } else {
-                            pageTitle.setText(getString(R.string.popularTitle, bookList.size()));
-                            pageDesc.setText(getString(R.string.popularDesc, bookList.size()));
-                            //Sort by Readers and Time
-                            Collections.sort(bookList, new Comparator() {
 
-                                public int compare(Object o1, Object o2) {
-
-                                    Integer reader1 = ((PopularBook) o1).getTotalReaders();
-                                    Integer reader2 = ((PopularBook) o2).getTotalReaders();
-                                    int sComp = reader1.compareTo(reader2);
-
-                                    if (sComp != 0) {
-                                        return sComp;
-                                    }
-
-                                    Integer time1 = ((PopularBook) o1).totalTime;
-                                    Integer time2 = ((PopularBook) o2).totalTime;
-                                    return time1.compareTo(time2);
-                                }});
-                            Collections.reverse(bookList);
-                        }
-                    } else {
-                        pageTitle.setText(getString(R.string.popularTitleNone));
-                        pageDesc.setText(getString(R.string.popularDescNone));
-                    }
                     popularBookAdapter.notifyDataSetChanged();
                     cancel();
                 }
