@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
+    private static final String TAG = "RecordAdapter";
    ArrayList<Records> recordsArrayList;
     private int hour;
 
@@ -110,9 +111,5 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
         return recordsArrayList.size();
     }
 
-    public void SetImage()
-    {
-
-    }
 
 }
