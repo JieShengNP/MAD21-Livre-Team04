@@ -443,7 +443,7 @@ public class DBHandler extends SQLiteOpenHelper {
             do {
                 Records records = new Records();
                 records.setName(cursor.getString(1));
-                records.setIsbn(cursor.getInt(2));
+                records.setBookID(cursor.getInt(2));
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 try {
                     records.setDateRead(sdf.parse(cursor.getString(3)));
@@ -615,7 +615,7 @@ public class DBHandler extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(LOG_COLUMN_ID, record.get_id());
             values.put(LOG_COLUMN_NAME, record.getName());
-            values.put(LOG_COLUMN_ISBN, record.getIsbn());
+            values.put(LOG_COLUMN_ISBN, record.getBookID());
             values.put(LOG_COLUMN_DATE, formatter.format(Calendar.getInstance().getTime()));
             values.put(LOG_COLUMN_SECOND, record.getTimeReadSec());
             db.insert(TABLE_LOG, null, values);

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Records {
     private int _id;
-    private int isbn;
+    private int bookID;
     private Date dateRead;
     private int timeReadSec;
     private String name;
@@ -25,13 +25,9 @@ public class Records {
         this.name = name;
     }
 
-    public int getIsbn() {
-        return isbn;
-    }
+    public int getBookID() { return bookID; }
 
-    public void setIsbn(int isbn) {
-        this.isbn = isbn;
-    }
+    public void setBookID(int bookID) { this.bookID = bookID; }
 
     public Date getDateRead() {
         return dateRead;
@@ -55,6 +51,6 @@ public class Records {
         this.setDateRead(D);
         this.setName(N);
         this.setTimeReadSec(T);
-        this.setIsbn(I);
+        this.setBookID(I);
     }
 }
