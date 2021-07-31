@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
     ArrayList<Book> data;
+    DBHandler dbhandler;
 
     public CatItemsAdapter(ArrayList<Book> input){
         data = input;
@@ -101,8 +102,13 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
         return data.size();
     }
 
-    //method for when title/thumbnail is catalogue is clicked
+    //method for when title/thumbnail of catalogue is clicked
     public void catItemClick(CatViewHolder holder, Book b){
+        dbhandler = new DBHandler(holder.catthumb.getContext());
+        Book tempBook = dbhandler.FindBookByISBN(b.getIsbn(), b.isCustom());
+        if(tempBook != null){
+            b = tempBook;
+        }
         Intent bookDetailsIntent = new Intent(holder.catthumb.getContext(), BookDetails.class);
         bookDetailsIntent.putExtra("BookObject", b);
         holder.catthumb.getContext().startActivity(bookDetailsIntent);

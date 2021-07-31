@@ -87,6 +87,7 @@ public class BookDetails extends AppCompatActivity {
             wasChanged = false;
         }
 
+
         //set onclick listeners and make
         backtag.setOnClickListener(v -> backClick());
 
@@ -165,10 +166,8 @@ public class BookDetails extends AppCompatActivity {
         // set onclicklisteners
          toggleArchiveBtn.setOnClickListener(v -> togArClick(dbHandler));
          startReadingBtn.setOnClickListener(v -> startClick());
-
-
-
         }
+
         else{
             //something (edit/add) is pending for the book
 
@@ -201,7 +200,7 @@ public class BookDetails extends AppCompatActivity {
         //try to update book, finish if it fails & tell user to delete book
         int rowsAffected = dbHandler.UpdateBook(book, id);
         if (rowsAffected == 0){
-            Toast.makeText(getBaseContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -254,7 +253,7 @@ public class BookDetails extends AppCompatActivity {
         //user wants to start reading, start activity and pass isbn
         try {
             Intent intent = new Intent(BookDetails.this, MainActivity.class);
-            intent.putExtra("Isbn", book.getIsbn());
+            intent.putExtra("Isbn", book.getID());
             book = null;
             startActivity(intent);
         }
@@ -316,7 +315,6 @@ public class BookDetails extends AppCompatActivity {
     public void backClick() {
         //to exit activity
         //is book is is from cus or edit and was just added/saved, go to library and clear queue
-
         if ((book.isCustom() && book.isAdded() && isFromCus) || wasChanged) {
             //set waschanged to false to
             wasChanged = false;

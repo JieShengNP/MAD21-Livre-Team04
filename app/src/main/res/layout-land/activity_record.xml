@@ -6,26 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".RecordActivity">
 
+
     <ImageView
         android:id="@+id/recordLibraryTag"
         android:layout_width="65dp"
         android:layout_height="107dp"
-        app:layout_constraintBottom_toTopOf="@+id/recordRecyclerView"
-        app:layout_constraintEnd_toStartOf="@id/recordStatTag"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.405"
-        app:srcCompat="@drawable/tag_library" />
-
-    <ImageView
-        android:id="@+id/recordStatTag"
-        android:layout_width="65dp"
-        android:layout_height="107dp"
-        android:layout_marginEnd="72dp"
-        app:layout_constraintBottom_toTopOf="@+id/recordRecyclerView"
+        android:layout_marginEnd="52dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.405"
-        app:srcCompat="@drawable/tag_stat" />
+        app:srcCompat="@drawable/tag_library" />
 
     <TextView
         android:id="@+id/recordTitle"

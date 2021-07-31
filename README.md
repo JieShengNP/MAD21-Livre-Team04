@@ -71,6 +71,7 @@ User clicks back (button or tag) when in Customise (and confirmed to delete any 
 **6,8**
 <br/>
 User selects a book in Catalogue or clicks done in Customise (and passed validation) respectively and is brought to book details where the details of their book is displayed (no updated to db at this point). Button to add book is shown while the rest are hidden.
+<br/>
 <img src="https://user-images.githubusercontent.com/72980567/127618246-092b7ec7-8a47-4f07-bec7-fdeee4bd51a8.png" width="200" >
 <img src="https://user-images.githubusercontent.com/72980567/127620153-3cf548b8-8ad2-4812-8dd4-a509090a916b.png" width="200" >
 <br/>
@@ -103,6 +104,8 @@ User is viewing a custom made book that they have not added yet and decided to g
 <br/>
 User edits a Custom book and clicks done (and passed validation) and is brought to book details where the details of their edited book is displayed (db has not been updated).
 Book details would show buttons meant for books that are pending a confirmation to save edits.
+<br/>
+
 <img src="https://user-images.githubusercontent.com/72980567/127622511-9fea1028-84ea-4c7d-9afd-3b1deee1d2cf.png" width="200" >
 <br/>
 
