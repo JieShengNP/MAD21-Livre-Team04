@@ -45,15 +45,13 @@ public class MainActivity extends AppCompatActivity {
     Chronometer timer;
     Handler handler;
     long tMilliSec, tStart = 0L;
-    int sec,min,hour, currentMusic;
+    int sec,min,hour, currentMusic, isbn;
     TextView musicName;
     boolean timerRunning, wasPaused, musicStart;
     DBHandler dbHandler;
-    String isbn;
     ArrayList<MusicTrack> musicList;
     MediaPlayer mp;
 
-    int isbn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
         handler = new Handler();
         dbHandler = new DBHandler(this);
         isbn = getIntent().getIntExtra("Isbn", -1);
-        Log.v(TAG, String.valueOf(isbn));
-
 
         //start recurring toast
         handler.postDelayed(toastRunnable,0);
@@ -428,16 +424,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void PrevMusic()
-    {
+    public void PrevMusic() {
         PauseMusic();
-        if (currentMusic == 0)
-        {
+        if (currentMusic == 0) {
             currentMusic = musicList.size() - 1;
-        }
-        else
-        {
-            currentMusic --;
+        } else {
+            currentMusic--;
         }
 
         mp.reset();
@@ -446,10 +438,10 @@ public class MainActivity extends AppCompatActivity {
             mp.setDataSource(MainActivity.this, Uri.parse(musicList.get(currentMusic).getTrackFileLocation()));
             mp.prepare();
             PlayMusic();
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
     private void UpdateFirebase(Book book, int extraTime){
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
