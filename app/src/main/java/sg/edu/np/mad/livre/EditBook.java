@@ -181,7 +181,7 @@ public class EditBook extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Toast.makeText(getApplicationContext(), "Valid", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Confirm Changes to Save", Toast.LENGTH_SHORT).show();
             ValidatedEdit();
         });
     }
