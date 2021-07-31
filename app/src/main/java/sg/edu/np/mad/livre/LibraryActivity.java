@@ -81,6 +81,8 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
             Picasso.get()
                     .load(user.getPhotoUrl())
                     .into(navImage);
+        } else {
+            navImage.setVisibility(View.INVISIBLE);
         }
         if (user.getDisplayName() != null){
             navUsername.setText(user.getDisplayName());
