@@ -37,7 +37,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     public void onBindViewHolder(RecordViewHolder holder, int position) {
         Records record = recordsArrayList.get(position);
         DBHandler dbHandler = new DBHandler(holder.bookCover.getContext());
-        Book book = dbHandler.FindBookByISBN(record.getIsbn());
+        Book book = dbHandler.FindBookByID(record.getIsbn());
 
         // If book can be found in library
         if (book != null)
