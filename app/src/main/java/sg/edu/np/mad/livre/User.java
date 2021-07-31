@@ -11,7 +11,7 @@ public class User {
     public ArrayList<Book> bookList;
     public ArrayList<Records> records;
 
-    public User(){};
+    public User() {}
 
     public User(String userID, String email) {
         this.userID = userID;

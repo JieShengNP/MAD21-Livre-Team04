@@ -26,9 +26,13 @@ public class Records {
         this.name = name;
     }
 
-    public int getBookID() { return bookID; }
+    public int getBookID() {
+        return bookID;
+    }
 
-    public void setBookID(int bookID) { this.bookID = bookID; }
+    public void setBookID(int bookID) {
+        this.bookID = bookID;
+    }
 
     public String getIsbn() {
         return isbn;
@@ -54,9 +58,12 @@ public class Records {
         this.timeReadSec = timeReadSec;
     }
 
-    public Records(){};
-    public Records(int I, Date D, int T, String N)
-    {
+    public Records() {
+    }
+
+    ;
+
+    public Records(int I, Date D, int T, String N) {
         this.setDateRead(D);
         this.setName(N);
         this.setTimeReadSec(T);

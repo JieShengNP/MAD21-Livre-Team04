@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class StatViewHolder extends RecyclerView.ViewHolder {
     TextView statName, statValue;
 
-    public StatViewHolder(View itemView)
-    {
+    public StatViewHolder(View itemView) {
         super(itemView);
         statName = itemView.findViewById(R.id.statName);
         statValue = itemView.findViewById(R.id.statValue);

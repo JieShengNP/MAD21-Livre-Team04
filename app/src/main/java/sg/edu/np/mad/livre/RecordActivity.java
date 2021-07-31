@@ -51,19 +51,15 @@ public class RecordActivity extends AppCompatActivity {
 
     }
 
-    public void setTotalTime()
-    {
+    public void setTotalTime() {
         int totalTimeSec = dbHandler.GetTotalReadingTimeInSec();
-        if(totalTimeSec > 0)
-        {
-            int min = totalTimeSec/60;
+        if (totalTimeSec > 0) {
+            int min = totalTimeSec / 60;
             totalTimeSec = totalTimeSec % 60;
             int hour = min / 60;
             min = min % 60;
-            totalTime.setText(String.format("%02d",hour) + "H " + String.format("%02d",min) + "M " + String.format("%02d",totalTimeSec) + "S");
-        }
-        else
-        {
+            totalTime.setText(String.format("%02d", hour) + "H " + String.format("%02d", min) + "M " + String.format("%02d", totalTimeSec) + "S");
+        } else {
             totalTime.setText("00:00:00");
         }
     }
