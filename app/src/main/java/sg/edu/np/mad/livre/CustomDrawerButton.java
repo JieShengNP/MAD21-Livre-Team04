@@ -5,10 +5,11 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-public class CustomDrawerButton extends androidx.appcompat.widget.AppCompatButton implements DrawerLayout.DrawerListener {
+public class CustomDrawerButton extends AppCompatButton implements DrawerLayout.DrawerListener {
 
     private DrawerLayout mDrawerLayout;
 
