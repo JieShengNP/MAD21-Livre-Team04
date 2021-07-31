@@ -14,8 +14,10 @@ import android.os.Bundle;
 
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.Html;
 import android.view.View;
 
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private static final long INTERVAL_MS = 1000;
     ImageView recordsTag, libraryChain, timerFrame;
     ImageView playButton, pauseButton, prevButton, nextButton, shuffleButton;
+    Button disclaimerButton;
     Chronometer timer;
     Handler handler;
     long tMilliSec, tStart = 0L;
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         
         timer = findViewById(R.id.timerText);
         timerFrame = findViewById(R.id.timerFrame);
+        disclaimerButton = findViewById(R.id.disclaimerButton);
         playButton = findViewById(R.id.button_play);
         pauseButton = findViewById(R.id.button_pause);
         prevButton = findViewById(R.id.button_prev);
@@ -100,6 +104,40 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     AlertDialog();
                 }
+            }
+        });
+
+        disclaimerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setCancelable(true);
+                builder.setTitle("Disclaimer");
+                builder.setMessage
+                        (
+                                "We DO NOT OWN the music tracks used \n" +
+                                "All music tracks used are Royalty Free and are licensed under Creative Commons License.\n" +
+                                "All music tracks used belong to Ron Gelinas\n" +
+                                        "SoundCloud: Ron Gelinas Chillout Lounge \n" +
+                                        "Youtube : Ron Gelinas Chillout Lounge "
+                        );
+                builder.setPositiveButton("Youtube", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/user/iamRottenRon"));
+                        startActivity(youtubeIntent);
+                    }
+                });
+                builder.setNegativeButton("SoundCloud", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent soundIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://soundcloud.com/atmospheric-music-portal"));
+                        startActivity(soundIntent);
+                    }
+                });
+                builder.setNeutralButton("Close", null);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 

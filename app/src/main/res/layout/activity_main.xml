@@ -107,4 +107,17 @@
         app:layout_constraintTop_toBottomOf="@+id/timerText"
         app:srcCompat="@drawable/button_pause" />
 
+    <Button
+        android:id="@+id/disclaimerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:text="Disclaimer"
+        app:layout_constraintBottom_toTopOf="@+id/timerFrame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.59"
+        app:layout_constraintStart_toEndOf="@+id/timerTitle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
