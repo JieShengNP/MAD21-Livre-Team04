@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Password: "
         android:textColor="@color/sage"
         android:textSize="30sp"
@@ -80,7 +80,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/sage"
         android:ems="10"
@@ -91,16 +91,26 @@
         app:layout_constraintStart_toEndOf="@+id/signinEmailText"
         app:layout_constraintTop_toBottomOf="@+id/signinEmailEditText" />
 
+
     <TextView
-        android:id="@+id/signinSignUp"
+        android:id="@+id/signinReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="No account? Tap here."
+        android:text="Forgot your password?"
         android:textColor="@color/sage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signinGoogle" />
+
+    <TextView
+        android:id="@+id/signinSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No account? Tap here."
+        android:textColor="@color/sage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signinReset" />
 
     <TextView
         android:id="@+id/signInTextView"
