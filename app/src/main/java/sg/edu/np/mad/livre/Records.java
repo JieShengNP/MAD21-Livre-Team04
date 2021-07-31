@@ -5,6 +5,7 @@ import java.util.Date;
 public class Records {
     private int _id;
     private int bookID;
+    private String isbn;
     private Date dateRead;
     private int timeReadSec;
     private String name;
@@ -28,6 +29,14 @@ public class Records {
     public int getBookID() { return bookID; }
 
     public void setBookID(int bookID) { this.bookID = bookID; }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
 
     public Date getDateRead() {
         return dateRead;
