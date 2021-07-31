@@ -105,6 +105,7 @@ User is viewing a custom made book that they have not added yet and decided to g
 User edits a Custom book and clicks done (and passed validation) and is brought to book details where the details of their edited book is displayed (db has not been updated).
 Book details would show buttons meant for books that are pending a confirmation to save edits.
 <br/>
+
 <img src="https://user-images.githubusercontent.com/72980567/127622511-9fea1028-84ea-4c7d-9afd-3b1deee1d2cf.png" width="200" >
 <br/>
 
