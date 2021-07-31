@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         handler = new Handler();
         dbHandler = new DBHandler(this);
-        isbn = getIntent().getIntExtra("Isbn", -1);
+        isbn = getIntent().getIntExtra("BookID", -1);
 
         //start recurring toast
         handler.postDelayed(toastRunnable, 0);
