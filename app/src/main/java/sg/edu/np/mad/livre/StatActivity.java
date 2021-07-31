@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class StatActivity extends AppCompatActivity {
     private static final String TAG = "StatActivity";
-    ImageView libraryTag, recordTag;
+    ImageView libraryTag;
     DBHandler dbHandler;
     ArrayList<String> hashKeys;
     HashMap<String, String> statList;
@@ -25,7 +25,6 @@ public class StatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stat);
         libraryTag = findViewById(R.id.statLibraryTag);
-        recordTag = findViewById(R.id.statRecordTag);
         dbHandler = new DBHandler(this);
 
         libraryTag.setOnClickListener(new View.OnClickListener() {
@@ -34,13 +33,6 @@ public class StatActivity extends AppCompatActivity {
                 Intent intent = new Intent(StatActivity.this, LibraryActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-            }
-        });
-
-        recordTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
 

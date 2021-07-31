@@ -6,8 +6,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_popularbook"
-            android:icon="@drawable/ic_baseline_menu_book_24"
+            android:icon="@drawable/icon_bookstack"
             android:title="Popular Books" />
+        <item
+            android:id="@+id/nav_mystats"
+            android:icon="@drawable/ic_baseline_menu_book_24"
+            android:title="My Statistics" />
     </group>
 
     <item android:title="Account">
