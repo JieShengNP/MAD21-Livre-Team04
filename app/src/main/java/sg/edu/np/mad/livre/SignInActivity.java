@@ -85,6 +85,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+        // Normal email and password Sign In
         signinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +105,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+        // Move to Sign Up if no account
         noAccount.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -116,7 +118,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-
+        // CountDownTimer used to prevent email reset spam
         requestCDT = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -129,7 +131,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         };
 
-
+        // Allow user to reset password through email
         resetPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -186,7 +188,7 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-
+    // Sign In function with email and password
     private void SignIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -220,6 +222,7 @@ public class SignInActivity extends AppCompatActivity {
                 });
     }
 
+    // Google Sign In Result
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -242,6 +245,7 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
+    // Authenticate user with Firebase with Google
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -277,6 +281,7 @@ public class SignInActivity extends AppCompatActivity {
                 });
     }
 
+    // Load user data from firebase
     public void LoadDataFromFirebase(String userID, String userEmail) {
         User user = new User(userID, userEmail);
         mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
@@ -308,6 +313,7 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
+    // Create database in firebase if new user
     public void CreateDataInFirebase(String userID, String userEmail) {
         User user = new User(userID, userEmail);
         mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users/" + userID);

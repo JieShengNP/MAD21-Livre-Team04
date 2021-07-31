@@ -89,7 +89,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Retriving of Book by its ISBN number.
+     * Retrieving of Book by its ISBN number.
      *
      * @param ISBN  ISBN of the book
      * @param isCus is book custom
@@ -120,9 +120,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     /**
-     * Retrieving of Book by its ISBN number.
+     * Retrieving of Book by its Database ID number.
      *
-     * @param id ISBN of the book
+     * @param id ID of the book
      * @return Book if it exists in the Database.
      */
     public Book FindBookByID(int id) {
@@ -149,7 +149,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * retrieving of Book by its ISBN number.
+     * Retrieving of Book ID by its ISBN number of Book Object.
      *
      * @param book to find id of book
      * @return id if it exists in the Database.
@@ -170,10 +170,10 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Retriving of Book by its ISBN number.
+     * Updating of Book by its Database ID number.
      *
      * @param book updated version
-     * @param id   id of book to update
+     * @param id   (String) id of book to update
      * @return Book if it exists in the Database.
      */
     public int UpdateBook(Book book, String id) {
@@ -224,7 +224,7 @@ public class DBHandler extends SQLiteOpenHelper {
         ArrayList<Book> bookList = new ArrayList<>();
         ArrayList<String> qList = new ArrayList<>(Arrays.asList(query.split(" ")));
 
-        //run through a list of words in the query and add all unique books to booklist
+        //run through a list of words in the query and add all unique books to book list
 
         for (int i = 0; qList.size() > i; i++) {
             String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE ((" + BOOK_COLUMN_TITLE + " LIKE '%" + qList.get(i) + "%') or (" + BOOK_COLUMN_AUTHOR + " LIKE '%" + qList.get(i) + "%') or (" + BOOK_COLUMN_BLURB + " LIKE '%" + qList.get(i) + "%')) and " + BOOK_COLUMN_CUSTOM + " = 1";
@@ -334,9 +334,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return bookList;
     }
 
-    /*
-        Creates a log entry of time read .
-    */
+    /***
+     * Creates a log entry of time read.
+     * @param book The book to update log
+     * @param seconds The number of seconds to add
+    **/
     public void UpdateLog(Book book, int seconds) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         ContentValues values = new ContentValues();
@@ -351,9 +353,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    /*
-        Updates total time read in Book table
-    */
+    /**
+     * Updates total time read in Book table
+     * @param book The book to update total time
+    **/
     public void UpdateTotalTime(Book book) {
         ContentValues values = new ContentValues();
         values.put(BOOK_COLUMN_READING_TIME, book.getReadSeconds());
@@ -431,6 +434,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return bookList;
     }
 
+    /**
+     * Gets all the books' total reading time in the Database
+     *
+     * @return Total reading time
+     */
 
     public int GetTotalReadingTimeInSec() {
         int totalTime = 0;
@@ -446,6 +454,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return totalTime;
     }
 
+    /**
+     * Gets all the records that are currently stored in the Database
+     *
+     * @return An ArrayList that contains all the Records.
+     */
     public ArrayList<Records> GetAllRecords() {
         ArrayList<Records> recordsList = new ArrayList<Records>();
         String dbQuery = "SELECT * FROM " + TABLE_LOG + " ORDER BY " + LOG_COLUMN_ID + " DESC";
@@ -473,7 +486,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return recordsList;
     }
 
-
+    /**
+     * Check if the book is stored in the Database
+     * @param book Book to check if is added in Database
+     * @return Whether the book is added in the Database
+     */
     public boolean isBookAdded(Book book) {
         String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\") and (" + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0) + ")";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -489,6 +506,11 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Gets the total number of books that are currently stored in the Database
+     *
+     * @return The number of books
+     */
     //Get Total Number of Books in Library
     public int GetTotalBooksInLibrary() {
         String dbQuery = "SELECT COUNT(*) FROM " + TABLE_BOOK;
@@ -505,7 +527,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return 0;
     }
 
-    //Get Total Number of Books Read
+    /**
+     * Gets all the books that are currently stored in the Database that has been read at least for a second
+     *
+     * @return The number of books read
+     */
     public int GetTotalBooksRead() {
         String dbQuery = "SELECT COUNT(*) FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_READING_TIME + " > 0";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -521,6 +547,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return 0;
     }
 
+    /**
+     * Gets the average reading time of all logs.
+     *
+     * @return Average time
+     */
     public int GetAvgTimePerSession() {
         String dbQuery = "SELECT AVG(" + LOG_COLUMN_SECOND + ") FROM " + TABLE_LOG;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -536,6 +567,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return 0;
     }
 
+    /**
+     * Gets all the books with most time spent on
+     *
+     * @return The book that was spent the most time on
+     */
     public Book GetBookMostTimeSpent() {
         String dbQuery = "SELECT * FROM " + TABLE_BOOK + " ORDER BY " + BOOK_COLUMN_READING_TIME + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -569,6 +605,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return null;
     }
 
+    /**
+     * Gets the most common author of all books in the Database
+     *
+     * @return Author's name
+     */
     public String GetFavouriteAuthor() {
         String dbQuery = "SELECT " + BOOK_COLUMN_AUTHOR + " ,COUNT(*) FROM " + TABLE_BOOK + " GROUP BY "
                 + BOOK_COLUMN_AUTHOR + " ORDER BY COUNT(*) DESC";
@@ -585,6 +626,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return "None";
     }
 
+    /**
+     * Adds all the books in a List to the Database
+     *
+     * @param bookList The book list to be added
+     */
     public void AddFirebaseBookToDB(List<Book> bookList) {
         SQLiteDatabase db = this.getWritableDatabase();
         for (Book book : bookList) {
@@ -606,6 +652,11 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Adds all the records in a List to the Database
+     *
+     * @param recordsList The records list to be added
+     */
     public void AddFirebaseRecordToDB(List<Records> recordsList) {
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -623,6 +674,11 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Deletes and empties the database
+     *
+     * @param context The context
+     */
     public static void DeleteDatabase(Context context) {
         context.deleteDatabase(DATABASE_NAME);
     }

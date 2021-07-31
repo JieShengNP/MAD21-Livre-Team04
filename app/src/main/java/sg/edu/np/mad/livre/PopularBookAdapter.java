@@ -30,15 +30,18 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
     public PopularBookViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case 1: {
+                // Last item of the recycler view
                 View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_popularbooks_end, parent, false);
                 return new PopularBookViewHolder(itemView);
             }
             case 2: {
+                // First item of the recycler view
                 View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_popularbooks_start, parent, false);
                 return new PopularBookViewHolder(itemView);
             }
             case 0:
             default: {
+                // Every item in the book list
                 View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_popularbooks, parent, false);
                 return new PopularBookViewHolder(itemView);
             }
@@ -51,6 +54,7 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
             return;
         }
         if (position == 0) {
+            // Set the Title and Descriptions of PopularBook Activity
             Context context = holder.pageTitle.getContext();
             if (bookList.size() > 0) {
                 if (bookList.size() == 1) {

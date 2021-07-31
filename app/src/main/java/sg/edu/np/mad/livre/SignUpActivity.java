@@ -79,6 +79,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+        // Sign Up Initialisation
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +102,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+        // Leads user to Sign In Page
         haveAccount.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -112,15 +114,13 @@ public class SignUpActivity extends AppCompatActivity {
                 return true;
             }
         });
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        // Check if user is logged in, if it is bring them to Library Activity
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             Intent intent = new Intent(SignUpActivity.this, LibraryActivity.class);
             startActivity(intent);
-        } else {
-            // No user is signed in
         }
-
     }
 
     @Override
@@ -133,6 +133,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    // Create user account with email and password and username
     private void CreateAccount(String email, String password, String name) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -166,6 +167,7 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
+    // Google Sign In Result
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -189,6 +191,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    // Authenticate user with Firebase with Google
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -224,6 +227,7 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
+    // Create data in firebase if doesn't exist
     public void CreateDataInFirebase(String userID, String userEmail, String mode, String name) {
         User user = new User(userID, userEmail);
         if (mode.equals("SignUp")) {
@@ -243,6 +247,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    // Load data from firebase
     public void LoadDataFromFirebase(String userID, String userEmail) {
         User user = new User(userID, userEmail);
         mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();

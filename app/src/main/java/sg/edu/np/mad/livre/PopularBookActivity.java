@@ -102,6 +102,7 @@ public class PopularBookActivity extends AppCompatActivity {
             }
         });
 
+        // Initialise Popular Book Recycler View
         popularBookAdapter = new PopularBookAdapter(bookList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         RecyclerView recyclerView = findViewById(R.id.popularRecyclerView);
