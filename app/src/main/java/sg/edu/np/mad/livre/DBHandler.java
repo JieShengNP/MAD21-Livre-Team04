@@ -49,7 +49,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String CREATE_BOOK_TABLE = "CREATE TABLE " + TABLE_BOOK + "(" + BOOK_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + BOOK_COLUMN_ISBN + " TEXT," + BOOK_COLUMN_AUTHOR + " TEXT," + BOOK_COLUMN_YEAR + " TEXT," + BOOK_COLUMN_TITLE + " TEXT," + BOOK_COLUMN_BLURB + " TEXT," + BOOK_COLUMN_THUMBNAIL + " TEXT," + BOOK_COLUMN_READING_TIME + " INT," + BOOK_COLUMN_CUSTOM + " INT," + BOOK_COLUMN_ADDED + " INT," + BOOK_COLUMN_ARCHIVED + " INT" + ")";
         String CREATE_LOG_TABLE = "CREATE TABLE " + TABLE_LOG + "(" + LOG_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + LOG_COLUMN_NAME+ " TEXT," + LOG_COLUMN_ISBN+ " TEXT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_SECOND + " INT)";
+                + LOG_COLUMN_NAME+ " TEXT," + LOG_COLUMN_ISBN+ " INT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_SECOND + " INT)";
         db.execSQL(CREATE_BOOK_TABLE);
         db.execSQL(CREATE_LOG_TABLE);
 
@@ -119,8 +119,8 @@ public class DBHandler extends SQLiteOpenHelper {
      * @param id ISBN of the book
      * @return Book if it exists in the Database.
      */
-    public Book FindBookByID(String id){
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ID + " = \"" + id +"\"";
+    public Book FindBookByID(int id){
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ID + " = \"" + String.valueOf(id) +"\"";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         Book book = new Book();
@@ -147,14 +147,16 @@ public class DBHandler extends SQLiteOpenHelper {
      * @return id if it exists in the Database.
      *          "not found" if it does not.
      */
-    public String GetBookId(Book book){
-        String id = "not found";
+    public int GetBookId(Book book){
         String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\"";
+        int id = -1;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.moveToFirst()){
-           id = cursor.getString(0);
+            id = cursor.getInt(0);
         }
+        cursor.close();;
+        db.close();
         return id;
     }
 
@@ -322,7 +324,7 @@ public class DBHandler extends SQLiteOpenHelper {
     /*
         Creates a log entry of time read .
     */
-    public void updateLog(String isbn,int seconds, String name)
+    public void updateLog(int isbn,int seconds, String name)
     {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         ContentValues values = new ContentValues();
@@ -441,7 +443,7 @@ public class DBHandler extends SQLiteOpenHelper {
             do {
                 Records records = new Records();
                 records.setName(cursor.getString(1));
-                records.setIsbn(cursor.getString(2));
+                records.setIsbn(cursor.getInt(2));
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 try {
                     records.setDateRead(sdf.parse(cursor.getString(3)));
