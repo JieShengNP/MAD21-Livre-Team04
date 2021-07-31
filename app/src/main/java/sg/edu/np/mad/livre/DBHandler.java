@@ -449,6 +449,7 @@ public class DBHandler extends SQLiteOpenHelper {
         {
             do {
                 Records records = new Records();
+                records.set_id(cursor.getInt(0));
                 records.setName(cursor.getString(1));
                 records.setIsbn(cursor.getString(2));
                 records.setBookID(cursor.getInt(3));
