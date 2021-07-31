@@ -353,7 +353,6 @@ public class EditBook extends AppCompatActivity {
         newBook.setCustom(true);
         newBook.setThumbnail(thumbnailBM);
 
-        Log.v("AAAAAAAAA", String.valueOf(id));
         //create intents and set putextras, start intent -> go to bookdetails
         Intent intent = new Intent(getApplicationContext(), BookDetails.class);
         intent.putExtra("BookObject", newBook);

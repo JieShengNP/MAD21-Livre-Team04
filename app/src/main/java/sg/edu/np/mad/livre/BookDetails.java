@@ -87,7 +87,6 @@ public class BookDetails extends AppCompatActivity {
             wasChanged = false;
         }
 
-        Log.v("book1book", book.toString());
 
         //set onclick listeners and make
         backtag.setOnClickListener(v -> backClick());
@@ -199,7 +198,6 @@ public class BookDetails extends AppCompatActivity {
         //user wants to save changes to book
 
         //try to update book, finish if it fails & tell user to delete book
-        Log.v("boobook", String.valueOf(id==null));
         int rowsAffected = dbHandler.UpdateBook(book, id);
         if (rowsAffected == 0){
             Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
@@ -279,11 +277,10 @@ public class BookDetails extends AppCompatActivity {
 
     public void remove(DBHandler dbHandler){
         //user wants to remove book
-        Log.v("bookbook", book.toString());
 
         if (book.isCustom()){
             //if book is custom
-Log.v("bookbook", book.toString());
+
             //alert dialogue (removing custom book permanently)
             AlertDialog.Builder bui = new AlertDialog.Builder(BookDetails.this);
             bui.setMessage("If you delete this book, all your reading logs will be erased. You will have to customise this book again in order to read it.")
