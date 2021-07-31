@@ -26,6 +26,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class PopularBookActivity extends AppCompatActivity {
 
@@ -33,6 +37,7 @@ public class PopularBookActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     CountDownTimer cdt;
     PopularBookAdapter popularBookAdapter;
+    ArrayList<PopularBook> bookList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,7 @@ public class PopularBookActivity extends AppCompatActivity {
         backText = findViewById(R.id.popularBackText);
         pageTitle = findViewById(R.id.popularTitle);
         pageDesc = findViewById(R.id.popularDesc);
-        ArrayList<PopularBook> bookList = new ArrayList<>();
+        bookList = new ArrayList<>();
 
         pageTitle.setText("Loading...");
         pageDesc.setText("Loading...");
@@ -79,6 +84,24 @@ public class PopularBookActivity extends AppCompatActivity {
                         } else {
                             pageTitle.setText(getString(R.string.popularTitle, bookList.size()));
                             pageDesc.setText(getString(R.string.popularDesc, bookList.size()));
+                            //Sort by Readers and Time
+                            Collections.sort(bookList, new Comparator() {
+
+                                public int compare(Object o1, Object o2) {
+
+                                    Integer reader1 = ((PopularBook) o1).getTotalReaders();
+                                    Integer reader2 = ((PopularBook) o2).getTotalReaders();
+                                    int sComp = reader1.compareTo(reader2);
+
+                                    if (sComp != 0) {
+                                        return sComp;
+                                    }
+
+                                    Integer time1 = ((PopularBook) o1).totalTime;
+                                    Integer time2 = ((PopularBook) o2).totalTime;
+                                    return time1.compareTo(time2);
+                                }});
+                            Collections.reverse(bookList);
                         }
                     } else {
                         pageTitle.setText(getString(R.string.popularTitleNone));
