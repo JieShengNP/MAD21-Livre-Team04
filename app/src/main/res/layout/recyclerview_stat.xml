@@ -7,12 +7,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="222dp">
+        android:layout_height="130dp">
 
         <ImageView
             android:id="@+id/statFrame"
-            android:layout_width="323dp"
-            android:layout_height="27dp"
+            android:layout_width="40dp"
+            android:layout_height="13dp"
             app:layout_constraintBottom_toTopOf="@+id/statName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="TextView"
-            android:textSize="24sp"
+            android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/statName"
