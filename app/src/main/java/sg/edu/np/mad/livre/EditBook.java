@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -65,7 +66,6 @@ public class EditBook extends AppCompatActivity {
         tag = findViewById(R.id.editTag);
 
 
-
         //check if intent has title, set if have
         Intent receivedIntent = getIntent();
         try {
@@ -73,7 +73,7 @@ public class EditBook extends AppCompatActivity {
 
             //find id of book, finish if error
             int idnew = dbHandler.GetBookId(book);
-            if(idnew == -1) {
+            if (idnew == -1) {
                 Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -86,9 +86,9 @@ public class EditBook extends AppCompatActivity {
             editISBN.setText(book.getIsbn());
             editBlurb.setText(book.getBlurb());
 
-            if(book.getThumbnail().equals("Unavailable")){
+            if (book.getThumbnail().equals("Unavailable")) {
                 thumbnailBM = "Unavailable";
-            }else{
+            } else {
                 thumbnailBM = book.getThumbnail();
                 //decode thumbnail and set
                 byte[] decodedString = Base64.decode(thumbnailBM, Base64.DEFAULT);
@@ -96,13 +96,11 @@ public class EditBook extends AppCompatActivity {
 
                 coverImg.setImageBitmap(decodedByte);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(EditBook.this, "Error", Toast.LENGTH_SHORT).show();
             finish();
         }
-
 
 
         //set onclick for tag
@@ -114,9 +112,12 @@ public class EditBook extends AppCompatActivity {
         //text changed listeners, validate when triggered
         editAuthor.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -127,9 +128,12 @@ public class EditBook extends AppCompatActivity {
         editPublishYear.addTextChangedListener(new TextWatcher() {
             //do nothing
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -140,9 +144,12 @@ public class EditBook extends AppCompatActivity {
         editISBN.addTextChangedListener(new TextWatcher() {
             //do nothing
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -154,29 +161,25 @@ public class EditBook extends AppCompatActivity {
         //when submit button is clicked
         submitBtn.setOnClickListener(v -> {
             //Hide keyboard
-            ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(editBlurb.getWindowToken(), 0);
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(editBlurb.getWindowToken(), 0);
 
             //check for missing values, toast and error if there are
             //no errors -> submit
-            if(!isChanged()){
+            if (!isChanged()) {
                 Toast.makeText(getApplicationContext(), "No changes to save", Toast.LENGTH_SHORT).show();
                 return;
-            }
-            else if(thumbnailBM == null){
+            } else if (thumbnailBM == null) {
                 editCoverBtn.setError("Please set book cover");
                 return;
-            }
-            else if(editTitle.getText().toString().length() == 0){
+            } else if (editTitle.getText().toString().length() == 0) {
                 editTitle.setError("Please enter a Title");
                 Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
-            }
-            else if(editBlurb.getText().toString().length() == 0){
+            } else if (editBlurb.getText().toString().length() == 0) {
                 editBlurb.setError("Please enter a Synopsis");
                 Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
-            }
-            else if(!(AuthorValidation() && PubYearValidation() && ISBNValidation())){
+            } else if (!(AuthorValidation() && PubYearValidation() && ISBNValidation())) {
                 Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -189,10 +192,10 @@ public class EditBook extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //reset original book from database
-        if(id != -1 && book !=null){
+        if (id != -1 && book != null) {
             //find id of book, finish if error
             int idnew = dbHandler.GetBookId(book);
-            if(idnew == -1) {
+            if (idnew == -1) {
                 Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -242,8 +245,7 @@ public class EditBook extends AppCompatActivity {
                                 thumbnailBM = "Unavailable";
                                 return;
                             }
-                        }
-                        else {
+                        } else {
                             //older version
                             try {
                                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), result);
@@ -264,19 +266,17 @@ public class EditBook extends AppCompatActivity {
                 }
             });
 
-    public void bitSet(Bitmap bitmap){
+    public void bitSet(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         //try to compress with png, if it fails, use jpg, show error message if both fail
-        try{
+        try {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            try{
+            try {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            }
-            catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Invalid file", Toast.LENGTH_SHORT).show();
                 thumbnailBM = "Unavailable";
@@ -294,8 +294,7 @@ public class EditBook extends AppCompatActivity {
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
             coverImg.setImageBitmap(decodedByte);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             //decode
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Invalid file", Toast.LENGTH_SHORT).show();
@@ -314,7 +313,7 @@ public class EditBook extends AppCompatActivity {
 
                     //find id of book, finish if error
                     int idnew = dbHandler.GetBookId(book);
-                    if(idnew == -1) {
+                    if (idnew == -1) {
                         Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -328,7 +327,9 @@ public class EditBook extends AppCompatActivity {
                     startActivity(bookDetailsIntent);
                 })
                 //User chooses not to
-                .setNegativeButton("No", (dialog, id) -> {return;});
+                .setNegativeButton("No", (dialog, id) -> {
+                    return;
+                });
 
         //Creating dialog box
         AlertDialog alert = bui.create();
@@ -337,7 +338,7 @@ public class EditBook extends AppCompatActivity {
         alert.show();
     }
 
-    public void ValidatedEdit(){
+    public void ValidatedEdit() {
         //for valid edits
         //create book object and set values
 
@@ -360,31 +361,28 @@ public class EditBook extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public Boolean AuthorValidation(){
+    public Boolean AuthorValidation() {
         //author's validation
 
         //regex that return true for any numbers in string
         Pattern p = Pattern.compile(".*\\d+.*");
 
-        if(editAuthor.getText().toString().length() == 0){
+        if (editAuthor.getText().toString().length() == 0) {
             editAuthor.setError("Please enter an Author");
-        }
-        else if(p.matcher(editAuthor.getText()).matches()){
+        } else if (p.matcher(editAuthor.getText()).matches()) {
             editAuthor.setError("No numbers!");
-        }
-        else if(editAuthor.getText().length() > 20){
+        } else if (editAuthor.getText().length() > 20) {
             editAuthor.setError("Max length 20!");
-        }
-        else{
+        } else {
             return true;
         }
         return false;
     }
 
-    public Boolean PubYearValidation(){
+    public Boolean PubYearValidation() {
         //validation for year that works for API 19
         //create date object out of input
-        String newDateStr = "01/"+"01/"+editPublishYear.getText();
+        String newDateStr = "01/" + "01/" + editPublishYear.getText();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         Date strDate = new Date();
@@ -395,66 +393,62 @@ public class EditBook extends AppCompatActivity {
         }
 
         //check length of input and validity of date object
-        if(editPublishYear.getText().length() > 4 || editPublishYear.getText().length() < 1){
+        if (editPublishYear.getText().length() > 4 || editPublishYear.getText().length() < 1) {
             editPublishYear.setError("Invalid Year!");
-        }
-        else if((new Date()).before(strDate)){
+        } else if ((new Date()).before(strDate)) {
             editPublishYear.setError("Invalid Year!");
-        }
-        else{
+        } else {
             return true;
         }
         return false;
     }
 
-    public Boolean ISBNValidation(){
+    public Boolean ISBNValidation() {
         //create book object and validate
         Book b = new Book();
         b.setCustom(true);
         b.setIsbn(editISBN.getText().toString());
-        if(b.getIsbn().length() != 13){
+        if (b.getIsbn().length() != 13) {
             editISBN.setError("Invalid ISBN-13!");
-        }else if (dbHandler.isBookAdded(b) && !(b.getIsbn().equals(book.getIsbn()))){
-                editISBN.setError("Custom book exists with this ISBN");
-        }
-        else{
+        } else if (dbHandler.isBookAdded(b) && !(b.getIsbn().equals(book.getIsbn()))) {
+            editISBN.setError("Custom book exists with this ISBN");
+        } else {
             return true;
         }
 
         return false;
     }
 
-    public void setOrientationDifferences(){
+    public void setOrientationDifferences() {
         tag = findViewById(R.id.editTag);
         editTxt = findViewById(R.id.editText);
         //if landscape
-        if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             //tag
             tag.getLayoutParams().height = Math.round(70 * Resources.getSystem().getDisplayMetrics().density);
-            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0,0,0,0);
+            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0, 0, 0, 0);
             tag.setRotation(270);
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tag.getLayoutParams();
-            p.setMargins(0, Math.round(20 * Resources.getSystem().getDisplayMetrics().density), Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+            p.setMargins(0, Math.round(20 * Resources.getSystem().getDisplayMetrics().density), Math.round(52 * Resources.getSystem().getDisplayMetrics().density), 0);
 
             //catalogue text
             editTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 42);
             ViewGroup.MarginLayoutParams ct = (ViewGroup.MarginLayoutParams) editTxt.getLayoutParams();
-            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(0 * Resources.getSystem().getDisplayMetrics().density),0,0);
+            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(0 * Resources.getSystem().getDisplayMetrics().density), 0, 0);
             editTxt.getLayoutParams().height = Math.round(62 * Resources.getSystem().getDisplayMetrics().density);
 
-        }
-        else { //if portrait
+        } else { //if portrait
             //tag
             tag.getLayoutParams().height = Math.round(107 * Resources.getSystem().getDisplayMetrics().density);
-            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0, 0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0, 0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density), 0);
             tag.setRotation(0);
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tag.getLayoutParams();
-            p.setMargins(0,0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+            p.setMargins(0, 0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density), 0);
 
             //catalogue text
             editTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 60);
             ViewGroup.MarginLayoutParams ct = (ViewGroup.MarginLayoutParams) editTxt.getLayoutParams();
-            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(16 * Resources.getSystem().getDisplayMetrics().density),0,0);
+            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(16 * Resources.getSystem().getDisplayMetrics().density), 0, 0);
             editTxt.getLayoutParams().height = Math.round(85 * Resources.getSystem().getDisplayMetrics().density);
 
         }
@@ -462,18 +456,17 @@ public class EditBook extends AppCompatActivity {
         tag.requestLayout();
     }
 
-    public void back(){
+    public void back() {
 
         //check for any value in any of the strings
         //alert user if there are
         //finish if there aren't
-        if(isChanged()){
+        if (isChanged()) {
             unsavedChangesWarning();
-        }
-        else{
+        } else {
             //find id of book, finish if error
             int idnew = dbHandler.GetBookId(book);
-            if(idnew == -1) {
+            if (idnew == -1) {
                 Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -488,7 +481,7 @@ public class EditBook extends AppCompatActivity {
         }
     }
 
-    public Boolean isChanged(){
+    public Boolean isChanged() {
         //return true if anything has been changed, false if no
         return !editTitle.getText().toString().equals(book.getName()) || !editAuthor.getText().toString().equals(book.getAuthor()) || !editPublishYear.getText().toString().equals(book.getYear()) || !editISBN.getText().toString().equals(book.getIsbn()) || !editBlurb.getText().toString().equals(book.getBlurb()) || !thumbnailBM.equals(book.getThumbnail());
     }

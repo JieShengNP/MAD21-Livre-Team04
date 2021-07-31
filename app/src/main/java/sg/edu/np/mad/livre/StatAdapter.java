@@ -13,15 +13,14 @@ public class StatAdapter extends RecyclerView.Adapter<StatViewHolder> {
     ArrayList<String> hashKeys;
     HashMap<String, String> statList;
 
-    public StatAdapter(ArrayList<String> keys, HashMap<String, String> map)
-    {
+    public StatAdapter(ArrayList<String> keys, HashMap<String, String> map) {
         hashKeys = keys;
         statList = map;
     }
 
     @Override
-    public StatViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_stat,parent,false);
+    public StatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_stat, parent, false);
         return new StatViewHolder(item);
     }
 

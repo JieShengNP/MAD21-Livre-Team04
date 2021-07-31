@@ -61,8 +61,8 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
         drawer = findViewById(R.id.drawer_layout);
 
         CustomDrawerButton customDrawerButton = findViewById(R.id.navHamburgerImg);
-        customDrawerButton.setDrawerLayout( drawer );
-        customDrawerButton.getDrawerLayout().addDrawerListener( customDrawerButton );
+        customDrawerButton.setDrawerLayout(drawer);
+        customDrawerButton.getDrawerLayout().addDrawerListener(customDrawerButton);
         customDrawerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,14 +77,14 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
         navUsername = nView.findViewById(R.id.nav_header_username);
         navEmail = nView.findViewById(R.id.nav_header_email);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user.getPhotoUrl() != null){
+        if (user.getPhotoUrl() != null) {
             Picasso.get()
                     .load(user.getPhotoUrl())
                     .into(navImage);
         } else {
             navImage.setVisibility(View.INVISIBLE);
         }
-        if (user.getDisplayName() != null){
+        if (user.getDisplayName() != null) {
             navUsername.setText(user.getDisplayName());
         } else {
             navUsername.setText("");
@@ -138,10 +138,10 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
         //Nested List is used to split into chunks for Recycler View
         ArrayList<ArrayList<Book>> bookNestedList = new ArrayList<>();
         ArrayList<Book> allNonArchivedBookList = dbHandler.GetAllNonArchivedBooks();
-        if (allNonArchivedBookList != null){
+        if (allNonArchivedBookList != null) {
             //Separating to 4 per list
             int chunk = 4;
-            for(int i = 0; i < allNonArchivedBookList.size(); i += chunk){
+            for (int i = 0; i < allNonArchivedBookList.size(); i += chunk) {
                 List<Book> splitBookList = allNonArchivedBookList.subList(i, Math.min(i + chunk, allNonArchivedBookList.size()));
                 ArrayList<Book> splitBookArray = new ArrayList<>();
                 splitBookArray.addAll(splitBookList);
@@ -159,7 +159,7 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             drawer.setVisibility(View.GONE);
         } else {
@@ -175,13 +175,13 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
                 startActivity(intent);
                 break;
             }
-            case R.id.nav_mystats:{
+            case R.id.nav_mystats: {
                 Intent intent = new Intent(LibraryActivity.this, StatActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.nav_saveCloud:{
+            case R.id.nav_saveCloud: {
                 FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
                 User user = new User(fbUser.getUid(), fbUser.getEmail());
                 user.name = fbUser.getDisplayName();
@@ -196,7 +196,7 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
                 Toast.makeText(LibraryActivity.this, "Successfully saved to cloud!", Toast.LENGTH_SHORT).show();
                 break;
             }
-            case R.id.nav_downloadCloud:{
+            case R.id.nav_downloadCloud: {
                 FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
                 dbHandler.DeleteDatabase(LibraryActivity.this);
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
@@ -253,7 +253,7 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
                 AlertDialog.Builder builder = new AlertDialog.Builder(LibraryActivity.this);
                 builder.setTitle("Before you log out...");
                 long lastSyncDate = getSharedPreferences(SignInActivity.sharedPrefName, MODE_PRIVATE).getLong("LastSyncTime", -1);
-                builder.setMessage(lastSyncDate == -1? "You have not uploaded your data, would you like to upload before logging out?": "Your data was last synced on " + (new Date(lastSyncDate)).toString() + "\nWould you like to upload before logging out?");
+                builder.setMessage(lastSyncDate == -1 ? "You have not uploaded your data, would you like to upload before logging out?" : "Your data was last synced on " + (new Date(lastSyncDate)).toString() + "\nWould you like to upload before logging out?");
                 builder.setCancelable(false);
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -282,7 +282,7 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
         return true;
     }
 
-    private void SignOut(){
+    private void SignOut() {
         FirebaseAuth.getInstance().signOut();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))

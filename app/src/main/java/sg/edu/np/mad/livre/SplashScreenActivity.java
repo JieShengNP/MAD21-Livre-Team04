@@ -20,6 +20,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     //Splash screen
     private static int SPLASH_TIME_OUT = 3000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +39,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
 
 
-        new Handler().postDelayed(new Runnable(){
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void run(){
+            public void run() {
                 FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -76,6 +77,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 //close this activity
                 finish();
             }
-        },SPLASH_TIME_OUT);
+        }, SPLASH_TIME_OUT);
     }
 }

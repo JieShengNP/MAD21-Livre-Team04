@@ -120,8 +120,9 @@ public class SignInActivity extends AppCompatActivity {
         requestCDT = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                secondsLeft = (int) (millisUntilFinished/1000);
+                secondsLeft = (int) (millisUntilFinished / 1000);
             }
+
             @Override
             public void onFinish() {
                 blocked = false;
@@ -152,7 +153,7 @@ public class SignInActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
-                          Toast.makeText(SignInActivity.this, "Please wait for " + secondsLeft + " more seconds before sending another one!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "Please wait for " + secondsLeft + " more seconds before sending another one!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

@@ -38,7 +38,7 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
                 return new PopularBookViewHolder(itemView);
             }
             case 0:
-            default:{
+            default: {
                 View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_popularbooks, parent, false);
                 return new PopularBookViewHolder(itemView);
             }
@@ -47,10 +47,10 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
 
     @Override
     public void onBindViewHolder(PopularBookViewHolder holder, int position) {
-        if (position == bookList.size() + 1){
+        if (position == bookList.size() + 1) {
             return;
         }
-        if (position == 0){
+        if (position == 0) {
             Context context = holder.pageTitle.getContext();
             if (bookList.size() > 0) {
                 if (bookList.size() == 1) {
@@ -75,7 +75,8 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
                             Integer time1 = ((PopularBook) o1).totalTime;
                             Integer time2 = ((PopularBook) o2).totalTime;
                             return time1.compareTo(time2);
-                        }});
+                        }
+                    });
                     Collections.reverse(bookList);
                 }
             } else {
@@ -120,12 +121,12 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
     @Override
     public int getItemViewType(int position) {
         // End Item
-        if (position == bookList.size() + 1){
+        if (position == bookList.size() + 1) {
             return 1;
         }
 
         // Start Item
-        if (position == 0){
+        if (position == 0) {
             return 2;
         }
 

@@ -53,36 +53,36 @@ public class BookDetails extends AppCompatActivity {
         //get intent and get book object.
         //find out which view user came from
 
-            Intent receivedIntent = getIntent();
-            try {
-                isFromEdit = false;
-                isFromCus = false;
-                if (getIntent().getStringExtra("prev") != null) {
-                    if (getIntent().getStringExtra("prev").equals("Cus")) {
-                        isFromCus = true;
-                        isFromEdit = false;
-                    } else if (getIntent().getStringExtra("prev").equals("Edit")) {
-                        isFromEdit = true;
-                        isFromCus = false;
-                        //get id of book if user came from edit
-                        id = getIntent().getStringExtra("EditId");
-                    }
+        Intent receivedIntent = getIntent();
+        try {
+            isFromEdit = false;
+            isFromCus = false;
+            if (getIntent().getStringExtra("prev") != null) {
+                if (getIntent().getStringExtra("prev").equals("Cus")) {
+                    isFromCus = true;
+                    isFromEdit = false;
+                } else if (getIntent().getStringExtra("prev").equals("Edit")) {
+                    isFromEdit = true;
+                    isFromCus = false;
+                    //get id of book if user came from edit
+                    id = getIntent().getStringExtra("EditId");
                 }
-
-                if (book == null) {
-                    book = (Book) receivedIntent.getSerializableExtra("BookObject");
-                    //set added of book
-                    book.setAdded(dbHandler.isBookAdded(book));
-                }
-            } catch (Exception e) {
-                //finish if there is an error
-                e.printStackTrace();
-                Toast.makeText(BookDetails.this, "Error", Toast.LENGTH_SHORT).show();
-                finish();
             }
 
+            if (book == null) {
+                book = (Book) receivedIntent.getSerializableExtra("BookObject");
+                //set added of book
+                book.setAdded(dbHandler.isBookAdded(book));
+            }
+        } catch (Exception e) {
+            //finish if there is an error
+            e.printStackTrace();
+            Toast.makeText(BookDetails.this, "Error", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
         //set waschanged (if book came from edit has has been changed), to false if null
-        if(wasChanged == null){
+        if (wasChanged == null) {
             wasChanged = false;
         }
 
@@ -94,26 +94,24 @@ public class BookDetails extends AppCompatActivity {
         bookImage.setVisibility(View.VISIBLE);
 
         //show and hide bookdurationread based on whether book isadded
-        if (book.isAdded()){
+        if (book.isAdded()) {
             bookDurationRead.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             bookDurationRead.setVisibility(View.GONE);
         }
 
         //set string that would say "custom" if book iscustom
         //and blank if it is not
         String customTxt = "";
-        if (book.isCustom()){
+        if (book.isCustom()) {
             //if book is custom
 
             //if book user edits a book and saves the edit
             //or has edited the book and does not have an edit pending saving
             //show edit button, if not, don't
-            if((book.isAdded() && isFromEdit && wasChanged) || (book.isAdded() && !isFromEdit)) {
+            if ((book.isAdded() && isFromEdit && wasChanged) || (book.isAdded() && !isFromEdit)) {
                 editBook.setVisibility(View.VISIBLE);
-            }
-            else{
+            } else {
                 editBook.setVisibility(View.GONE);
             }
 
@@ -122,13 +120,13 @@ public class BookDetails extends AppCompatActivity {
             removeBtn.setText("Delete Custom Book");
 
             //if books's thumbnail is not unavailable, decode base64 to bitmap and set it
-            if(!(book.getThumbnail()).equals("Unavailable")){
+            if (!(book.getThumbnail()).equals("Unavailable")) {
                 byte[] decodedString = Base64.decode(book.getThumbnail(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                 bookImage.setImageBitmap(decodedByte);
             }
-        }else{
+        } else {
             //if book is not custom
 
             //dont show option to edit & set text to remove button
@@ -145,7 +143,7 @@ public class BookDetails extends AppCompatActivity {
 
         //set details of book to view
         bookTitle.setText(book.getName());
-        String details = book.getAuthor() +" · "+ book.getYear() +"\nISBN: " + book.getIsbn() + customTxt;
+        String details = book.getAuthor() + " · " + book.getYear() + "\nISBN: " + book.getIsbn() + customTxt;
         bookDetails.setText(details);
         String duration = "Reading Time: " + CalculateTotalTime();
         bookDurationRead.setText(duration);
@@ -155,35 +153,32 @@ public class BookDetails extends AppCompatActivity {
         //if book is not custom but is added
         //or if book is from custom and just got added
         //or is from edit and was just changed
-        if((book.isCustom() && book.isAdded() && isFromCus)|| (book.isCustom() && isFromEdit && wasChanged) || (book.isCustom() && !isFromCus && !isFromEdit) || (!book.isCustom() && book.isAdded())){
+        if ((book.isCustom() && book.isAdded() && isFromCus) || (book.isCustom() && isFromEdit && wasChanged) || (book.isCustom() && !isFromCus && !isFromEdit) || (!book.isCustom() && book.isAdded())) {
             //show buttons meant for edited book with no edits or creation pending
             toggleArchiveBtn.setVisibility(View.VISIBLE);
             SingleActionBtn.setVisibility(View.GONE);
             removeBtn.setVisibility(View.VISIBLE);
 
             //set start reading button and text of toggle archive button based on whether book is archived
-            if (book.isArchived()){
+            if (book.isArchived()) {
                 toggleArchiveBtn.setText("Move to Library");
             } else {
                 startReadingBtn.setVisibility(View.VISIBLE);
                 toggleArchiveBtn.setText("Move to Archive");
             }
 
-        // set onclicklisteners
-         toggleArchiveBtn.setOnClickListener(v -> togArClick(dbHandler));
-         startReadingBtn.setOnClickListener(v -> startClick());
-        }
-
-        else{
+            // set onclicklisteners
+            toggleArchiveBtn.setOnClickListener(v -> togArClick(dbHandler));
+            startReadingBtn.setOnClickListener(v -> startClick());
+        } else {
             //something (edit/add) is pending for the book
 
             //if book is from edit and is pending changes, show button button that saves
             //if not show button that adds to library
-            if (book.isCustom() && isFromEdit){
+            if (book.isCustom() && isFromEdit) {
                 SingleActionBtn.setText("Save Changes");
                 SingleActionBtn.setOnClickListener(v -> saveClick(id));
-            }
-            else{
+            } else {
                 SingleActionBtn.setText("Add to Library");
                 SingleActionBtn.setOnClickListener(v -> addclick());
             }
@@ -197,15 +192,15 @@ public class BookDetails extends AppCompatActivity {
         }
 
         //set onclicklistener for remove button
-        removeBtn.setOnClickListener(v-> remove(dbHandler));
-   }
+        removeBtn.setOnClickListener(v -> remove(dbHandler));
+    }
 
     public void saveClick(String id) {
         //user wants to save changes to book
 
         //try to update book, finish if it fails & tell user to delete book
         int rowsAffected = dbHandler.UpdateBook(book, id);
-        if (rowsAffected == 0){
+        if (rowsAffected == 0) {
             Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -234,10 +229,10 @@ public class BookDetails extends AppCompatActivity {
         backClick();
     }
 
-    public void togArClick(DBHandler dbHandler){
+    public void togArClick(DBHandler dbHandler) {
         //toggle book between archived and not archived, set buttons and text accordingly
 
-        if (book.isArchived()){
+        if (book.isArchived()) {
             book.setArchived(false);
             Toast.makeText(getBaseContext(), "Moved to Library!", Toast.LENGTH_SHORT).show();
             toggleArchiveBtn.setText("Move to Archive");
@@ -253,7 +248,7 @@ public class BookDetails extends AppCompatActivity {
         dbHandler.ToggleArchive(book);
     }
 
-    public void startClick(){
+    public void startClick() {
         //user wants to start reading
 
         //user wants to start reading, start activity and pass isbn
@@ -262,8 +257,7 @@ public class BookDetails extends AppCompatActivity {
             intent.putExtra("Isbn", dbHandler.GetBookId(book));
             book = null;
             startActivity(intent);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(BookDetails.this, LibraryActivity.class);
             book = null;
@@ -271,20 +265,20 @@ public class BookDetails extends AppCompatActivity {
         }
     }
 
-    public void addclick(){
+    public void addclick() {
         //user wants to add book, update information, update database, toast
         //and recreate to show updated buttons and options
         book.setAdded(true);
         book.setArchived(false);
         dbHandler.AddBook(book);
         recreate();
-        Toast.makeText(getBaseContext(), "Added" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), "Added", Toast.LENGTH_SHORT).show();
     }
 
-    public void remove(DBHandler dbHandler){
+    public void remove(DBHandler dbHandler) {
         //user wants to remove book
 
-        if (book.isCustom()){
+        if (book.isCustom()) {
             //if book is custom
 
             //alert dialogue (removing custom book permanently)
@@ -303,7 +297,9 @@ public class BookDetails extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT).show();
                     })
                     //User chooses not to
-                    .setNegativeButton("Nevermind", (dialog, id) -> {return;});
+                    .setNegativeButton("Nevermind", (dialog, id) -> {
+                        return;
+                    });
 
             //Creating dialog box
             AlertDialog alert = bui.create();
@@ -311,8 +307,7 @@ public class BookDetails extends AppCompatActivity {
             alert.setTitle("Are you sure?");
             alert.show();
 
-        }
-        else{
+        } else {
             //alert dialogue (removing custom book permanently)
             AlertDialog.Builder bui = new AlertDialog.Builder(BookDetails.this);
             bui.setMessage("If you remove this book, all your reading logs for this book will be erased. This is irreversible!")
@@ -328,7 +323,9 @@ public class BookDetails extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), "Removed", Toast.LENGTH_SHORT).show();
                     })
                     //User chooses not to
-                    .setNegativeButton("Nevermind", (dialog, id) -> {return;});
+                    .setNegativeButton("Nevermind", (dialog, id) -> {
+                        return;
+                    });
 
             //Creating dialog box
             AlertDialog alert = bui.create();
@@ -356,31 +353,30 @@ public class BookDetails extends AppCompatActivity {
             book = null;
 
             //if activity is last one in stack, go to library
-            ActivityManager mngr = (ActivityManager) getSystemService( ACTIVITY_SERVICE );
+            ActivityManager mngr = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 
             List<ActivityManager.RunningTaskInfo> taskList = mngr.getRunningTasks(10);
 
-            if(taskList.get(0).numActivities == 1 &&
+            if (taskList.get(0).numActivities == 1 &&
                     taskList.get(0).topActivity.getClassName().equals(this.getClass().getName())) {
                 Intent intent = new Intent(BookDetails.this, LibraryActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-            }
-            else {
+            } else {
 
                 finish();
             }
         }
     }
 
-    public String CalculateTotalTime(){
+    public String CalculateTotalTime() {
         //return a string with time in 00H 00M 00S
         int sec = 0;
 
         //if book.getReadSeconds() is invalid, return unavailable
         try {
             sec = book.getReadSeconds();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "Unavailable";
         }
@@ -391,10 +387,10 @@ public class BookDetails extends AppCompatActivity {
         min = min % 60;
 
         String returnMessage = "";
-        if (hour > 0){
+        if (hour > 0) {
             returnMessage += hour + "H ";
         }
-        if (min > 0){
+        if (min > 0) {
             returnMessage += min + "M ";
         }
         returnMessage += sec + "S";
