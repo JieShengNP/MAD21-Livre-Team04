@@ -6,24 +6,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
+
 import android.os.Handler;
 import android.os.SystemClock;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.concurrent.ExecutionException;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -38,12 +41,18 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final long INTERVAL_MS = 1000;
     ImageView recordsTag,libraryChain, timerFrame;
+    ImageView playButton,pauseButton,prevButton,nextButton,shuffleButton;
     Chronometer timer;
     Handler handler;
     long tMilliSec, tStart = 0L;
-    int sec,min,hour;
-    boolean timerRunning;
+    int sec,min,hour, currentMusic;
+    TextView musicName;
+    boolean timerRunning, wasPaused, musicStart;
     DBHandler dbHandler;
+    String isbn;
+    ArrayList<MusicTrack> musicList;
+    MediaPlayer mp;
+
     int isbn;
 
     @Override
@@ -56,6 +65,13 @@ public class MainActivity extends AppCompatActivity {
 //        myRef.setValue("Value");
         timer = findViewById(R.id.timerText);
         timerFrame = findViewById(R.id.timerFrame);
+        playButton = findViewById(R.id.button_play);
+        pauseButton = findViewById(R.id.button_pause);
+        prevButton = findViewById(R.id.button_prev);
+        nextButton = findViewById(R.id.button_next);
+        shuffleButton = findViewById(R.id.button_shuffle);
+        musicName = findViewById(R.id.musicName);
+
         handler = new Handler();
         dbHandler = new DBHandler(this);
         isbn = getIntent().getIntExtra("Isbn", -1);
@@ -99,6 +115,96 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        
+        //initialize music tracks list
+        InitializeMusicList();
+        currentMusic = 0;
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!timerRunning)
+                {
+                    handler.removeCallbacks(toastRunnable);
+                    Toast.makeText(MainActivity.this, "Please Start Timer First",Toast.LENGTH_SHORT).show();
+                    handler.postDelayed(toastRunnable, 0);
+                }
+                else
+                {
+                    playButton.setVisibility(View.INVISIBLE);
+                    pauseButton.setVisibility(View.VISIBLE);
+                    PlayMusic();
+                }
+            }
+        });
+        
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pauseButton.setVisibility(View.INVISIBLE);
+                playButton.setVisibility(View.VISIBLE);
+
+                PauseMusic();
+            }
+        });
+        
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!timerRunning) {
+                    handler.removeCallbacks(toastRunnable);
+                    Toast.makeText(MainActivity.this, "Please Start Timer First", Toast.LENGTH_SHORT).show();
+                    handler.postDelayed(toastRunnable, 0);
+                } else {
+                    NextMusic();
+                }
+            }
+        });
+
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!timerRunning)
+                {
+                    handler.removeCallbacks(toastRunnable);
+                    Toast.makeText(MainActivity.this, "Please Start Timer First",Toast.LENGTH_SHORT).show();
+                    handler.postDelayed(toastRunnable, 0);
+                }
+                else
+                {
+                    PrevMusic();
+                }
+            }
+        });
+
+        shuffleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Collections.shuffle(musicList);
+                Toast.makeText(MainActivity.this, "Playlist Shuffled",Toast.LENGTH_SHORT).show();
+            }
+        });
+        
+        
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(musicStart == true)
+        {
+            musicName.setText(musicList.get(currentMusic).getTrackName() + "\n" + musicList.get(currentMusic).getTrackAuthor());
+        }
+        if (wasPaused == true)
+        {
+            playButton.setVisibility(View.VISIBLE);
+            pauseButton.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            playButton.setVisibility(View.INVISIBLE);
+            pauseButton.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -189,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
                 startActivity(intent);
+                mp.release();
                 finish();
             }
         });
@@ -209,6 +316,140 @@ public class MainActivity extends AppCompatActivity {
 
         
     }
+
+    public void InitializeMusicList()
+    {
+        musicList = new ArrayList<MusicTrack>();
+        musicList.add(new MusicTrack(
+                "Another Day \n (Original Mix)",
+                "android.resource://" + getPackageName() + "/" + R.raw.another_day,
+                "Ron Gelinas"
+        ));
+        musicList.add(new MusicTrack(
+                "Beacon of Light \n (Original Mix)",
+                "android.resource://" + getPackageName() + "/" + R.raw.beacon_of_light,
+                "Ron Gelinas"
+        ));
+        musicList.add(new MusicTrack(
+                "Easy \n (Original Mix)",
+                "android.resource://" + getPackageName() + "/" + R.raw.easy,
+                "Ron Gelinas"
+        ));
+        musicList.add(new MusicTrack(
+                "Endeavour \n (Original Mix)",
+                "android.resource://" + getPackageName() + "/" + R.raw.endeavour,
+                "Ron Gelinas"
+        ));
+        musicList.add(new MusicTrack(
+                "Equinox \n (Original Mix)",
+                "android.resource://" + getPackageName() + "/" + R.raw.equinox,
+                "Ron Gelinas"
+        ));
+        musicList.add(new MusicTrack(
+                "Evening Out \n (Original Mix)",
+                "android.resource://" + getPackageName() + "/" + R.raw.evening_out,
+                "Ron Gelinas"
+        ));
+        musicList.add(new MusicTrack(
+                "Far Away \n (Original Mix)",
+                "android.resource://" + getPackageName() + "/" + R.raw.far_away,
+                "Ron Gelinas"
+        ));
+        musicList.add(new MusicTrack(
+                "New Direction (Instrumental) \n (Original Mix)",
+                "android.resource://" + getPackageName() + "/" + R.raw.new_direction,
+                "Ron Gelinas"
+        ));
+        musicList.add(new MusicTrack(
+                "The Art of Healing \n (Original Mix)",
+                "android.resource://" + getPackageName() + "/" + R.raw.the_art_of_healing,
+                "Ron Gelinas"
+        ));
+        musicList.add(new MusicTrack(
+                "Windsurfing \n (Original Mix)",
+                "android.resource://" + getPackageName() + "/" + R.raw.windsurfing,
+                "Ron Gelinas"
+        ));
+        Collections.shuffle(musicList);
+    }
+
+    public void PlayMusic()
+    {
+        //MP just started
+        if (!wasPaused)
+        {
+            try {
+                musicName.setText(musicList.get(currentMusic).getTrackName() + "\n" + musicList.get(currentMusic).getTrackAuthor());
+                mp = new MediaPlayer();
+                mp.setDataSource(MainActivity.this, Uri.parse(musicList.get(currentMusic).getTrackFileLocation()));
+                mp.prepare();
+                mp.start();
+                musicStart = true;
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        //Pausing of mp
+        else
+        {
+            wasPaused = !wasPaused;
+            mp.start();
+        }
+    }
+
+    public void PauseMusic()
+    {
+        wasPaused = !wasPaused;
+        mp.pause();
+    }
+
+    public void NextMusic()
+    {
+        PauseMusic();
+        if (currentMusic == musicList.size() - 1)
+        {
+            currentMusic = 0;
+        }
+        else
+        {
+            currentMusic ++;
+        }
+
+        mp.reset();
+        try {
+            musicName.setText(musicList.get(currentMusic).getTrackName() + "\n" + musicList.get(currentMusic).getTrackAuthor());
+            mp.setDataSource(MainActivity.this, Uri.parse(musicList.get(currentMusic).getTrackFileLocation()));
+            mp.prepare();
+            PlayMusic();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void PrevMusic()
+    {
+        PauseMusic();
+        if (currentMusic == 0)
+        {
+            currentMusic = musicList.size() - 1;
+        }
+        else
+        {
+            currentMusic --;
+        }
+
+        mp.reset();
+        try {
+            musicName.setText(musicList.get(currentMusic).getTrackName() + "\n" + musicList.get(currentMusic).getTrackAuthor());
+            mp.setDataSource(MainActivity.this, Uri.parse(musicList.get(currentMusic).getTrackFileLocation()));
+            mp.prepare();
+            PlayMusic();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
     private void UpdateFirebase(Book book, int extraTime){
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
