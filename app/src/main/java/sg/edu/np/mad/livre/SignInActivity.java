@@ -246,6 +246,7 @@ public class SignInActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(SignInActivity.this, "An error has occurred.", Toast.LENGTH_SHORT).show();
                     }
+                    CreateDataInFirebase(userID, userEmail);
                 }
             }
         });

@@ -251,7 +251,7 @@ public class SignUpActivity extends AppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(SignUpActivity.this, "An error has occurred.", Toast.LENGTH_SHORT).show();
+                        CreateDataInFirebase(userID, userEmail, "Google");
                     }
                 }
             }
