@@ -275,7 +275,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Book object = new Book();
         if (cursor.moveToFirst()){
             object.setID(Integer.parseInt(cursor.getString(0)));
-            db.delete(TABLE_BOOK, BOOK_COLUMN_ID + " = ?", new String[] { String.valueOf(object.getID()) });
+            db.delete(TABLE_BOOK, BOOK_COLUMN_ID + " = " + object.getID(), null);
             cursor.close();
             result = true;
         }
@@ -285,11 +285,11 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /**
      * Remove of Logs of Book from the Database.
-     * @param book The book to erase logs for
+     * @param bookID The BookID of the book to erase logs for
      */
-    public void EraseLogs(Book book){
+    public void EraseLogs(int bookID){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_LOG, LOG_COLUMN_BOOKID + " = ?", new String[] { String.valueOf(GetBookId(book)) });
+        db.delete(TABLE_LOG, LOG_COLUMN_BOOKID + " = " + bookID, null);
         db.close();
     }
 

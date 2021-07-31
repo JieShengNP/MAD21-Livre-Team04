@@ -287,7 +287,8 @@ public class BookDetails extends AppCompatActivity {
                     .setCancelable(true)
                     .setPositiveButton("Oh, delete it already!", (dialog, id) -> {
                         //User chooses to delete custom book and erase logs, exit activity
-                        dbHandler.EraseLogs(book);
+                        book.setID(dbHandler.GetBookId(book));
+                        dbHandler.EraseLogs(book.getID());
                         dbHandler.RemoveBook(book);
                         backClick();
                         Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT).show();
@@ -303,11 +304,28 @@ public class BookDetails extends AppCompatActivity {
 
         }
         else{
-            //if book is not custom, remove it immediately (user can add book again easily) and recreate
-            book.setAdded(false);
-            dbHandler.RemoveBook(book);
-            recreate();
-            Toast.makeText(getBaseContext(), "Removed", Toast.LENGTH_SHORT).show();
+            //alert dialogue (removing custom book permanently)
+            AlertDialog.Builder bui = new AlertDialog.Builder(BookDetails.this);
+            bui.setMessage("If you delete this book, all your reading logs will be erased. This is irreversible!")
+                    .setCancelable(true)
+                    .setPositiveButton("Oh, delete it already!", (dialog, id) -> {
+                        //User chooses to delete custom book and erase logs, exit activity
+                        book.setAdded(false);
+                        book.setID(dbHandler.GetBookId(book));
+                        dbHandler.EraseLogs(book.getID());
+                        dbHandler.RemoveBook(book);
+                        recreate();
+                        Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                    })
+                    //User chooses not to
+                    .setNegativeButton("Nevermind", (dialog, id) -> {return;});
+
+            //Creating dialog box
+            AlertDialog alert = bui.create();
+            //Setting the title manually
+            alert.setTitle("Are you sure?");
+            alert.show();
+
         }
 
     }
