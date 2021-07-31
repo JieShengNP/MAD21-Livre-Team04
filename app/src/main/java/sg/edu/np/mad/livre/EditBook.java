@@ -345,6 +345,7 @@ public class EditBook extends AppCompatActivity {
 
         Book newBook = book;
         newBook.setName(editTitle.getText().toString());
+        newBook.setName(editTitle.getText().toString());
         newBook.setAuthor(editAuthor.getText().toString());
         newBook.setYear(editPublishYear.getText().toString());
         newBook.setIsbn(editISBN.getText().toString());
@@ -352,11 +353,12 @@ public class EditBook extends AppCompatActivity {
         newBook.setCustom(true);
         newBook.setThumbnail(thumbnailBM);
 
+        Log.v("AAAAAAAAA", String.valueOf(id));
         //create intents and set putextras, start intent -> go to bookdetails
         Intent intent = new Intent(getApplicationContext(), BookDetails.class);
         intent.putExtra("BookObject", newBook);
         intent.putExtra("prev", "Edit");
-        intent.putExtra("EditId", id);
+        intent.putExtra("EditId", String.valueOf(id));
         startActivity(intent);
     }
 

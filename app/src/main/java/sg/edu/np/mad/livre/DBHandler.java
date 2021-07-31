@@ -38,6 +38,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String LOG_COLUMN_ISBN = "Isbn";
     public static final String LOG_COLUMN_DATE = "Date";
     public static final String LOG_COLUMN_SECOND = "Time";
+    public static final String LOG_COLUMN_BOOKID = "BookId";
 
     public DBHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,7 +50,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String CREATE_BOOK_TABLE = "CREATE TABLE " + TABLE_BOOK + "(" + BOOK_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + BOOK_COLUMN_ISBN + " TEXT," + BOOK_COLUMN_AUTHOR + " TEXT," + BOOK_COLUMN_YEAR + " TEXT," + BOOK_COLUMN_TITLE + " TEXT," + BOOK_COLUMN_BLURB + " TEXT," + BOOK_COLUMN_THUMBNAIL + " TEXT," + BOOK_COLUMN_READING_TIME + " INT," + BOOK_COLUMN_CUSTOM + " INT," + BOOK_COLUMN_ADDED + " INT," + BOOK_COLUMN_ARCHIVED + " INT" + ")";
         String CREATE_LOG_TABLE = "CREATE TABLE " + TABLE_LOG + "(" + LOG_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + LOG_COLUMN_NAME+ " TEXT," + LOG_COLUMN_ISBN+ " INT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_SECOND + " INT)";
+                + LOG_COLUMN_NAME+ " TEXT," + LOG_COLUMN_ISBN+ " INT," + LOG_COLUMN_BOOKID+ " INT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_SECOND + " INT)";
         db.execSQL(CREATE_BOOK_TABLE);
         db.execSQL(CREATE_LOG_TABLE);
 
@@ -181,7 +182,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(BOOK_COLUMN_ARCHIVED, book.isArchived()? 1: 0);
         values.put(BOOK_COLUMN_ADDED, book.isAdded()? 1: 0);
 
-        int rowsAffected = db.update(TABLE_BOOK, values, "(" +BOOK_COLUMN_ID + " = " + id + ") and (" + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0) + ")", null);
+        int rowsAffected = db.update(TABLE_BOOK, values, "(" +BOOK_COLUMN_ID + " = " + Integer.parseInt(id) + ") and (" + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0) + ")", null);
         db.close();
 
         return rowsAffected;
@@ -282,8 +283,7 @@ public class DBHandler extends SQLiteOpenHelper {
      */
     public void EraseLogs(Book book){
         SQLiteDatabase db = this.getWritableDatabase();
-        String dbQuery = "DELETE FROM " + TABLE_LOG + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\" and " + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0);
-        db.execSQL(dbQuery);
+        db.delete(TABLE_LOG, LOG_COLUMN_BOOKID + " = ?", new String[] { String.valueOf(GetBookId(book)) });
         db.close();
     }
 
