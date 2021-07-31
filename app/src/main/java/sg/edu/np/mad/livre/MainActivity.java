@@ -178,7 +178,9 @@ public class MainActivity extends AppCompatActivity {
                     dbBook.setReadSeconds(dbBook.getReadSeconds() + (int)(tMilliSec/1000));
 
                     //Update Firebase
-                    UpdateFirebase(dbBook, (int)(tMilliSec/1000));
+                    if (!dbBook.isCustom()) {
+                        UpdateFirebase(dbBook, (int) (tMilliSec / 1000));
+                    }
                     //Updating Database
                     dbHandler.updateLog(isbn, (int) (tMilliSec/1000), dbBook.getName());
                     dbHandler.updateTotalTime(dbBook);
