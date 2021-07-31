@@ -42,7 +42,7 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
         holder.bookAuthorYear.setText(bookList.get(position).author + " . " + bookList.get(position).year);
         holder.bookDesc.setText(bookList.get(position).blurb);
         String timeFormat = "";
-        float calculatedTime = bookList.get(position).totalTime;
+        double calculatedTime = bookList.get(position).totalTime;
 
         // Format in 2dp
         DecimalFormat df = new DecimalFormat("#0.00");
@@ -50,10 +50,10 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
         if (bookList.get(position).totalTime < 60) {
             timeFormat = " Total Seconds Read";
             timeSpent = String.valueOf(bookList.get(position).totalTime);
-        } else if ((calculatedTime = (bookList.get(position).totalTime / 60)) < 60) {
+        } else if ((calculatedTime = (bookList.get(position).totalTime / 60.0)) < 60) {
             timeFormat = " Total Minutes Read";
             timeSpent = df.format(calculatedTime);
-        } else if ((calculatedTime = (bookList.get(position).totalTime / 3600)) < 60) {
+        } else if ((calculatedTime = (bookList.get(position).totalTime / 3600.0)) < 60) {
             timeFormat = " Total Hours Read";
             timeSpent = df.format(calculatedTime);
         }
