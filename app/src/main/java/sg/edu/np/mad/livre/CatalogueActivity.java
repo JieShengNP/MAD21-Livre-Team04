@@ -30,9 +30,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 
@@ -40,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -98,7 +101,7 @@ public class CatalogueActivity extends AppCompatActivity {
 
         //when search bar is in focus, clear
         input.setOnFocusChangeListener((v, hasFocus) -> {
-            if(hasFocus){
+            if (hasFocus) {
                 input.getText().clear();
                 input.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
             }
@@ -121,7 +124,7 @@ public class CatalogueActivity extends AppCompatActivity {
             //when search icon is clicked
 
             //return if EditText is empty/whitespace
-            if (input.getText().toString().trim().isEmpty()){
+            if (input.getText().toString().trim().isEmpty()) {
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Please enter a query",
                         Toast.LENGTH_SHORT);
@@ -132,7 +135,7 @@ public class CatalogueActivity extends AppCompatActivity {
 
             //clear focus on EditText and hide keyboard
             input.clearFocus();
-            ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(input.getWindowToken(), 0);
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(input.getWindowToken(), 0);
 
             // RecyclerView rv = findViewById(R.id.catRecyclerView);
             CatItemsAdapter itemsAdapter1 = new CatItemsAdapter(new ArrayList<>());
@@ -152,10 +155,10 @@ public class CatalogueActivity extends AppCompatActivity {
 
             //replace spaces in input with plus, create request url
             String inputText = input.getText().toString().replace(" ", "+");
-            String url ="https://openlibrary.org/search.json?q=" + inputText;
+            String url = "https://openlibrary.org/search.json?q=" + inputText;
 
             //Loading indicators appear
-            ((TextView)findViewById(R.id.changeloadText)).setText("Scouring...");
+            ((TextView) findViewById(R.id.changeloadText)).setText("Scouring...");
             findViewById(R.id.featherDuster).setVisibility(View.GONE);
             findViewById(R.id.loadLayout).setVisibility(View.VISIBLE);
 
@@ -172,7 +175,7 @@ public class CatalogueActivity extends AppCompatActivity {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                     (Request.Method.GET, url, null, response -> {
                         //change loading text
-                        ((TextView)findViewById(R.id.changeloadText)).setText("Voilà, a scroll of titles, let's get sorting!");
+                        ((TextView) findViewById(R.id.changeloadText)).setText("Voilà, a scroll of titles, let's get sorting!");
 
                         try {
                             //get jsonarray docs
@@ -229,8 +232,7 @@ public class CatalogueActivity extends AppCompatActivity {
                                 //If books found, do second and third API calls for
                                 getDescFromAPI(); //Book description (2nd)
                                 getThumbsfromAPI(); //Thumbnail (3rd)
-                            }
-                            else{
+                            } else {
                                 //if no books found, skip other API calls, update book list
                                 addInfoBookList();
                             }
@@ -253,13 +255,13 @@ public class CatalogueActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-            //load video
-            VideoView loadVid = findViewById(R.id.loadVid);
-            //setting video path
-            String uri = "android.resource://" + getPackageName() + "/" + R.raw.lanima;
-            loadVid.setVideoURI(Uri.parse(uri));
-            loadVid.start();
-            loadVid.setOnPreparedListener(mp -> mp.setLooping(true));
+        //load video
+        VideoView loadVid = findViewById(R.id.loadVid);
+        //setting video path
+        String uri = "android.resource://" + getPackageName() + "/" + R.raw.lanima;
+        loadVid.setVideoURI(Uri.parse(uri));
+        loadVid.start();
+        loadVid.setOnPreparedListener(mp -> mp.setLooping(true));
     }
 
     @Override
@@ -269,13 +271,13 @@ public class CatalogueActivity extends AppCompatActivity {
         setOrientationDifferences();
     }
 
-    public void detAddCus(View view){
+    public void detAddCus(View view) {
         //when view is clicked start intent to customisebook activity
         Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
         startActivity(intent);
     }
 
-    public void LibraryTagClick(View view){
+    public void LibraryTagClick(View view) {
         //when view is clicked start intent to library activity
         Intent intent = new Intent(CatalogueActivity.this, LibraryActivity.class);
         startActivity(intent);
@@ -283,14 +285,14 @@ public class CatalogueActivity extends AppCompatActivity {
 
     public void getThumbsfromAPI() {
         //get thumbnail for every book in booklist
-        for (int b = 0; b < bookList.size(); b++)  {
+        for (int b = 0; b < bookList.size(); b++) {
             //create request utl
             String requrl = "https://openlibrary.org/api/books?bibkeys=ISBN:" + bookList.get(b).getIsbn() + "&format=json";
             //Create JsonObjectRequest object
             JsonObjectRequest reqObj = new JsonObjectRequest
                     (Request.Method.GET, requrl, null, response -> {
                         //change loading text
-                        ((TextView)findViewById(R.id.changeloadText)).setText("Catching flyaway book covers...");
+                        ((TextView) findViewById(R.id.changeloadText)).setText("Catching flyaway book covers...");
 
                         //default thumbnail string
                         String thumb = "unavailable";
@@ -317,7 +319,7 @@ public class CatalogueActivity extends AppCompatActivity {
                             thumbList.add(thumb); //add url
 
                             //if booklist and thumblist are same size, break loop
-                            if(bookList.size() == thumbList.size()){
+                            if (bookList.size() == thumbList.size()) {
                                 //compile information about books, end method
                                 addInfoBookList();
                                 return;
@@ -410,24 +412,23 @@ public class CatalogueActivity extends AppCompatActivity {
         }
     }
 
-    public void addInfoBookList(){
+    public void addInfoBookList() {
         //change loading text
-        ((TextView)findViewById(R.id.changeloadText)).setText("Dotting the i's, crossing the t's...");
+        ((TextView) findViewById(R.id.changeloadText)).setText("Dotting the i's, crossing the t's...");
 
-       //if lengths of all lists are not the same, return
-        if(bookList.size()!=descList.size() || thumbList.size()!=bookList.size()){
+        //if lengths of all lists are not the same, return
+        if (bookList.size() != descList.size() || thumbList.size() != bookList.size()) {
             return;
         }
 
         //go through every book in booklist and add the desc and thumb of same index
-        for (int b = 0; b<bookList.size(); b++){
+        for (int b = 0; b < bookList.size(); b++) {
             Book book = new Book();
             try {
                 book = bookList.get(b);
                 book.setBlurb(descList.get(b));
                 book.setThumbnail(thumbList.get(b));
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 Toast.makeText(getBaseContext(), "Error getting some content", Toast.LENGTH_SHORT).show();
             }
 
@@ -436,11 +437,11 @@ public class CatalogueActivity extends AppCompatActivity {
         updateBookList();
     }
 
-    public void updateBookList(){
+    public void updateBookList() {
 
         //combine both booklists, custom in front of api books
         //just use cusBookList if booklist is null
-        if(cusBookList == null){
+        if (cusBookList == null) {
             cusBookList = new ArrayList<>();
         }
         if (bookList != null) {
@@ -448,7 +449,7 @@ public class CatalogueActivity extends AppCompatActivity {
             findViewById(R.id.loadLayout).setVisibility(View.GONE);
 
             //update catinfo and make it visible, update recyclerview
-            if (bookList.size()!=0) {
+            if (bookList.size() != 0) {
                 cusBookList.addAll(bookList);
 
                 bookList = cusBookList;
@@ -460,13 +461,12 @@ public class CatalogueActivity extends AppCompatActivity {
                 View search = findViewById(R.id.catalogueSearch);
 
                 //make EditText like search bar
-                search.setPadding(search.getPaddingLeft(), 0,  (int) Math.round(search.getPaddingLeft() * 2.25), 0);
+                search.setPadding(search.getPaddingLeft(), 0, (int) Math.round(search.getPaddingLeft() * 2.25), 0);
                 findViewById(R.id.catsearchicon).setVisibility(View.VISIBLE);
                 search.setEnabled(true);
 
                 updateRecyclerView();
-            }
-            else{
+            } else {
                 //if booklist is empty, show featherduster
                 (findViewById(R.id.featherDuster)).setVisibility(View.VISIBLE);
 
@@ -487,7 +487,7 @@ public class CatalogueActivity extends AppCompatActivity {
 
                                     //create intent and get input
                                     Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
-                                    intent.putExtra("Title", String.valueOf(((EditText)findViewById(R.id.catalogueSearch)).getText()));
+                                    intent.putExtra("Title", String.valueOf(((EditText) findViewById(R.id.catalogueSearch)).getText()));
 
                                     //recreate activity
                                     recreate();
@@ -510,14 +510,14 @@ public class CatalogueActivity extends AppCompatActivity {
 
             }
 
-        }else{
+        } else {
             handleErrorWhileSearching("Something went wrong");
         }
 
 
     }
 
-    public void updateRecyclerView(){
+    public void updateRecyclerView() {
         //UpdateRecyclerView
         RecyclerView rv = findViewById(R.id.catRecyclerView);
         CatItemsAdapter itemsAdapter = new CatItemsAdapter(bookList);
@@ -526,7 +526,7 @@ public class CatalogueActivity extends AppCompatActivity {
         rv.setAdapter(itemsAdapter);
     }
 
-    public void levitate (float Y){
+    public void levitate(float Y) {
         //Levitation animation in one direction (up/down)
         final long yourDuration = 3000; //duration of one direction
         final TimeInterpolator yourInterpolator = new DecelerateInterpolator();
@@ -544,7 +544,7 @@ public class CatalogueActivity extends AppCompatActivity {
                 });
     }
 
-    public void shake (float X){
+    public void shake(float X) {
         //Levitation animation in one direction (left/right)
         final long yourDuration = 50; //duration of one direction
         final TimeInterpolator yourInterpolator = new DecelerateInterpolator();
@@ -562,7 +562,7 @@ public class CatalogueActivity extends AppCompatActivity {
                 });
     }
 
-    public void setOrientationDifferences(){
+    public void setOrientationDifferences() {
         //find views
         ImageView tag = findViewById(R.id.catalogueLibraryTag);
         TextView catTxt = findViewById(R.id.catalogueText);
@@ -570,18 +570,18 @@ public class CatalogueActivity extends AppCompatActivity {
         ImageView feadus = findViewById(R.id.featherDuster);
 
         //if landscape
-        if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             //tag
             tag.getLayoutParams().height = Math.round(70 * Resources.getSystem().getDisplayMetrics().density);
-            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0,0,0,0);
+            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0, 0, 0, 0);
             tag.setRotation(270);
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tag.getLayoutParams();
-            p.setMargins(0, Math.round(20 * Resources.getSystem().getDisplayMetrics().density), Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+            p.setMargins(0, Math.round(20 * Resources.getSystem().getDisplayMetrics().density), Math.round(52 * Resources.getSystem().getDisplayMetrics().density), 0);
 
             //catalogue text
             catTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 42);
             ViewGroup.MarginLayoutParams ct = (ViewGroup.MarginLayoutParams) catTxt.getLayoutParams();
-            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(0 * Resources.getSystem().getDisplayMetrics().density),0,0);
+            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(0 * Resources.getSystem().getDisplayMetrics().density), 0, 0);
             catTxt.getLayoutParams().height = Math.round(62 * Resources.getSystem().getDisplayMetrics().density);
 
             //frame2
@@ -589,19 +589,18 @@ public class CatalogueActivity extends AppCompatActivity {
 
             //featherdusters
             feadus.getLayoutParams().height = Math.round(70 * Resources.getSystem().getDisplayMetrics().density);
-        }
-        else { //if portrait
+        } else { //if portrait
             //tag
             tag.getLayoutParams().height = Math.round(107 * Resources.getSystem().getDisplayMetrics().density);
-            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0, 0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0, 0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density), 0);
             tag.setRotation(0);
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tag.getLayoutParams();
-            p.setMargins(0,0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+            p.setMargins(0, 0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density), 0);
 
             //catalogue text
             catTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 60);
             ViewGroup.MarginLayoutParams ct = (ViewGroup.MarginLayoutParams) catTxt.getLayoutParams();
-            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(16 * Resources.getSystem().getDisplayMetrics().density),0,0);
+            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(16 * Resources.getSystem().getDisplayMetrics().density), 0, 0);
             catTxt.getLayoutParams().height = Math.round(85 * Resources.getSystem().getDisplayMetrics().density);
 
             //frame2
@@ -614,7 +613,7 @@ public class CatalogueActivity extends AppCompatActivity {
         tag.requestLayout();
     }
 
-    public void handleErrorWhileSearching (String s){
+    public void handleErrorWhileSearching(String s) {
 
         //Alert dialogue when there is an error when searching queries
         AlertDialog.Builder bui = new AlertDialog.Builder(CatalogueActivity.this);
@@ -623,15 +622,14 @@ public class CatalogueActivity extends AppCompatActivity {
         s += ". Please try again later or with a different query.";
 
         //if network is not connected, change message to say so
-        if (!isNetworkAvailable(getApplication())){
+        if (!isNetworkAvailable(getApplication())) {
             s = ("Network connection not detected, please connect to one and try again.");
         }
 
         //add message on whether there are custom books or not
-        if (cusBookList != null){
+        if (cusBookList != null) {
             s += " Custom books results will still be shown.";
-        }
-        else{
+        } else {
             s += " No custom books were found.";
         }
 
@@ -642,7 +640,7 @@ public class CatalogueActivity extends AppCompatActivity {
 
                     //create intent and get input
                     Intent intent = new Intent(CatalogueActivity.this, CustomiseBook.class);
-                    intent.putExtra("Title", String.valueOf(((EditText)findViewById(R.id.catalogueSearch)).getText()));
+                    intent.putExtra("Title", String.valueOf(((EditText) findViewById(R.id.catalogueSearch)).getText()));
 
                     //recreate activity
                     recreate();
@@ -652,10 +650,9 @@ public class CatalogueActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Got it", (dialog, id) -> {
                     //if there are not custom books (no books found at all) recreate
-                    if (cusBookList == null){
+                    if (cusBookList == null) {
                         recreate();
-                    }
-                    else{ //update list if there are custom books found
+                    } else { //update list if there are custom books found
                         updateBookList();
                     }
                 });

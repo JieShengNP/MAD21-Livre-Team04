@@ -21,7 +21,7 @@ public class PopularBook {
         this.totalReaders = readers.size();
     }
 
-    public PopularBook(){
+    public PopularBook() {
         readers = new HashMap<>();
     }
 

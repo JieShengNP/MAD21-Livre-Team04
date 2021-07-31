@@ -17,16 +17,15 @@ import java.util.ArrayList;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     private static final String TAG = "RecordAdapter";
-   ArrayList<Records> recordsArrayList;
+    ArrayList<Records> recordsArrayList;
     private int hour;
 
-    public RecordAdapter(ArrayList<Records> input)
-   {
-       recordsArrayList = input;
-   }
+    public RecordAdapter(ArrayList<Records> input) {
+        recordsArrayList = input;
+    }
 
     @Override
-    public RecordViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
+    public RecordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_records, parent, false);
         return new RecordViewHolder(itemView);
     }
@@ -38,41 +37,30 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
         Book book = dbHandler.FindBookByID(record.getBookID());
 
         // If book can be found in library
-        if (book != null)
-        {
-                if (book.isCustom())
-                {
-                    if(book.getThumbnail().equals("Unavailable"))
-                    {
-                        holder.bookCover.setImageDrawable(holder.bookCover.getContext()
-                                .getResources().getDrawable(R.drawable.shelf_bust));
-                    }
-                    else
-                    {
-                        byte[] decodedString = Base64.decode(book.getThumbnail(), Base64.DEFAULT);
-                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        holder.bookCover.setImageBitmap(decodedByte);
-                    }
+        if (book != null) {
+            if (book.isCustom()) {
+                if (book.getThumbnail().equals("Unavailable")) {
+                    holder.bookCover.setImageDrawable(holder.bookCover.getContext()
+                            .getResources().getDrawable(R.drawable.shelf_bust));
+                } else {
+                    byte[] decodedString = Base64.decode(book.getThumbnail(), Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    holder.bookCover.setImageBitmap(decodedByte);
                 }
-                else
-                {
-                    if (book.getThumbnail() != "Unavailable")
-                    {
-                        Picasso.get()
-                                .load(book.getThumbnail())
-                                .resize(90, 140)
-                                .into(holder.bookCover);
-                    }
-                    else
-                    {
-                        holder.bookCover.setImageDrawable(holder.bookCover.getContext()
-                                .getResources().getDrawable(R.drawable.shelf_bust));
-                    }
+            } else {
+                if (book.getThumbnail() != "Unavailable") {
+                    Picasso.get()
+                            .load(book.getThumbnail())
+                            .resize(90, 140)
+                            .into(holder.bookCover);
+                } else {
+                    holder.bookCover.setImageDrawable(holder.bookCover.getContext()
+                            .getResources().getDrawable(R.drawable.shelf_bust));
                 }
+            }
         }
         //if image not available possibly due to no set thumbnail or deletion of book from library
-        else
-        {
+        else {
             holder.bookCover.setImageDrawable(holder.bookCover.getContext()
                     .getResources().getDrawable(R.drawable.shelf_bust));
         }

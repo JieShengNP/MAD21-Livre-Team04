@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     Chronometer timer;
     Handler handler;
     long tMilliSec, tStart = 0L;
-    int sec,min,hour, currentMusic, isbn;
+    int sec, min, hour, currentMusic, isbn;
     TextView musicName;
     boolean timerRunning, wasPaused, musicStart;
     DBHandler dbHandler;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         timer = findViewById(R.id.timerText);
         timerFrame = findViewById(R.id.timerFrame);
         disclaimerButton = findViewById(R.id.disclaimerButton);
@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
                 builder.setMessage
                         (
                                 "We DO NOT OWN the music tracks used \n" +
-                                "All music tracks used are Royalty Free and are licensed under Creative Commons License.\n" +
-                                "All music tracks used belong to Ron Gelinas\n" +
+                                        "All music tracks used are Royalty Free and are licensed under Creative Commons License.\n" +
+                                        "All music tracks used belong to Ron Gelinas\n" +
                                         "SoundCloud: Ron Gelinas Chillout Lounge \n" +
                                         "Youtube : Ron Gelinas Chillout Lounge "
                         );
@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
                 startActivity(intent);
-                if (musicStart){
+                if (musicStart) {
                     mp.release();
                 }
                 finish();

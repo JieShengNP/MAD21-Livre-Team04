@@ -7,16 +7,19 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
-public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
+public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder> {
     ArrayList<Book> data;
     DBHandler dbhandler;
 
-    public CatItemsAdapter(ArrayList<Book> input){
+    public CatItemsAdapter(ArrayList<Book> input) {
         data = input;
     }
 
@@ -26,7 +29,7 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
         View item;
 
         //inflate layout based on type
-        if(viewType == 0) {
+        if (viewType == 0) {
             //normal item
             item = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.catalogue_item,
@@ -46,10 +49,9 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
 
     @Override
     public int getItemViewType(int position) {
-        if (position != (getItemCount() -1)){
+        if (position != (getItemCount() - 1)) {
             return 0;
-        }
-        else{
+        } else {
             return 1;
         }
 
@@ -65,7 +67,6 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
         holder.catauthordate.setText(catauthordate);
 
 
-
         //set onclick listeners to thumbnail and title
         holder.catthumb.setOnClickListener(v -> catItemClick(holder, b));
 
@@ -77,14 +78,13 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
             holder.customtxt.setVisibility(View.VISIBLE);
 
             //if thumbnail is not unavailable, decode bitmap and set to thumbnail
-            if(!(b.getThumbnail()).equals("Unavailable")){
+            if (!(b.getThumbnail()).equals("Unavailable")) {
                 byte[] decodedString = Base64.decode(b.getThumbnail(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                 holder.catthumb.setImageBitmap(decodedByte);
             }
-        }
-        else{
+        } else {
             //for not custom books
             //don't show custom book indicator
             holder.customtxt.setVisibility(View.GONE);
@@ -103,10 +103,10 @@ public class CatItemsAdapter extends RecyclerView.Adapter<CatViewHolder>{
     }
 
     //method for when title/thumbnail of catalogue is clicked
-    public void catItemClick(CatViewHolder holder, Book b){
+    public void catItemClick(CatViewHolder holder, Book b) {
         dbhandler = new DBHandler(holder.catthumb.getContext());
         Book tempBook = dbhandler.FindBookByISBN(b.getIsbn(), b.isCustom());
-        if(tempBook != null){
+        if (tempBook != null) {
             b = tempBook;
         }
         Intent bookDetailsIntent = new Intent(holder.catthumb.getContext(), BookDetails.class);
