@@ -34,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.shobhitpuri.custombuttons.GoogleSignInButton;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -148,6 +149,7 @@ public class SignInActivity extends AppCompatActivity {
                                 SharedPreferences.Editor editor = getSharedPreferences(sharedPrefName, MODE_PRIVATE).edit();
                                 editor.putString("FirebaseUser", userId);
                                 editor.putString("FirebaseEmail", userEmail);
+                                editor.putLong("LastSyncTime", new Date(System.currentTimeMillis()).getTime());
                                 editor.apply();
                                 LoadDataFromFirebase(userId, userEmail);
 
@@ -201,6 +203,7 @@ public class SignInActivity extends AppCompatActivity {
                                 SharedPreferences.Editor editor = getSharedPreferences(SignInActivity.sharedPrefName, MODE_PRIVATE).edit();
                                 editor.putString("FirebaseUser", userId);
                                 editor.putString("FirebaseEmail", userEmail);
+                                editor.putLong("LastSyncTime", new Date(System.currentTimeMillis()).getTime());
                                 editor.apply();
                                 if (task.getResult().getAdditionalUserInfo().isNewUser()) {
                                     progressDialog.setTitle("Creating Account");
