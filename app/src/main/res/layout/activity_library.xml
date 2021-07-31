@@ -83,8 +83,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/ic_baseline_dehaze_24"
-        app:srcCompat="@drawable/ic_baseline_dehaze_24" />
+        android:background="@drawable/ic_baseline_dehaze_24"/>
 
     <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
