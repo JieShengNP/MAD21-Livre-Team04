@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Stats"
+        android:text="Statistics"
         android:textColor="@color/sage"
         android:textSize="60sp"
         app:layout_constraintBottom_toTopOf="@+id/statRecyclerView"

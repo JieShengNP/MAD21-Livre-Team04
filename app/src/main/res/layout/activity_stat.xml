@@ -13,7 +13,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="103dp"
         android:layout_marginBottom="47dp"
-        android:text="Stats"
+        android:text="Statistics"
         android:textColor="@color/sage"
         android:textSize="60sp"
         app:layout_constraintBottom_toTopOf="@+id/statRecyclerView"
