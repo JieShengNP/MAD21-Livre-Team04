@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Livre</string>
+
+    <!-- Popular Book Activity -->
+    <string name="popularTitleSingle">The Top Book</string>
+    <string name="popularDescSingle">This is the top book that Livre readers are reading!</string>
+    <string name="popularTitle">Top %1$d Books</string>
+    <string name="popularDesc">Here are the top %1$d books Livre readers are reading!</string>
+    <string name="popularTitleNone">No Top Books</string>
+    <string name="popularDescNone">"There are currently no top books, you can be the first to read!"</string>
 </resources>

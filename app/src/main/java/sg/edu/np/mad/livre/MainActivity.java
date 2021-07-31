@@ -1,5 +1,6 @@
 package sg.edu.np.mad.livre;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -24,8 +25,14 @@ import org.w3c.dom.Text;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -170,6 +177,10 @@ public class MainActivity extends AppCompatActivity {
                     Book dbBook = dbHandler.FindBookByID(isbn);
                     dbBook.setReadSeconds(dbBook.getReadSeconds() + (int)(tMilliSec/1000));
 
+                    //Update Firebase
+                    if (!dbBook.isCustom()) {
+                        UpdateFirebase(dbBook, (int) (tMilliSec / 1000));
+                    }
                     //Updating Database
                     dbHandler.updateLog(isbn, (int) (tMilliSec/1000), dbBook.getName());
                     dbHandler.updateTotalTime(dbBook);
@@ -197,5 +208,40 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
 
         
+    }
+
+    private void UpdateFirebase(Book book, int extraTime){
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference database = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("public/books").child(book.getIsbn());
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    PopularBook popBook = snapshot.getValue(PopularBook.class);
+                    if (!popBook.readers.containsKey(userID)){
+                        database.child("readers").child(userID).setValue(true);
+                        database.child("totalReaders").setValue(popBook.getTotalReaders() + 1);
+                    }
+                    database.child("totalTime").setValue(popBook.totalTime + extraTime);
+                } else {
+                    PopularBook popBook = new PopularBook();
+                    popBook.isbn = book.getIsbn();
+                    popBook.title = book.getName();
+                    popBook.author = book.getAuthor();
+                    popBook.blurb = book.getBlurb();
+                    popBook.year = book.getYear();
+                    popBook.thumbnail = book.getThumbnail();
+                    popBook.readers.put(userID, true);
+                    popBook.setTotalReaders();
+                    popBook.totalTime = extraTime;
+                    database.getRef().setValue(popBook);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
