@@ -87,13 +87,20 @@ public class BookDetails extends AppCompatActivity {
             wasChanged = false;
         }
 
-
         //set onclick listeners and make
         backtag.setOnClickListener(v -> backClick());
 
         editBook.setOnClickListener(v -> editBookClick());
 
         bookImage.setVisibility(View.VISIBLE);
+
+        //show and hide bookdurationread based on whether book isadded
+        if (book.isAdded()){
+            bookDurationRead.setVisibility(View.VISIBLE);
+        }
+        else{
+            bookDurationRead.setVisibility(View.GONE);
+        }
 
         //set string that would say "custom" if book iscustom
         //and blank if it is not
@@ -283,14 +290,17 @@ public class BookDetails extends AppCompatActivity {
 
             //alert dialogue (removing custom book permanently)
             AlertDialog.Builder bui = new AlertDialog.Builder(BookDetails.this);
-            bui.setMessage("If you delete this book, all your reading logs will be erased. You will have to customise this book again in order to read it.")
+            bui.setMessage("If you delete this book, all your reading logs for this book will be erased. You will have to customise this book again in order to read it.")
                     .setCancelable(true)
                     .setPositiveButton("Oh, delete it already!", (dialog, id) -> {
                         //User chooses to delete custom book and erase logs, exit activity
                         book.setID(dbHandler.GetBookId(book));
                         dbHandler.EraseLogs(book.getID());
                         dbHandler.RemoveBook(book);
-                        backClick();
+                        book = null;
+                        Intent intent = new Intent(getApplicationContext(), LibraryActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                         Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT).show();
                     })
                     //User chooses not to
@@ -306,16 +316,17 @@ public class BookDetails extends AppCompatActivity {
         else{
             //alert dialogue (removing custom book permanently)
             AlertDialog.Builder bui = new AlertDialog.Builder(BookDetails.this);
-            bui.setMessage("If you delete this book, all your reading logs will be erased. This is irreversible!")
+            bui.setMessage("If you remove this book, all your reading logs for this book will be erased. This is irreversible!")
                     .setCancelable(true)
-                    .setPositiveButton("Oh, delete it already!", (dialog, id) -> {
+                    .setPositiveButton("Oh, remove it already!", (dialog, id) -> {
                         //User chooses to delete custom book and erase logs, exit activity
                         book.setAdded(false);
+                        book.setReadSeconds(0);
                         book.setID(dbHandler.GetBookId(book));
                         dbHandler.EraseLogs(book.getID());
                         dbHandler.RemoveBook(book);
                         recreate();
-                        Toast.makeText(getBaseContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), "Removed", Toast.LENGTH_SHORT).show();
                     })
                     //User chooses not to
                     .setNegativeButton("Nevermind", (dialog, id) -> {return;});
