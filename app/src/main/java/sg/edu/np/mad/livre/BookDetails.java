@@ -205,10 +205,12 @@ public class BookDetails extends AppCompatActivity {
             finish();
         }
 
-        //if it works, save and recreate to update buttons and options
+        //if it works, save and bring user to library
         Toast.makeText(getBaseContext(), "Saved", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(),LibraryActivity.class);
+        startActivity(intent);
         wasChanged = true;
-        recreate();
+
     }
 
     public void editBookClick() {
