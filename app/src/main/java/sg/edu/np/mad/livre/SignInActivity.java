@@ -42,7 +42,7 @@ public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     EditText emailText, passwordText;
     Button signinBtn;
-    TextView noAccount;
+    TextView noAccount, resetPassword;
     ProgressDialog progressDialog;
     GoogleSignInButton googleBtn;
     GoogleSignInClient mGoogleSignInClient;
@@ -61,6 +61,7 @@ public class SignInActivity extends AppCompatActivity {
         passwordText = findViewById(R.id.signinPasswordEditText);
         signinBtn = findViewById(R.id.signinBtn);
         noAccount = findViewById(R.id.signinSignUp);
+        resetPassword = findViewById(R.id.signinReset);
         progressDialog = new ProgressDialog(this);
 
         // Google Sign In
@@ -104,6 +105,29 @@ public class SignInActivity extends AppCompatActivity {
                 Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+                return true;
+            }
+        });
+
+        resetPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (emailText.getText().toString().isEmpty()){
+                    Toast.makeText(SignInActivity.this, "Enter the email in the field above and tap again!", Toast.LENGTH_SHORT).show();
+                } else {
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    String email = emailText.getText().toString();
+                    auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                Toast.makeText(SignInActivity.this, "Successfully sent a reset email!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(SignInActivity.this, "An error occurred while sending a reset email.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
                 return true;
             }
         });
