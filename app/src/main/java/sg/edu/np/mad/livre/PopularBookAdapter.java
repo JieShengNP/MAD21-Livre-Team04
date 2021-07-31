@@ -58,8 +58,8 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
             timeSpent = df.format(calculatedTime);
         }
         // Make the number text bigger in TextView
-        SpannableStringBuilder readerSpannable = new SpannableStringBuilder(bookList.get(position).totalReaders + " Total Readers");
-        readerSpannable.setSpan(new RelativeSizeSpan(1.5f), 0, String.valueOf(bookList.get(position).totalReaders).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableStringBuilder readerSpannable = new SpannableStringBuilder(bookList.get(position).getTotalReaders() + " Total Readers");
+        readerSpannable.setSpan(new RelativeSizeSpan(1.5f), 0, String.valueOf(bookList.get(position).getTotalReaders()).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         SpannableStringBuilder timeSpannable = new SpannableStringBuilder(timeSpent + timeFormat);
         timeSpannable.setSpan(new RelativeSizeSpan(1.5f), 0, timeSpent.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         holder.bookStats.setText(TextUtils.concat(readerSpannable, "\n", timeSpannable));
