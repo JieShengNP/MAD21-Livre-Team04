@@ -261,7 +261,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public boolean RemoveBook(Book book){
         SQLiteDatabase db = this.getWritableDatabase();
         boolean result = false;
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\"";
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\" and " + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0);
         Cursor cursor = db.rawQuery(dbQuery, null);
         Book object = new Book();
         if (cursor.moveToFirst()){
@@ -280,7 +280,7 @@ public class DBHandler extends SQLiteOpenHelper {
      */
     public void EraseLogs(Book book){
         SQLiteDatabase db = this.getWritableDatabase();
-        String dbQuery = "DELETE FROM " + TABLE_LOG + " WHERE " + LOG_COLUMN_ISBN + " = \"" + book.getIsbn() + "\"";
+        String dbQuery = "DELETE FROM " + TABLE_LOG + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\" and " + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0);
         db.execSQL(dbQuery);
         db.close();
     }

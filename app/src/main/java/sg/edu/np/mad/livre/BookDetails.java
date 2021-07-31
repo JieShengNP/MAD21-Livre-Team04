@@ -165,10 +165,8 @@ public class BookDetails extends AppCompatActivity {
         // set onclicklisteners
          toggleArchiveBtn.setOnClickListener(v -> togArClick(dbHandler));
          startReadingBtn.setOnClickListener(v -> startClick());
-
-
-
         }
+
         else{
             //something (edit/add) is pending for the book
 
@@ -316,7 +314,6 @@ public class BookDetails extends AppCompatActivity {
     public void backClick() {
         //to exit activity
         //is book is is from cus or edit and was just added/saved, go to library and clear queue
-
         if ((book.isCustom() && book.isAdded() && isFromCus) || wasChanged) {
             //set waschanged to false to
             wasChanged = false;

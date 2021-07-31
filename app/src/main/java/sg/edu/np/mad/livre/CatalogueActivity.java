@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -180,7 +181,6 @@ public class CatalogueActivity extends AppCompatActivity {
                             //go through every element(book) in the array and get first seed, other Book properties
                             for (int i = 0; i < docs.length(); i++) {
                                 JSONObject object = docs.getJSONObject(i);
-
                                 //get first seed in seed array
                                 JSONArray seedArray = object.getJSONArray("seed");
                                 String firstseed = seedArray.get(0).toString();
