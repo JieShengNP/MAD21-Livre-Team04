@@ -1,6 +1,5 @@
 package sg.edu.np.mad.livre;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PopularBook {
