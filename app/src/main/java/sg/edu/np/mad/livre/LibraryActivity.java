@@ -166,6 +166,12 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
                 startActivity(intent);
                 break;
             }
+            case R.id.nav_mystats:{
+                Intent intent = new Intent(LibraryActivity.this, StatActivity.class);
+                startActivity(intent);
+                break;
+            }
+
             case R.id.nav_saveCloud:{
                 FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
                 User user = new User(fbUser.getUid(), fbUser.getEmail());
