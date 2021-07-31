@@ -22,10 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.ExecutionException;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,13 +33,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final long INTERVAL_MS = 1000;
-    ImageView recordsTag,libraryChain, timerFrame;
-    ImageView playButton,pauseButton,prevButton,nextButton,shuffleButton;
+    ImageView recordsTag, libraryChain, timerFrame;
+    ImageView playButton, pauseButton, prevButton, nextButton, shuffleButton;
     Chronometer timer;
     Handler handler;
     long tMilliSec, tStart = 0L;
@@ -52,15 +48,11 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<MusicTrack> musicList;
     MediaPlayer mp;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/");
-//        Usage of Firebase Database
-//        DatabaseReference myRef = database.getReference("Key");
-//        myRef.setValue("Value");
+        
         timer = findViewById(R.id.timerText);
         timerFrame = findViewById(R.id.timerFrame);
         playButton = findViewById(R.id.button_play);
@@ -75,19 +67,19 @@ public class MainActivity extends AppCompatActivity {
         isbn = getIntent().getIntExtra("Isbn", -1);
 
         //start recurring toast
-        handler.postDelayed(toastRunnable,0);
+        handler.postDelayed(toastRunnable, 0);
 
         timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
                 tMilliSec += INTERVAL_MS;
-                sec = (int) (tMilliSec/1000);
-                min = sec/60;
+                sec = (int) (tMilliSec / 1000);
+                min = sec / 60;
                 sec = sec % 60;
-                hour = min/60;
+                hour = min / 60;
                 min = min % 60;
 
-                timer.setText(String.format("%02d",hour) + ":" + String.format("%02d",min) + ":" + String.format("%02d",sec));
+                timer.setText(String.format("%02d", hour) + ":" + String.format("%02d", min) + ":" + String.format("%02d", sec));
             }
         });
 
@@ -95,8 +87,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //timer not running
-                if (!timerRunning)
-                {
+                if (!timerRunning) {
                     handler.removeCallbacks(toastRunnable);
                     Toast.makeText(MainActivity.this, "Press again to stop", Toast.LENGTH_SHORT).show();
                     tStart = SystemClock.uptimeMillis();
@@ -105,13 +96,12 @@ public class MainActivity extends AppCompatActivity {
                     timerRunning = true;
                 }
                 //timer running
-                else
-                {
+                else {
                     AlertDialog();
                 }
             }
         });
-        
+
         //initialize music tracks list
         InitializeMusicList();
         currentMusic = 0;
@@ -119,21 +109,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (!timerRunning)
-                {
+                if (!timerRunning) {
                     handler.removeCallbacks(toastRunnable);
-                    Toast.makeText(MainActivity.this, "Please Start Timer First",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Please Start Timer First", Toast.LENGTH_SHORT).show();
                     handler.postDelayed(toastRunnable, 0);
-                }
-                else
-                {
+                } else {
                     playButton.setVisibility(View.INVISIBLE);
                     pauseButton.setVisibility(View.VISIBLE);
                     PlayMusic();
                 }
             }
         });
-        
+
         pauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 PauseMusic();
             }
         });
-        
+
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,14 +147,11 @@ public class MainActivity extends AppCompatActivity {
         prevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!timerRunning)
-                {
+                if (!timerRunning) {
                     handler.removeCallbacks(toastRunnable);
-                    Toast.makeText(MainActivity.this, "Please Start Timer First",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Please Start Timer First", Toast.LENGTH_SHORT).show();
                     handler.postDelayed(toastRunnable, 0);
-                }
-                else
-                {
+                } else {
                     PrevMusic();
                 }
             }
@@ -177,27 +161,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Collections.shuffle(musicList);
-                Toast.makeText(MainActivity.this, "Playlist Shuffled",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Playlist Shuffled", Toast.LENGTH_SHORT).show();
             }
         });
-        
-        
+
+
     }
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if(musicStart == true)
-        {
+        if (musicStart == true) {
             musicName.setText(musicList.get(currentMusic).getTrackName() + "\n" + musicList.get(currentMusic).getTrackAuthor());
         }
-        if (wasPaused == true)
-        {
+        if (wasPaused == true) {
             playButton.setVisibility(View.VISIBLE);
             pauseButton.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
+        } else {
             playButton.setVisibility(View.INVISIBLE);
             pauseButton.setVisibility(View.VISIBLE);
         }
@@ -205,15 +185,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (timerRunning)
-        {
+        if (timerRunning) {
             AlertDialog();
-        }
-        else
-        {
+        } else {
             Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
             startActivity(intent);
-            Toast.makeText(MainActivity.this, "Returning to library",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Returning to library", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -222,8 +199,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         // stop toast from showing when activity paused if timer not running
-        if (!timerRunning)
-        {
+        if (!timerRunning) {
             handler.removeCallbacks(toastRunnable);
         }
     }
@@ -232,31 +208,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //resume toast if timer was not running
-        if (!timerRunning)
-        {
-            handler.postDelayed(toastRunnable,0);
-        }
-        else
-        {
+        if (!timerRunning) {
+            handler.postDelayed(toastRunnable, 0);
+        } else {
             tMilliSec = SystemClock.uptimeMillis() - tStart;
         }
-    };
+    }
+
+    ;
 
     // Shows toast message to remind user to press timer to start
     public Runnable toastRunnable = new Runnable() {
         @Override
         public void run() {
-            if(!timerRunning)
-            {
+            if (!timerRunning) {
                 handler.removeCallbacks(toastRunnable);
-                Toast.makeText(getBaseContext(), "Press the timer to begin",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Press the timer to begin", Toast.LENGTH_SHORT).show();
             }
             handler.postDelayed(this, 10000);
         }
     };
 
-    public void AlertDialog()
-    {
+    public void AlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setMessage("Do you want to stop the timer?");
@@ -264,27 +237,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if(!timerRunning)
-                {
+                if (!timerRunning) {
                     //stop showing of toast message if timer hasn't run yet
                     handler.removeCallbacks(toastRunnable);
                     Toast.makeText(getBaseContext(), "Returning to library!", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     // stop timer
                     timer.stop();
                     timerRunning = false;
 
                     Book dbBook = dbHandler.FindBookByID(isbn);
-                    dbBook.setReadSeconds(dbBook.getReadSeconds() + (int)(tMilliSec/1000));
+                    dbBook.setReadSeconds(dbBook.getReadSeconds() + (int) (tMilliSec / 1000));
 
                     //Update Firebase
                     if (!dbBook.isCustom()) {
                         UpdateFirebase(dbBook, (int) (tMilliSec / 1000));
                     }
                     //Updating Database
-                    dbHandler.updateLog(isbn, (int) (tMilliSec/1000), dbBook.getName());
+                    dbHandler.updateLog(isbn, (int) (tMilliSec / 1000), dbBook.getName());
                     dbHandler.updateTotalTime(dbBook);
                     Toast.makeText(MainActivity.this, "Time saved!", Toast.LENGTH_SHORT).show();
                 }
@@ -310,11 +280,10 @@ public class MainActivity extends AppCompatActivity {
 
         alertDialog.show();
 
-        
+
     }
 
-    public void InitializeMusicList()
-    {
+    public void InitializeMusicList() {
         musicList = new ArrayList<MusicTrack>();
         musicList.add(new MusicTrack(
                 "Another Day \n (Original Mix)",
@@ -369,11 +338,9 @@ public class MainActivity extends AppCompatActivity {
         Collections.shuffle(musicList);
     }
 
-    public void PlayMusic()
-    {
+    public void PlayMusic() {
         //MP just started
-        if (!wasPaused)
-        {
+        if (!wasPaused) {
             try {
                 musicName.setText(musicList.get(currentMusic).getTrackName() + "\n" + musicList.get(currentMusic).getTrackAuthor());
                 mp = new MediaPlayer();
@@ -381,35 +348,28 @@ public class MainActivity extends AppCompatActivity {
                 mp.prepare();
                 mp.start();
                 musicStart = true;
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         //Pausing of mp
-        else
-        {
+        else {
             wasPaused = !wasPaused;
             mp.start();
         }
     }
 
-    public void PauseMusic()
-    {
+    public void PauseMusic() {
         wasPaused = !wasPaused;
         mp.pause();
     }
 
-    public void NextMusic()
-    {
+    public void NextMusic() {
         PauseMusic();
-        if (currentMusic == musicList.size() - 1)
-        {
+        if (currentMusic == musicList.size() - 1) {
             currentMusic = 0;
-        }
-        else
-        {
-            currentMusic ++;
+        } else {
+            currentMusic++;
         }
 
         mp.reset();
@@ -418,8 +378,7 @@ public class MainActivity extends AppCompatActivity {
             mp.setDataSource(MainActivity.this, Uri.parse(musicList.get(currentMusic).getTrackFileLocation()));
             mp.prepare();
             PlayMusic();
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -443,15 +402,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void UpdateFirebase(Book book, int extraTime){
+    private void UpdateFirebase(Book book, int extraTime) {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference database = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("public/books").child(book.getIsbn());
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     PopularBook popBook = snapshot.getValue(PopularBook.class);
-                    if (!popBook.readers.containsKey(userID)){
+                    if (!popBook.readers.containsKey(userID)) {
                         database.child("readers").child(userID).setValue(true);
                         database.child("totalReaders").setValue(popBook.getTotalReaders() + 1);
                     }
