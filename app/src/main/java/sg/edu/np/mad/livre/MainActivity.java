@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     int sec,min,hour;
     boolean timerRunning;
     DBHandler dbHandler;
-    String isbn;
+    int isbn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         timerFrame = findViewById(R.id.timerFrame);
         handler = new Handler();
         dbHandler = new DBHandler(this);
-        isbn = getIntent().getStringExtra("Isbn");
+        isbn = getIntent().getIntExtra("Isbn", -1);
+        Log.v(TAG, String.valueOf(isbn));
 
 
         //start recurring toast
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 //timer running
                 else
                 {
-                    AlertDialog(isbn);
+                    AlertDialog();
                 }
             }
         });
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (timerRunning)
         {
-            AlertDialog(isbn);
+            AlertDialog();
         }
         else
         {
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void AlertDialog(String isbn)
+    public void AlertDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
@@ -166,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                     timer.stop();
                     timerRunning = false;
 
-                    Book dbBook = dbHandler.FindBookByISBN(isbn);
+                    Book dbBook = dbHandler.FindBookByID(isbn);
                     dbBook.setReadSeconds(dbBook.getReadSeconds() + (int)(tMilliSec/1000));
 
                     //Updating Database
