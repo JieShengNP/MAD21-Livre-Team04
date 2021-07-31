@@ -60,7 +60,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
                     {
                         Picasso.get()
                                 .load(book.getThumbnail())
-                                .placeholder(holder.bookCover.getContext().getResources().getDrawable(R.drawable.shelf_bust))
                                 .resize(90, 140)
                                 .into(holder.bookCover);
                     }
