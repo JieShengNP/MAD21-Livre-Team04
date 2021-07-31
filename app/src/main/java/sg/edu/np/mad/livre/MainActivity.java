@@ -18,6 +18,7 @@ import android.view.View;
 
 import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -169,21 +170,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (musicStart == true) {
-            musicName.setText(musicList.get(currentMusic).getTrackName() + "\n" + musicList.get(currentMusic).getTrackAuthor());
-        }
-        if (wasPaused == true) {
-            playButton.setVisibility(View.VISIBLE);
-            pauseButton.setVisibility(View.INVISIBLE);
-        } else {
-            playButton.setVisibility(View.INVISIBLE);
-            pauseButton.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         if (timerRunning) {
             AlertDialog();
@@ -254,14 +240,16 @@ public class MainActivity extends AppCompatActivity {
                         UpdateFirebase(dbBook, (int) (tMilliSec / 1000));
                     }
                     //Updating Database
-                    dbHandler.updateLog(isbn, (int) (tMilliSec / 1000), dbBook.getName());
-                    dbHandler.updateTotalTime(dbBook);
+                    dbHandler.UpdateLog(dbBook, (int) (tMilliSec / 1000));
+                    dbHandler.UpdateTotalTime(dbBook);
                     Toast.makeText(MainActivity.this, "Time saved!", Toast.LENGTH_SHORT).show();
                 }
 
                 Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
                 startActivity(intent);
-                mp.release();
+                if (musicStart){
+                    mp.release();
+                }
                 finish();
             }
         });
