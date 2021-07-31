@@ -14,8 +14,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class LibraryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -80,6 +85,8 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
             Picasso.get()
                     .load(user.getPhotoUrl())
                     .into(navImage);
+        } else {
+            navImage.setVisibility(View.INVISIBLE);
         }
         if (user.getDisplayName() != null){
             navUsername.setText(user.getDisplayName());
@@ -87,6 +94,12 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
             navUsername.setText("");
         }
         navEmail.setText(user.getEmail());
+
+        Menu menu = navigationView.getMenu();
+        MenuItem tools = menu.findItem(R.id.menu_account);
+        SpannableString s = new SpannableString(tools.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.AccountTitle), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tools.setTitle(s);
 
         // End of Navigation Drawer
 
@@ -166,6 +179,12 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
                 startActivity(intent);
                 break;
             }
+            case R.id.nav_mystats:{
+                Intent intent = new Intent(LibraryActivity.this, StatActivity.class);
+                startActivity(intent);
+                break;
+            }
+
             case R.id.nav_saveCloud:{
                 FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
                 User user = new User(fbUser.getUid(), fbUser.getEmail());
@@ -175,6 +194,9 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
                 user.records = dbHandler.GetAllRecords();
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users/" + fbUser.getUid());
                 mDatabase.getRef().setValue(user);
+                SharedPreferences.Editor editor = getSharedPreferences(SignInActivity.sharedPrefName, MODE_PRIVATE).edit();
+                editor.putLong("LastSyncTime", new Date(System.currentTimeMillis()).getTime());
+                editor.apply();
                 Toast.makeText(LibraryActivity.this, "Successfully saved to cloud!", Toast.LENGTH_SHORT).show();
                 break;
             }
@@ -198,6 +220,9 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
                                     dbHandler.AddFirebaseRecordToDB(user.records);
                                 }
                                 Toast.makeText(LibraryActivity.this, "Successfully loaded from cloud!", Toast.LENGTH_SHORT).show();
+                                SharedPreferences.Editor editor = getSharedPreferences(SignInActivity.sharedPrefName, MODE_PRIVATE).edit();
+                                editor.putLong("LastSyncTime", new Date(System.currentTimeMillis()).getTime());
+                                editor.apply();
                                 finish();
                                 startActivity(getIntent());
                             } else {
@@ -229,24 +254,53 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
             }
 
             case R.id.nav_logout: {
-                FirebaseAuth.getInstance().signOut();
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build();
-                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-                mGoogleSignInClient.signOut();
-                SharedPreferences.Editor editor = getSharedPreferences("Firebase", MODE_PRIVATE).edit();
-                editor.remove("FirebaseUser");
-                editor.remove("FirebaseEmail");
-                editor.apply();
-                Toast.makeText(LibraryActivity.this, "You have successfully logged out!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LibraryActivity.this, SignInActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(LibraryActivity.this);
+                builder.setTitle("Before you log out...");
+                long lastSyncDate = getSharedPreferences(SignInActivity.sharedPrefName, MODE_PRIVATE).getLong("LastSyncTime", -1);
+                builder.setMessage(lastSyncDate == -1? "You have not uploaded your data, would you like to upload before logging out?": "Your data was last synced on " + (new Date(lastSyncDate)).toString() + "\nWould you like to upload before logging out?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+                        User user = new User(fbUser.getUid(), fbUser.getEmail());
+                        user.name = fbUser.getDisplayName();
+                        user.photoURL = String.valueOf(fbUser.getPhotoUrl());
+                        user.bookList = dbHandler.GetAllBooks();
+                        user.records = dbHandler.GetAllRecords();
+                        DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users/" + fbUser.getUid());
+                        mDatabase.getRef().setValue(user);
+                        SignOut();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SignOut();
+                    }
+                });
+                builder.create().show();
                 break;
             }
         }
         return true;
+    }
+
+    private void SignOut(){
+        FirebaseAuth.getInstance().signOut();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient.signOut();
+        SharedPreferences.Editor editor = getSharedPreferences("Firebase", MODE_PRIVATE).edit();
+        editor.remove("FirebaseUser");
+        editor.remove("FirebaseEmail");
+        editor.apply();
+        Toast.makeText(LibraryActivity.this, "You have successfully logged out!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LibraryActivity.this, SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

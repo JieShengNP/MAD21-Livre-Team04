@@ -26,10 +26,9 @@
         android:contentDescription="Timer frame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timerTitle"
-        app:layout_constraintVertical_bias="0.02"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/frame1" />
 
     <Chronometer
@@ -43,5 +42,82 @@
         app:layout_constraintEnd_toEndOf="@+id/timerFrame"
         app:layout_constraintStart_toStartOf="@+id/timerFrame"
         app:layout_constraintTop_toTopOf="@+id/timerFrame" />
+
+    <ImageView
+        android:id="@+id/button_play"
+        android:layout_width="72dp"
+        android:layout_height="74dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timerText"
+        app:srcCompat="@drawable/button_play" />
+
+    <ImageView
+        android:id="@+id/button_prev"
+        android:layout_width="72dp"
+        android:layout_height="74dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_play"
+        app:layout_constraintHorizontal_bias="0.755"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timerText"
+        app:srcCompat="@drawable/button_prev" />
+
+    <ImageView
+        android:id="@+id/button_next"
+        android:layout_width="72dp"
+        android:layout_height="74dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.247"
+        app:layout_constraintStart_toEndOf="@+id/button_play"
+        app:layout_constraintTop_toBottomOf="@+id/timerText"
+        app:srcCompat="@drawable/button_next" />
+
+    <TextView
+        android:id="@+id/musicName"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timerFrame" />
+
+    <ImageView
+        android:id="@+id/button_shuffle"
+        android:layout_width="58dp"
+        android:layout_height="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/musicName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_prev"
+        app:srcCompat="@drawable/button_shuffle" />
+
+    <ImageView
+        android:id="@+id/button_pause"
+        android:layout_width="72dp"
+        android:layout_height="74dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timerText"
+        app:srcCompat="@drawable/button_pause" />
+
+    <Button
+        android:id="@+id/disclaimerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:text="Disclaimer"
+        app:layout_constraintBottom_toTopOf="@+id/timerFrame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.59"
+        app:layout_constraintStart_toEndOf="@+id/timerTitle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

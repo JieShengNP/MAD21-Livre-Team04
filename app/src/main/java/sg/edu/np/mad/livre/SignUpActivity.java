@@ -29,15 +29,18 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.shobhitpuri.custombuttons.GoogleSignInButton;
 
+import java.util.Date;
+
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    EditText emailText, passwordText;
+    EditText emailText, passwordText, nameText;
     Button signupBtn;
     TextView haveAccount;
     ProgressDialog progressDialog;
@@ -56,6 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         emailText = findViewById(R.id.signupEmailEditText);
         passwordText = findViewById(R.id.signupPasswordEditText);
+        nameText = findViewById(R.id.signupNameEditText);
         signupBtn = findViewById(R.id.signupBtn);
         haveAccount = findViewById(R.id.signupSignIn);
         progressDialog = new ProgressDialog(this);
@@ -81,16 +85,19 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = emailText.getText().toString();
                 String password = passwordText.getText().toString();
+                String name = nameText.getText().toString();
                 if (email.isEmpty()){
                     Toast.makeText(SignUpActivity.this, "Please enter an email!", Toast.LENGTH_SHORT).show();
                 } else if (password.isEmpty()){
+                    Toast.makeText(SignUpActivity.this, "Please enter a password!", Toast.LENGTH_SHORT).show();
+                } else if (name.isEmpty()){
                     Toast.makeText(SignUpActivity.this, "Please enter a password!", Toast.LENGTH_SHORT).show();
                 } else {
                     progressDialog.setTitle("Creating Account");
                     progressDialog.setMessage("Please wait while we create an account for you...");
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
-                    CreateAccount(email, password);
+                    CreateAccount(email, password, name);
                 }
             }
         });
@@ -125,7 +132,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    private void CreateAccount(String email, String password) {
+    private void CreateAccount(String email, String password, String name) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -136,7 +143,11 @@ public class SignUpActivity extends AppCompatActivity {
                             // Notify user of success and move to Sign In page
                             Toast.makeText(SignUpActivity.this, "Signed up successfully! Please sign in!", Toast.LENGTH_LONG).show();
                             String userId = mAuth.getCurrentUser().getUid();
-                            CreateDataInFirebase(userId, email, "SignUp");
+                            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(name)
+                                    .build();
+                            FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate);
+                            CreateDataInFirebase(userId, email, "SignUp", name);
                         } else {
                             // If sign in fails, display a message to the user.
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
@@ -191,11 +202,12 @@ public class SignUpActivity extends AppCompatActivity {
                                 SharedPreferences.Editor editor = getSharedPreferences(SignInActivity.sharedPrefName, MODE_PRIVATE).edit();
                                 editor.putString("FirebaseUser", userId);
                                 editor.putString("FirebaseEmail", userEmail);
+                                editor.putLong("LastSyncTime", new Date(System.currentTimeMillis()).getTime());
                                 editor.apply();
                                 if (task.getResult().getAdditionalUserInfo().isNewUser()) {
                                     progressDialog.setTitle("Creating Account");
                                     progressDialog.setMessage("Creating Account... Please hold on.");
-                                    CreateDataInFirebase(userId, userEmail, "Google");
+                                    CreateDataInFirebase(userId, userEmail, "Google", "");
                                 } else {
                                     progressDialog.setTitle("Loading Data");
                                     progressDialog.setMessage("Loading Data from Cloud... Please hold on.");
@@ -204,14 +216,17 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         } else {
                             progressDialog.dismiss();
-                            Toast.makeText(SignUpActivity.this, "An erorr has occurred, please try again!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "An error has occurred, please try again!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    public void CreateDataInFirebase(String userID, String userEmail, String mode) {
+    public void CreateDataInFirebase(String userID, String userEmail, String mode, String name) {
         User user = new User(userID, userEmail);
+        if (mode.equals("SignUp")){
+            user.name = name;
+        }
         mDatabase = FirebaseDatabase.getInstance("https://livre-46ac7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users/" + userID);
         mDatabase.getRef().setValue(user);
         progressDialog.dismiss();
@@ -251,7 +266,7 @@ public class SignUpActivity extends AppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     } else {
-                        CreateDataInFirebase(userID, userEmail, "Google");
+                        CreateDataInFirebase(userID, userEmail, "Google", "");
                     }
                 }
             }

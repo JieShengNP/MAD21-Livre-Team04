@@ -131,6 +131,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(dbQuery, null);
         Book book = new Book();
         if (cursor.moveToFirst()){
+            book.setID(cursor.getInt(0));
             book.setIsbn(cursor.getString(1));
             book.setAuthor(cursor.getString(2));
             book.setYear(cursor.getString(3));
@@ -329,14 +330,15 @@ public class DBHandler extends SQLiteOpenHelper {
     /*
         Creates a log entry of time read .
     */
-    public void updateLog(int isbn,int seconds, String name)
+    public void UpdateLog(Book book,int seconds)
     {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         ContentValues values = new ContentValues();
-        values.put(LOG_COLUMN_ISBN, isbn);
+        values.put(LOG_COLUMN_ISBN, book.getIsbn());
         values.put(LOG_COLUMN_DATE, formatter.format(Calendar.getInstance().getTime()));
         values.put(LOG_COLUMN_SECOND, seconds);
-        values.put(LOG_COLUMN_NAME, name);
+        values.put(LOG_COLUMN_NAME, book.getName());
+        values.put(LOG_COLUMN_BOOKID, book.getID());
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_LOG, null, values);
@@ -345,7 +347,7 @@ public class DBHandler extends SQLiteOpenHelper {
     /*
         Updates total time read in Book table
     */
-    public void updateTotalTime(Book book)
+    public void UpdateTotalTime(Book book)
     {
         ContentValues values = new ContentValues();
         values.put(BOOK_COLUMN_READING_TIME, book.getReadSeconds());
@@ -448,15 +450,16 @@ public class DBHandler extends SQLiteOpenHelper {
             do {
                 Records records = new Records();
                 records.setName(cursor.getString(1));
-                records.setBookID(cursor.getInt(2));
+                records.setIsbn(cursor.getString(2));
+                records.setBookID(cursor.getInt(3));
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 try {
-                    records.setDateRead(sdf.parse(cursor.getString(3)));
+                    records.setDateRead(sdf.parse(cursor.getString(4)));
                 }catch (ParseException ex)
                 {
                     records.setDateRead(null);
                 }
-                records.setTimeReadSec(cursor.getInt(4));
+                records.setTimeReadSec(cursor.getInt(5));
                 recordsList.add(records);
             } while (cursor.moveToNext());
         }
