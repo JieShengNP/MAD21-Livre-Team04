@@ -623,7 +623,8 @@ public class DBHandler extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(LOG_COLUMN_ID, record.get_id());
             values.put(LOG_COLUMN_NAME, record.getName());
-            values.put(LOG_COLUMN_ISBN, record.getBookID());
+            values.put(LOG_COLUMN_ISBN, record.getIsbn());
+            values.put(LOG_COLUMN_BOOKID, record.getBookID());
             values.put(LOG_COLUMN_DATE, formatter.format(Calendar.getInstance().getTime()));
             values.put(LOG_COLUMN_SECOND, record.getTimeReadSec());
             db.insert(TABLE_LOG, null, values);
