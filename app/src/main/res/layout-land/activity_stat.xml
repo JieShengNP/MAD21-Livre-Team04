@@ -25,22 +25,10 @@
         android:id="@+id/statLibraryTag"
         android:layout_width="65dp"
         android:layout_height="107dp"
-        app:layout_constraintBottom_toTopOf="@+id/recordRecyclerView"
-        app:layout_constraintEnd_toStartOf="@+id/statRecordTag"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/tag_library" />
-
-    <ImageView
-        android:id="@+id/statRecordTag"
-        android:layout_width="65dp"
-        android:layout_height="107dp"
-        android:layout_marginEnd="72dp"
-        app:layout_constraintBottom_toTopOf="@+id/recordRecyclerView"
+        android:layout_marginEnd="52dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/tag_records" />
+        app:srcCompat="@drawable/tag_library" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/statRecyclerView"

@@ -170,8 +170,8 @@ public class SignInActivity extends AppCompatActivity {
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            progressDialog.setTitle("Signing In");
-            progressDialog.setMessage("Retriving Data... Please hold on.");
+            progressDialog.setTitle("Signing In With Google");
+            progressDialog.setMessage("Signing In... Please hold on.");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -203,8 +203,12 @@ public class SignInActivity extends AppCompatActivity {
                                 editor.putString("FirebaseEmail", userEmail);
                                 editor.apply();
                                 if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                                    progressDialog.setTitle("Creating Account");
+                                    progressDialog.setMessage("Creating Account... Please hold on.");
                                     CreateDataInFirebase(userId, userEmail);
                                 } else {
+                                    progressDialog.setTitle("Loading Data");
+                                    progressDialog.setMessage("Loading Data from Cloud... Please hold on.");
                                     LoadDataFromFirebase(userId, userEmail);
                                 }
                             }
@@ -240,7 +244,7 @@ public class SignInActivity extends AppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(SignInActivity.this, "An error has occurred.", Toast.LENGTH_SHORT).show();
+                        CreateDataInFirebase(userID, userEmail);
                     }
                 }
             }

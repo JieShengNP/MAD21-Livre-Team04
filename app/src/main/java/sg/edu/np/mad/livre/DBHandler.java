@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +49,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String CREATE_BOOK_TABLE = "CREATE TABLE " + TABLE_BOOK + "(" + BOOK_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + BOOK_COLUMN_ISBN + " TEXT," + BOOK_COLUMN_AUTHOR + " TEXT," + BOOK_COLUMN_YEAR + " TEXT," + BOOK_COLUMN_TITLE + " TEXT," + BOOK_COLUMN_BLURB + " TEXT," + BOOK_COLUMN_THUMBNAIL + " TEXT," + BOOK_COLUMN_READING_TIME + " INT," + BOOK_COLUMN_CUSTOM + " INT," + BOOK_COLUMN_ADDED + " INT," + BOOK_COLUMN_ARCHIVED + " INT" + ")";
         String CREATE_LOG_TABLE = "CREATE TABLE " + TABLE_LOG + "(" + LOG_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + LOG_COLUMN_NAME+ " TEXT," + LOG_COLUMN_ISBN+ " TEXT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_SECOND + " INT)";
+                + LOG_COLUMN_NAME+ " TEXT," + LOG_COLUMN_ISBN+ " INT," + LOG_COLUMN_DATE + " TEXT," + LOG_COLUMN_SECOND + " INT)";
         db.execSQL(CREATE_BOOK_TABLE);
         db.execSQL(CREATE_LOG_TABLE);
 
@@ -86,10 +87,11 @@ public class DBHandler extends SQLiteOpenHelper {
     /**
      * Retriving of Book by its ISBN number.
      * @param ISBN ISBN of the book
+     * @param isCus is book custom
      * @return Book if it exists in the Database.
      */
-    public Book FindBookByISBN(String ISBN){
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + ISBN +"\"";
+    public Book FindBookByISBN(String ISBN, Boolean isCus){
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + ISBN +"\" and " + BOOK_COLUMN_CUSTOM + " = " + (isCus ? 1 : 0);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         Book book = new Book();
@@ -107,6 +109,7 @@ public class DBHandler extends SQLiteOpenHelper {
         } else {
             book = null;
         }
+        cursor.close();
         return book;
     }
 
@@ -116,8 +119,8 @@ public class DBHandler extends SQLiteOpenHelper {
      * @param id ISBN of the book
      * @return Book if it exists in the Database.
      */
-    public Book FindBookByID(String id){
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ID + " = \"" + id +"\"";
+    public Book FindBookByID(int id){
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ID + " = \"" + String.valueOf(id) +"\"";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         Book book = new Book();
@@ -144,14 +147,16 @@ public class DBHandler extends SQLiteOpenHelper {
      * @return id if it exists in the Database.
      *          "not found" if it does not.
      */
-    public String GetBookId(Book book){
-        String id = "not found";
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\"";
+    public int GetBookId(Book book){
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\" and " + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0);
+        int id = -1;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.moveToFirst()){
-           id = cursor.getString(0);
+            id = cursor.getInt(0);
         }
+        cursor.close();;
+        db.close();
         return id;
     }
 
@@ -194,7 +199,7 @@ public class DBHandler extends SQLiteOpenHelper {
 //        db.execSQL(dbQuery);
         ContentValues values = new ContentValues();
         values.put(BOOK_COLUMN_ARCHIVED, book.isArchived()? 1: 0);
-        int rowsAffected = db.update(TABLE_BOOK, values, BOOK_COLUMN_ISBN + " = " + book.getIsbn(), null);
+        int rowsAffected = db.update(TABLE_BOOK, values, BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\"", null);
         db.close();
     }
 
@@ -203,34 +208,52 @@ public class DBHandler extends SQLiteOpenHelper {
      * @param query to use to look for book
      * @return arraylist of books
      */
-    public ArrayList<Book> searchCustomBookQuery(String query){
+    public ArrayList<Book> searchCustomBookQuery(String query) {
         ArrayList<Book> bookList = new ArrayList<>();
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE ((" + BOOK_COLUMN_TITLE + " LIKE '%" + query + "%') or (" + BOOK_COLUMN_AUTHOR + " LIKE '%" + query + "%') or (" + BOOK_COLUMN_BLURB + " LIKE '%" + query + "%')) and " + BOOK_COLUMN_CUSTOM + " = 1";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(dbQuery, null);
-        if (cursor.moveToFirst()){
-            do {
-                Book book = new Book();
-                book.setID(cursor.getInt(0));
-                book.setIsbn(cursor.getString(1));
-                book.setAuthor(cursor.getString(2));
-                book.setYear(cursor.getString(3));
-                book.setName(cursor.getString(4));
-                book.setBlurb(cursor.getString(5));
-                book.setThumbnail(cursor.getString(6));
-                book.setReadSeconds(cursor.getInt(7));
-                book.setCustom(cursor.getInt(8) == 1);
-                book.setAdded(cursor.getInt(9) == 1);
-                book.setArchived(cursor.getInt(10) == 1);
-                bookList.add(book);
-            } while (cursor.moveToNext());
-            cursor.close();
-        } else {
-            bookList = null;
+        ArrayList<String> qList = new ArrayList<>(Arrays.asList(query.split(" ")));
+
+        //run through a list of words in the query and add all unique books to booklist
+
+        for (int i = 0; qList.size() > i; i++) {
+            String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE ((" + BOOK_COLUMN_TITLE + " LIKE '%" + qList.get(i) + "%') or (" + BOOK_COLUMN_AUTHOR + " LIKE '%" + qList.get(i) + "%') or (" + BOOK_COLUMN_BLURB + " LIKE '%" + qList.get(i) + "%')) and " + BOOK_COLUMN_CUSTOM + " = 1";
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(dbQuery, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    Book book = new Book();
+                    book.setID(cursor.getInt(0));
+                    book.setIsbn(cursor.getString(1));
+                    book.setAuthor(cursor.getString(2));
+                    book.setYear(cursor.getString(3));
+                    book.setName(cursor.getString(4));
+                    book.setBlurb(cursor.getString(5));
+                    book.setThumbnail(cursor.getString(6));
+                    book.setReadSeconds(cursor.getInt(7));
+                    book.setCustom(cursor.getInt(8) == 1);
+                    book.setAdded(cursor.getInt(9) == 1);
+                    book.setArchived(cursor.getInt(10) == 1);
+
+                    Boolean con = false;
+                    if(bookList == null){
+                        bookList.add(book);
+                    }
+                    else {
+                        for (int j = 0; bookList.size() > j; j++) {
+                            if (bookList.get(j).getIsbn().equals(book.getIsbn())) {
+                                con = true;
+                            }
+                        }
+                        if(!con){
+                            bookList.add(book);
+                        }
+                    }
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+            db.close();
         }
-        db.close();
         return bookList;
-        }
+    }
 
     /**
      * Remove of book from the Database.
@@ -240,7 +263,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public boolean RemoveBook(Book book){
         SQLiteDatabase db = this.getWritableDatabase();
         boolean result = false;
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\"";
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\" and " + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0);
         Cursor cursor = db.rawQuery(dbQuery, null);
         Book object = new Book();
         if (cursor.moveToFirst()){
@@ -259,7 +282,8 @@ public class DBHandler extends SQLiteOpenHelper {
      */
     public void EraseLogs(Book book){
         SQLiteDatabase db = this.getWritableDatabase();
-        String dbQuery = "DELETE FROM " + TABLE_LOG + " WHERE " + LOG_COLUMN_ISBN + " = \"" + book.getIsbn() + "\"";
+        String dbQuery = "DELETE FROM " + TABLE_LOG + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\" and " + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0);
+        db.execSQL(dbQuery);
         db.close();
     }
 
@@ -300,7 +324,7 @@ public class DBHandler extends SQLiteOpenHelper {
     /*
         Creates a log entry of time read .
     */
-    public void updateLog(String isbn,int seconds, String name)
+    public void updateLog(int isbn,int seconds, String name)
     {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         ContentValues values = new ContentValues();
@@ -322,7 +346,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(BOOK_COLUMN_READING_TIME, book.getReadSeconds());
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.update(TABLE_BOOK, values, BOOK_COLUMN_ISBN + " = ?",new String[]{book.getIsbn()});
+        db.update(TABLE_BOOK, values, BOOK_COLUMN_ISBN + " = ?", new String[]{book.getIsbn()});
         db.close();
     }
 
@@ -419,7 +443,7 @@ public class DBHandler extends SQLiteOpenHelper {
             do {
                 Records records = new Records();
                 records.setName(cursor.getString(1));
-                records.setIsbn(cursor.getString(2));
+                records.setBookID(cursor.getInt(2));
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 try {
                     records.setDateRead(sdf.parse(cursor.getString(3)));
@@ -438,7 +462,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     public boolean isBookAdded(Book book){
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_ISBN + " = " + book.getIsbn() + ") and (" + BOOK_COLUMN_CUSTOM + " = " +  (book.isCustom() ? 1 : 0) + ")";
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\") and (" + BOOK_COLUMN_CUSTOM + " = " +  (book.isCustom() ? 1 : 0) + ")";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.getCount() > 0){
@@ -591,7 +615,7 @@ public class DBHandler extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(LOG_COLUMN_ID, record.get_id());
             values.put(LOG_COLUMN_NAME, record.getName());
-            values.put(LOG_COLUMN_ISBN, record.getIsbn());
+            values.put(LOG_COLUMN_ISBN, record.getBookID());
             values.put(LOG_COLUMN_DATE, formatter.format(Calendar.getInstance().getTime()));
             values.put(LOG_COLUMN_SECOND, record.getTimeReadSec());
             db.insert(TABLE_LOG, null, values);
