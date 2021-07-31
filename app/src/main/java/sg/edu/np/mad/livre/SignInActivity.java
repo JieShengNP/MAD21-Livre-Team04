@@ -7,6 +7,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,6 +51,12 @@ public class SignInActivity extends AppCompatActivity {
     private static final String TAG = "SignIn";
     private static final int RC_SIGN_IN = 9001;
     private DatabaseReference mDatabase;
+
+    // Prevent spamming of reset
+    private boolean blocked = false;
+    private CountDownTimer requestCDT;
+    private int secondsLeft = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +119,19 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+
+        requestCDT = new CountDownTimer(60000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                secondsLeft = (int) (millisUntilFinished/1000);
+            }
+            @Override
+            public void onFinish() {
+                blocked = false;
+            }
+        };
+
+
         resetPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -118,18 +139,24 @@ public class SignInActivity extends AppCompatActivity {
                     if (emailText.getText().toString().isEmpty()) {
                         Toast.makeText(SignInActivity.this, "Enter the email in the field above and tap again!", Toast.LENGTH_SHORT).show();
                     } else {
-                        FirebaseAuth auth = FirebaseAuth.getInstance();
-                        String email = emailText.getText().toString();
-                        auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(SignInActivity.this, "Successfully sent a reset email!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(SignInActivity.this, "An error occurred while sending a reset email.", Toast.LENGTH_SHORT).show();
+                        if (!blocked) {
+                            FirebaseAuth auth = FirebaseAuth.getInstance();
+                            String email = emailText.getText().toString();
+                            auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(SignInActivity.this, "Successfully sent a reset email!", Toast.LENGTH_SHORT).show();
+                                        blocked = true;
+                                        requestCDT.start();
+                                    } else {
+                                        Toast.makeText(SignInActivity.this, "An error occurred while sending a reset email.", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        } else {
+                          Toast.makeText(SignInActivity.this, "Please wait for " + secondsLeft + " more seconds before sending another one!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
                 return true;
@@ -160,6 +187,7 @@ public class SignInActivity extends AppCompatActivity {
         if (currentUser != null) {
         }
     }
+
 
     private void SignIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
