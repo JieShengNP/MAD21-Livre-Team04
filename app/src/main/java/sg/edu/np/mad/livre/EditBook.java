@@ -46,7 +46,7 @@ public class EditBook extends AppCompatActivity {
     EditText editTitle, editAuthor, editPublishYear, editISBN, editBlurb;
     public static String thumbnailBM;
     public static Book book;
-    public static String id;
+    public static int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +73,8 @@ public class EditBook extends AppCompatActivity {
             book = (Book) receivedIntent.getSerializableExtra("BookObjectForEdit");
 
             //find id of book, finish if error
-            String idnew = dbHandler.GetBookId(book);
-            if(idnew.equals("not found")) {
+            int idnew = dbHandler.GetBookId(book);
+            if(idnew == -1) {
                 Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -190,10 +190,10 @@ public class EditBook extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //reset original book from database
-        if(id !=null && book !=null){
+        if(id != -1 && book !=null){
             //find id of book, finish if error
-            String idnew = dbHandler.GetBookId(book);
-            if(idnew.equals("not found")) {
+            int idnew = dbHandler.GetBookId(book);
+            if(idnew == -1) {
                 Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -314,8 +314,8 @@ public class EditBook extends AppCompatActivity {
                 .setPositiveButton("Sure", (dialog, id) -> {
 
                     //find id of book, finish if error
-                    String idnew = dbHandler.GetBookId(book);
-                    if(idnew.equals("not found")) {
+                    int idnew = dbHandler.GetBookId(book);
+                    if(idnew == -1) {
                         Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -472,8 +472,8 @@ public class EditBook extends AppCompatActivity {
         }
         else{
             //find id of book, finish if error
-            String idnew = dbHandler.GetBookId(book);
-            if(idnew.equals("not found")) {
+            int idnew = dbHandler.GetBookId(book);
+            if(idnew == -1) {
                 Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                 finish();
             }
