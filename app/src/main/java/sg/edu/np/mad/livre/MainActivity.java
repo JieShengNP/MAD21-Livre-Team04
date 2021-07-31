@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     Chronometer timer;
     Handler handler;
     long tMilliSec, tStart = 0L;
-    int sec, min, hour, currentMusic, isbn;
+    int sec,min,hour, currentMusic, isbn;
     TextView musicName;
     boolean timerRunning, wasPaused, musicStart;
     DBHandler dbHandler;
@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         handler = new Handler();
         dbHandler = new DBHandler(this);
         isbn = getIntent().getIntExtra("Isbn", -1);
-
 
         //start recurring toast
         handler.postDelayed(toastRunnable, 0);
