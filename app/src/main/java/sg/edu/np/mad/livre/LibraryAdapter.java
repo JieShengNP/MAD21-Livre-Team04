@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
     ArrayList<ArrayList<Book>> bookListData;
 
-    public LibraryAdapter(ArrayList<ArrayList<Book>> bookList){
+    public LibraryAdapter(ArrayList<ArrayList<Book>> bookList) {
         bookListData = bookList;
     }
 
@@ -37,12 +37,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
         Context context = holder.book1.getContext();
         Drawable defaultImage = context.getResources().getDrawable(R.drawable.shelf_bust);
         String URL;
-        for(int i = 0; i < bookDataList.size(); i++){
-            if ((URL = bookDataList.get(i).getThumbnail()) != null){
-                if (!bookDataList.get(i).isCustom()){
+        for (int i = 0; i < bookDataList.size(); i++) {
+            if ((URL = bookDataList.get(i).getThumbnail()) != null) {
+                if (!bookDataList.get(i).isCustom()) {
                     SetImage(i, Uri.parse(URL), holder, defaultImage);
-                }else{
-                    if(!(bookDataList.get(i).getThumbnail()).equals("Unavailable")) {
+                } else {
+                    if (!(bookDataList.get(i).getThumbnail()).equals("Unavailable")) {
                         byte[] decodedString = Base64.decode(bookDataList.get(i).getThumbnail(), Base64.DEFAULT);
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                         SetImage(i, decodedByte, holder, defaultImage);
@@ -88,31 +88,32 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
             }
         });
     }
+
     //For custom books with Base64 Encoding
-    public void SetImage(int position, Bitmap bitmap, LibraryViewHolder holder, Drawable defaultImage){
-        switch(position){
-            case(0):
+    public void SetImage(int position, Bitmap bitmap, LibraryViewHolder holder, Drawable defaultImage) {
+        switch (position) {
+            case (0):
                 holder.book1.setVisibility(View.VISIBLE);
                 holder.book1.setImageBitmap(bitmap);
                 break;
-            case(1):
+            case (1):
                 holder.book2.setVisibility(View.VISIBLE);
                 holder.book2.setImageBitmap(bitmap);
                 break;
-            case(2):
+            case (2):
                 holder.book3.setVisibility(View.VISIBLE);
                 holder.book3.setImageBitmap(bitmap);
                 break;
-            case(3):
+            case (3):
                 holder.book4.setVisibility(View.VISIBLE);
                 holder.book4.setImageBitmap(bitmap);
                 break;
         }
     }
 
-    public void SetImage(int position, Uri uri, LibraryViewHolder holder, Drawable defaultImage){
-        switch(position){
-            case(0):
+    public void SetImage(int position, Uri uri, LibraryViewHolder holder, Drawable defaultImage) {
+        switch (position) {
+            case (0):
                 holder.book1.setVisibility(View.VISIBLE);
                 Picasso.get()
                         .load(uri)
@@ -120,7 +121,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
                         .resize(90, 140)
                         .into(holder.book1);
                 break;
-            case(1):
+            case (1):
                 holder.book2.setVisibility(View.VISIBLE);
                 Picasso.get()
                         .load(uri)
@@ -128,7 +129,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
                         .resize(90, 140)
                         .into(holder.book2);
                 break;
-            case(2):
+            case (2):
                 holder.book3.setVisibility(View.VISIBLE);
                 Picasso.get()
                         .load(uri)
@@ -136,7 +137,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
                         .resize(90, 140)
                         .into(holder.book3);
                 break;
-            case(3):
+            case (3):
                 holder.book4.setVisibility(View.VISIBLE);
                 Picasso.get()
                         .load(uri)

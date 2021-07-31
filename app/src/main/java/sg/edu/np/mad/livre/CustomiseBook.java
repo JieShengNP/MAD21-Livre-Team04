@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +27,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
@@ -60,13 +63,13 @@ public class CustomiseBook extends AppCompatActivity {
         coverImg = findViewById(R.id.coverCus);
         tag = findViewById(R.id.cusTag);
 
-        if(customBlurb.getText().toString().length() == 0){
+        if (customBlurb.getText().toString().length() == 0) {
             thumbnailBM = null;
         }
 
         //check if intent has title, set if have
         Intent receivedIntent = getIntent();
-        if(receivedIntent.getSerializableExtra("Title") != null) {
+        if (receivedIntent.getSerializableExtra("Title") != null) {
             customTitle.setText(receivedIntent.getSerializableExtra("Title").toString());
         }
 
@@ -79,9 +82,12 @@ public class CustomiseBook extends AppCompatActivity {
         //text changed listeners, validate when triggered
         customAuthor.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -92,9 +98,12 @@ public class CustomiseBook extends AppCompatActivity {
         customPublishYear.addTextChangedListener(new TextWatcher() {
             //do nothing
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -105,9 +114,12 @@ public class CustomiseBook extends AppCompatActivity {
         customISBN.addTextChangedListener(new TextWatcher() {
             //do nothing
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -119,26 +131,23 @@ public class CustomiseBook extends AppCompatActivity {
         //when submit button is clicked
         submitBtn.setOnClickListener(v -> {
             //Hide keyboard
-            ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(customBlurb.getWindowToken(), 0);
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(customBlurb.getWindowToken(), 0);
 
             //check for missing values, toast and error if there are
             //no errors -> submit
-            if(thumbnailBM == null){
+            if (thumbnailBM == null) {
                 cusCoverBtn.setError("Please set book cover");
                 Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
-            }
-            else if(customTitle.getText().toString().length() == 0){
+            } else if (customTitle.getText().toString().length() == 0) {
                 customTitle.setError("Please enter a Title");
                 Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
-            }
-            else if(customBlurb.getText().toString().length() == 0){
+            } else if (customBlurb.getText().toString().length() == 0) {
                 customBlurb.setError("Please enter a Synopsis");
                 Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
-            }
-            else if(!(AuthorValidation() && PubYearValidation() && ISBNValidation())){
+            } else if (!(AuthorValidation() && PubYearValidation() && ISBNValidation())) {
                 Toast.makeText(getApplicationContext(), "Invalid", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -185,8 +194,7 @@ public class CustomiseBook extends AppCompatActivity {
                                 thumbnailBM = "Unavailable";
                                 return;
                             }
-                        }
-                        else {
+                        } else {
                             //older version
                             try {
                                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), result);
@@ -207,19 +215,17 @@ public class CustomiseBook extends AppCompatActivity {
                 }
             });
 
-    public void bitSet(Bitmap bitmap){
+    public void bitSet(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         //try to compress with png, if it fails, use jpg, show error message if both fail
-        try{
+        try {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            try{
+            try {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            }
-            catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Invalid file", Toast.LENGTH_SHORT).show();
                 thumbnailBM = "Unavailable";
@@ -237,8 +243,7 @@ public class CustomiseBook extends AppCompatActivity {
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
             coverImg.setImageBitmap(decodedByte);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             //error is fails
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Invalid file", Toast.LENGTH_SHORT).show();
@@ -255,7 +260,9 @@ public class CustomiseBook extends AppCompatActivity {
                 .setCancelable(true)
                 .setPositiveButton("Sure", (dialog, id) -> finish())
                 //User chooses not to
-                .setNegativeButton("No", (dialog, id) -> {return;});
+                .setNegativeButton("No", (dialog, id) -> {
+                    return;
+                });
 
         //Creating dialog box
         AlertDialog alert = bui.create();
@@ -264,7 +271,7 @@ public class CustomiseBook extends AppCompatActivity {
         alert.show();
     }
 
-    public void ValidatedSubmission(){
+    public void ValidatedSubmission() {
         //for valid submissions
         //create book object and set values
         Book book = new Book();
@@ -285,31 +292,28 @@ public class CustomiseBook extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public Boolean AuthorValidation(){
+    public Boolean AuthorValidation() {
         //author's validation
 
         //regex that return true for any numbers in string
         Pattern p = Pattern.compile(".*\\d+.*");
 
-        if(customAuthor.getText().toString().length() == 0){
+        if (customAuthor.getText().toString().length() == 0) {
             customAuthor.setError("Please enter an Author");
-        }
-        else if(p.matcher(customAuthor.getText()).matches()){
+        } else if (p.matcher(customAuthor.getText()).matches()) {
             customAuthor.setError("No numbers!");
-        }
-        else if(customAuthor.getText().length() > 20){
+        } else if (customAuthor.getText().length() > 20) {
             customAuthor.setError("Max length 20!");
-        }
-        else{
+        } else {
             return true;
         }
         return false;
     }
 
-    public Boolean PubYearValidation(){
+    public Boolean PubYearValidation() {
         //validation for year that works for API 19
         //create date object out of input
-        String newDateStr = "01/"+"01/"+customPublishYear.getText();
+        String newDateStr = "01/" + "01/" + customPublishYear.getText();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         Date strDate = new Date();
@@ -321,81 +325,76 @@ public class CustomiseBook extends AppCompatActivity {
         }
 
         //check length of input and validity of date object
-        if(customPublishYear.getText().length() > 4 || customPublishYear.getText().length() < 1){
+        if (customPublishYear.getText().length() > 4 || customPublishYear.getText().length() < 1) {
             customPublishYear.setError("Invalid Year!");
-        }
-        else if((new Date()).before(strDate)){
+        } else if ((new Date()).before(strDate)) {
             customPublishYear.setError("Invalid Year!");
-        }
-        else{
+        } else {
             return true;
         }
         return false;
     }
 
-    public Boolean ISBNValidation(){
+    public Boolean ISBNValidation() {
         //create book object and validate
         Book b = new Book();
         b.setCustom(true);
         b.setIsbn(customISBN.getText().toString());
-        if(b.getIsbn().length() != 13){
+        if (b.getIsbn().length() != 13) {
             customISBN.setError("Invalid ISBN-13!");
-        }else if (dbHandler.isBookAdded(b)){
+        } else if (dbHandler.isBookAdded(b)) {
             customISBN.setError("Custom book exists with this ISBN");
-        }
-        else{
+        } else {
             return true;
         }
         return false;
     }
 
-    public void setOrientationDifferences(){
+    public void setOrientationDifferences() {
         tag = findViewById(R.id.cusTag);
         cusTxt = findViewById(R.id.customiseText);
         //if landscape
-        if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             //tag
             tag.getLayoutParams().height = Math.round(70 * Resources.getSystem().getDisplayMetrics().density);
-            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0,0,0,0);
+            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0, 0, 0, 0);
             tag.setRotation(270);
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tag.getLayoutParams();
-            p.setMargins(0, Math.round(20 * Resources.getSystem().getDisplayMetrics().density), Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+            p.setMargins(0, Math.round(20 * Resources.getSystem().getDisplayMetrics().density), Math.round(52 * Resources.getSystem().getDisplayMetrics().density), 0);
 
             //catalogue text
             cusTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 42);
             ViewGroup.MarginLayoutParams ct = (ViewGroup.MarginLayoutParams) cusTxt.getLayoutParams();
-            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(0 * Resources.getSystem().getDisplayMetrics().density),0,0);
+            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(0 * Resources.getSystem().getDisplayMetrics().density), 0, 0);
             cusTxt.getLayoutParams().height = Math.round(62 * Resources.getSystem().getDisplayMetrics().density);
 
-            }
-        else { //if portrait
+        } else { //if portrait
             //tag
             tag.getLayoutParams().height = Math.round(107 * Resources.getSystem().getDisplayMetrics().density);
-            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0, 0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+            ((ViewGroup.MarginLayoutParams) tag.getLayoutParams()).setMargins(0, 0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density), 0);
             tag.setRotation(0);
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tag.getLayoutParams();
-            p.setMargins(0,0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density),0);
+            p.setMargins(0, 0, Math.round(52 * Resources.getSystem().getDisplayMetrics().density), 0);
 
             //catalogue text
             cusTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 60);
             ViewGroup.MarginLayoutParams ct = (ViewGroup.MarginLayoutParams) cusTxt.getLayoutParams();
-            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(16 * Resources.getSystem().getDisplayMetrics().density),0,0);
+            ct.setMargins(Math.round(48 * Resources.getSystem().getDisplayMetrics().density), Math.round(16 * Resources.getSystem().getDisplayMetrics().density), 0, 0);
             cusTxt.getLayoutParams().height = Math.round(85 * Resources.getSystem().getDisplayMetrics().density);
 
-            }
+        }
         //ensure changes are applied
         tag.requestLayout();
     }
 
-    public void back(){
+    public void back() {
 
         //check for any value in any of the strings
         //alert user if there are
         //finish if there aren't
-        if(customTitle.getText().toString().length() != 0 || customAuthor.getText().toString().length() != 0 || customPublishYear.getText().toString().length() != 0 || customISBN.getText().toString().length() != 0 || customBlurb.getText().toString().length() != 0){
+        if (customTitle.getText().toString().length() != 0 || customAuthor.getText().toString().length() != 0 || customPublishYear.getText().toString().length() != 0 || customISBN.getText().toString().length() != 0 || customBlurb.getText().toString().length() != 0) {
             unsavedChangesWarning();
-        }
-        else{
+        } else {
             finish();
         }
     }

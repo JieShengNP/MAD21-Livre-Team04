@@ -18,6 +18,7 @@ public class StatActivity extends AppCompatActivity {
     DBHandler dbHandler;
     ArrayList<String> hashKeys;
     HashMap<String, String> statList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +48,7 @@ public class StatActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-    public void InitializeHashKeyList()
-    {
+    public void InitializeHashKeyList() {
         hashKeys = new ArrayList<>();
         hashKeys.add("Number of Added books");
         hashKeys.add("Number of Books Read");
@@ -59,128 +59,103 @@ public class StatActivity extends AppCompatActivity {
         hashKeys.add("Favourite Author");
     }
 
-    public void MapData()
-    {
+    public void MapData() {
         statList = new HashMap<String, String>();
         //Overrideable Int variable
         int count = dbHandler.GetTotalBooksInLibrary();
 
         // Mapping Total Books in Library
-        if (count != 0)
-        {
-            statList.put(hashKeys.get(0),String.valueOf(count));
-        }
-        else
-        {
+        if (count != 0) {
+            statList.put(hashKeys.get(0), String.valueOf(count));
+        } else {
             statList.put(hashKeys.get(0), "None");
         }
 
         //Mapping Total Books Read
         count = dbHandler.GetTotalBooksRead();
-        if (count != 0)
-        {
-            statList.put(hashKeys.get(1),String.valueOf(count));
-        }
-        else
-        {
+        if (count != 0) {
+            statList.put(hashKeys.get(1), String.valueOf(count));
+        } else {
             statList.put(hashKeys.get(1), "None");
         }
 
         //Mapping Total Time Spend Reading
         count = dbHandler.GetTotalReadingTimeInSec();
-        if(count > 0)
-        {
+        if (count > 0) {
             //less than 1 minute
-            if (count < 60)
-            {
+            if (count < 60) {
 
-                statList.put(hashKeys.get(2), String.format("%02d",count) + "S");
+                statList.put(hashKeys.get(2), String.format("%02d", count) + "S");
             }
             //more than 1 hour
-            else if (count >= 3600)
-            {
-                int min = count/60;
+            else if (count >= 3600) {
+                int min = count / 60;
                 count = count % 60;
                 int hour = min / 60;
                 min = min % 60;
-                statList.put(hashKeys.get(2), String.format("%02d",hour) + "H " + String.format("%02d",min) + "M " + String.format("%02d",count) + "S");
+                statList.put(hashKeys.get(2), String.format("%02d", hour) + "H " + String.format("%02d", min) + "M " + String.format("%02d", count) + "S");
             }
             //less than 1 hour , more than 1 minute
-            else
-            {
-                int min = count/60;
+            else {
+                int min = count / 60;
                 count = count % 60;
-                statList.put(hashKeys.get(2), String.format("%02d",min) + "M " + String.format("%02d",count) + "S");
+                statList.put(hashKeys.get(2), String.format("%02d", min) + "M " + String.format("%02d", count) + "S");
             }
-        }
-        else
-        {
-            statList.put(hashKeys.get(2),"0S");
+        } else {
+            statList.put(hashKeys.get(2), "0S");
         }
 
         //Mapping Avg Time Spend Reading
         count = dbHandler.GetAvgTimePerSession();
-        if(count > 0)
-        {
+        if (count > 0) {
             //less than 1 minute
-            if (count < 60)
-            {
+            if (count < 60) {
 
-                statList.put(hashKeys.get(3), String.format("%02d",count) + "S");
+                statList.put(hashKeys.get(3), String.format("%02d", count) + "S");
             }
             //more than 1 hour
-            else if (count >= 3600)
-            {
-                int min = count/60;
+            else if (count >= 3600) {
+                int min = count / 60;
                 count = count % 60;
                 int hour = min / 60;
                 min = min % 60;
-                statList.put(hashKeys.get(3), String.format("%02d",hour) + "H " + String.format("%02d",min) + "M " + String.format("%02d",count) + "S");
+                statList.put(hashKeys.get(3), String.format("%02d", hour) + "H " + String.format("%02d", min) + "M " + String.format("%02d", count) + "S");
             }
             //less than 1 hour , more than 1 minute
-            else
-            {
-                int min = count/60;
+            else {
+                int min = count / 60;
                 count = count % 60;
-                statList.put(hashKeys.get(3), String.format("%02d",min) + "M " + String.format("%02d",count) + "S");
+                statList.put(hashKeys.get(3), String.format("%02d", min) + "M " + String.format("%02d", count) + "S");
             }
-        }
-        else
-        {
-            statList.put(hashKeys.get(3),"0S");
+        } else {
+            statList.put(hashKeys.get(3), "0S");
         }
 
         //Mapping Book Most Time Spent On
         Book book = dbHandler.GetBookMostTimeSpent();
-        if (book != null)
-        {
+        if (book != null) {
             statList.put(hashKeys.get(4), book.getName());
             //Mapping Time Spent on Book
             count = book.getReadSeconds();
-            if (count < 60)
-            {
+            if (count < 60) {
 
-                statList.put(hashKeys.get(5), String.format("%02d",count) + "S");
+                statList.put(hashKeys.get(5), String.format("%02d", count) + "S");
             }
             //more than 1 hour
-            else if (count >= 3600)
-            {
-                int min = count/60;
+            else if (count >= 3600) {
+                int min = count / 60;
                 count = count % 60;
                 int hour = min / 60;
                 min = min % 60;
-                statList.put(hashKeys.get(5), String.format("%02d",hour) + "H " + String.format("%02d",min) + "M " + String.format("%02d",count) + "S");
+                statList.put(hashKeys.get(5), String.format("%02d", hour) + "H " + String.format("%02d", min) + "M " + String.format("%02d", count) + "S");
             }
             //less than 1 hour , more than 1 minute
-            else
-            {
-                int min = count/60;
+            else {
+                int min = count / 60;
                 count = count % 60;
-                statList.put(hashKeys.get(5), String.format("%02d",min) + "M " + String.format("%02d",count) + "S");
+                statList.put(hashKeys.get(5), String.format("%02d", min) + "M " + String.format("%02d", count) + "S");
             }
-        }
-        else
-        {
+        } else {
             statList.put(hashKeys.get(4), "None");
             statList.put(hashKeys.get(5), "0S");
         }

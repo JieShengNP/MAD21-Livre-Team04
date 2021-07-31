@@ -59,10 +59,10 @@ public class ArchiveActivity extends AppCompatActivity {
         //Nested List is used to split into chunks for Recycler View
         ArrayList<ArrayList<Book>> bookNestedList = new ArrayList<>();
         ArrayList<Book> allNonArchivedBookList = dbHandler.GetAllArchivedBooks();
-        if (allNonArchivedBookList != null){
+        if (allNonArchivedBookList != null) {
             //Separating to 4 per list
             int chunk = 4;
-            for(int i = 0; i < allNonArchivedBookList.size(); i += chunk){
+            for (int i = 0; i < allNonArchivedBookList.size(); i += chunk) {
                 List<Book> splitBookList = allNonArchivedBookList.subList(i, Math.min(i + chunk, allNonArchivedBookList.size()));
                 ArrayList<Book> splitBookArray = new ArrayList<>();
                 splitBookArray.addAll(splitBookList);
