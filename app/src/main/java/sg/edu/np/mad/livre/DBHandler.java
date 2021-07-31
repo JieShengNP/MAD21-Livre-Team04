@@ -148,7 +148,7 @@ public class DBHandler extends SQLiteOpenHelper {
      *          "not found" if it does not.
      */
     public int GetBookId(Book book){
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\"";
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() +"\" and " + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0)+"\"";
         int id = -1;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
