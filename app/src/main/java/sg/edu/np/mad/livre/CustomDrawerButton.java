@@ -2,7 +2,6 @@ package sg.edu.np.mad.livre;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.widget.AppCompatButton;

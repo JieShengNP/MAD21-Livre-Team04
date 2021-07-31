@@ -5,15 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
@@ -449,6 +446,7 @@ public class DBHandler extends SQLiteOpenHelper {
         {
             do {
                 Records records = new Records();
+                records.set_id(cursor.getInt(0));
                 records.setName(cursor.getString(1));
                 records.setIsbn(cursor.getString(2));
                 records.setBookID(cursor.getInt(3));

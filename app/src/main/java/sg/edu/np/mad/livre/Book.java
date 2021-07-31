@@ -1,7 +1,6 @@
 package sg.edu.np.mad.livre;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Book implements Serializable {
     private int ID;

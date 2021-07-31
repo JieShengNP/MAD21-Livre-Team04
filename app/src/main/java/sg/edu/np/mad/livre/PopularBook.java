@@ -1,6 +1,5 @@
 package sg.edu.np.mad.livre;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PopularBook {
@@ -12,7 +11,7 @@ public class PopularBook {
     public String thumbnail;
     public HashMap<String, Boolean> readers;
     private int totalReaders;
-    public long totalTime;
+    public int totalTime;
 
     public int getTotalReaders() {
         return totalReaders;
