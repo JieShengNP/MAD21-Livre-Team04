@@ -35,6 +35,19 @@
         app:srcCompat="@drawable/icon_lcalligraphy" />
 
     <TextView
+        android:id="@+id/signupNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Name: "
+        android:textColor="@color/sage"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpTextView"
+        tools:text="Name:" />
+
+    <TextView
         android:id="@+id/signupEmailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +57,7 @@
         android:textColor="@color/sage"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTextView"
+        app:layout_constraintTop_toBottomOf="@+id/signupNameText"
         tools:text="Email:" />
 
     <TextView
@@ -61,6 +74,21 @@
         tools:text="Password" />
 
     <EditText
+        android:id="@+id/signupNameEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/sage"
+        android:ems="10"
+        android:inputType="text"
+        android:text=""
+        android:textColor="@color/sage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/signupNameText"
+        app:layout_constraintTop_toBottomOf="@+id/signUpTextView" />
+
+    <EditText
         android:id="@+id/signupEmailEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -73,7 +101,7 @@
         android:textColor="@color/sage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/signupEmailText"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/signupNameEditText" />
 
     <EditText
         android:id="@+id/signupPasswordEditText"
