@@ -10,14 +10,14 @@
 
 ## Description of The app (Livre)
 
-Livre is an app for readers, tracking their reading habits by logging the length of reading sessions. The process of tracking one's reading habits digitally is easier with the ability to search for books in the catalogue and add it to one's library. Books can also be archived or removed to reduce clutter. Users have the flexibility of adding custom books. The app further enhances the reading experience by providing reading analytics and Popular book listings. Through making reading more hassle free, Livre is a good companion app for everyone who reads, from casual readers to book worms.
+Livre is an app for readers, tracking their reading habits by logging the length of reading sessions. The process of tracking one's reading habits digitally is easier with the ability to search for books in the catalogue and add it to one's library. Books can also be archived or removed to reduce clutter. Users have the flexibility of adding custom books. The app further enhances the reading experience by providing reading analytics and Popular book listings. Users' reading data is saved on the cloud, preserving their precious reading logs, that can still be erased if they choose to. Through making reading more hassle free, Livre is a good companion app for anyone who reads, from casual readers to book worms.
 
 ## Roles and Contributions
 
 | Name | Roles | Contributions |
 |-|-|-|
 | Tan Jie Sheng | <ul><li>Debugger</li><li>Application Tester</li><li>CI Automation with GitHub Actions</li></ul> | <ul><li>Library and Archive Activity (Showing of User's Books)</li><li>Navigation Drawer for Specific Scenarios</li><li>Book Database Creation</li><li>Firebase User Accounts</li><li>Integration of Database with Firebase Database</li><li>Showing of Public Analytics</li></ul> |
-| Kua Li Min | <ul><li>Ideator (come up with general ideas, solutions, and logic)</li><li>Designer (app colour scheme, UI, etc.)</li><li>Padlet submitter</li></ul> | <ul><li>Catalogue Activity, Layouts, API calls and putting response into recyclerview</li><li>Book Details Activity and Layouts for all kinds of books and scenarios</li><li>Customise Book Activity and Layout</li><li>Edit Book Activity and layout</li><li>Sections in DBHandler specific to my activities</li><li>Drawing most images</li><li>Common sections of ReadMe</li></ul> |
+| Kua Li Min | <ul><li>Ideator (come up with general ideas, solutions, and logic)</li><li>Designer (app colour scheme, UI, etc.)</li><li>Padlet submitter</li></ul> | <ul><li>Catalogue Activity, Layouts, API calls and putting response into recyclerview</li><li>Book Details Activity and Layouts for all kinds of books and scenarios</li><li>Customise Book Activity and Layout</li><li>Edit Book Activity and layout</li><li>Sections in DBHandler specific to my activities</li><li>Drawing certain images</li><li>Common sections of ReadMe</li></ul> |
 | Chow Yun Cong | <ul><li>Music Sourcer</li><li>Application Tester</li><li>App Publisher</li></ul> | <ul><li>Timer(Main) Activity(timing and recording)</li><li>Music Player and Disclaimer</li><li>Logs Database Creation</li><li>Showing of Logs(History)</li><li>Showing of Individual Statistics</li></ul> |
 
 ## Other
@@ -104,6 +104,7 @@ User is viewing a custom made book that they have not added yet and decided to g
 <br/>
 User edits a Custom book and clicks done (and passed validation) and is brought to book details where the details of their edited book is displayed (db has not been updated).
 Book details would show buttons meant for books that are pending a confirmation to save edits.
+
 <br/>
 
 <img src="https://user-images.githubusercontent.com/72980567/127622511-9fea1028-84ea-4c7d-9afd-3b1deee1d2cf.png" width="200" >
@@ -156,3 +157,5 @@ The Art of Healing (Original Mix) <br />
 Windsurfing (Original Mix) <br /> 
 SoundCloud : <a href = "https://soundcloud.com/atmospheric-music-portal">Ron Gelinas Chillout Lounge</a> <br /> 
 Youtube: <a href = "https://www.youtube.com/user/iamRottenRon">Ron Gelinas Chillout Lounge</a>
+
+Some logos were taken from Microsoft Office.

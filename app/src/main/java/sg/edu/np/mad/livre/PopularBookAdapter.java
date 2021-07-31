@@ -1,6 +1,5 @@
 package sg.edu.np.mad.livre;
 
-import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -44,11 +43,9 @@ public class PopularBookAdapter extends RecyclerView.Adapter<PopularBookViewHold
         if (position == bookList.size()){
             return;
         }
-        Drawable defaultImage = holder.bookThumbnail.getContext().getResources().getDrawable(R.drawable.shelf_bust);
         holder.bookTitle.setText(bookList.get(position).title);
         Picasso.get()
                 .load(bookList.get(position).thumbnail)
-                .placeholder(defaultImage)
                 .resize(90, 140)
                 .into(holder.bookThumbnail);
         holder.bookAuthorYear.setText(bookList.get(position).author + " . " + bookList.get(position).year);
