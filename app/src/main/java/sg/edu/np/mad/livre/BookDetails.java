@@ -208,6 +208,7 @@ public class BookDetails extends AppCompatActivity {
         //if it works, save and bring user to library
         Toast.makeText(getBaseContext(), "Saved", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(),LibraryActivity.class);
+        book = null;
         startActivity(intent);
         wasChanged = true;
 
