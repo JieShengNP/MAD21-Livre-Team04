@@ -135,6 +135,32 @@ User ends up in Bookdetails with no other activities below the stack, going back
 <br/>
 User clicks on book in Library, catalogue button in the library and redirects to Book details showing information about to book.
 
+### Library and Archive
+#### Library
+This is the Library, where all the books that the user has added will be shown.<br/>
+<img src="https://user-images.githubusercontent.com/73047869/127776350-c6d7f239-292f-4c46-9b25-e48119813ace.PNG" width = "200"><br/>
+#### Archive
+This is the Archive, where all the books that the user has moved to library will be shown. This is usually used as a place for the user to store books that they are currently not reading and also for decluttering of library.<br/>
+<img src="https://user-images.githubusercontent.com/73047869/127776418-54a11d2d-358b-4af5-aef7-e2d2dc2f36cc.PNG" width = "200"><br/>
+
+### Cloud Data and Statistics Features
+<img src = "https://user-images.githubusercontent.com/73047869/127775587-d76bc0a5-98fe-4b1b-a288-ec3f02c2b716.PNG" width = "200">
+
+#### Popular Books
+This page shows the top books the general public has been reading with the Livre app and sorted by most readers, then most time spent.<br/>
+<img src = "https://user-images.githubusercontent.com/73047869/127775960-280e7c5f-d011-4d8b-89d7-381dab17d225.PNG" width = "200"><br/>
+#### My Statistics
+This page shows the user's personal reading statistics.<br/>
+<img src = "https://user-images.githubusercontent.com/73047869/127776069-7ed70a41-e4db-410c-b0d8-aa680d96dbae.PNG" width = "200"><br/>
+#### Save to Cloud
+This option will copy the user's current book list and records list into the online database.<br/>
+#### Download from Cloud
+This option will replace all the user's current data with what the user last uploaded into the online database.<br/>
+#### Delete Local Data
+This option will delete the user's current data in the database, if the user wishes to restore their latest cloud data, they can still download from cloud as long as they do not save to cloud after deleting.<br/>
+#### Log out
+This option will log the user out of the app and will redirect them back to the sign in page.<br/>
+
 ### Credits
 All music tracks used are Royalty Free and are licensed under Creative Commons License. <br />
 All music tracks used belong to Ron Gelinas <br />
