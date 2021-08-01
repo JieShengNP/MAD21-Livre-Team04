@@ -342,7 +342,7 @@ public class CustomiseBook extends AppCompatActivity {
         b.setIsbn(customISBN.getText().toString());
         if (b.getIsbn().length() != 13) {
             customISBN.setError("Invalid ISBN-13!");
-        } else if (dbHandler.isBookAdded(b)) {
+        } else if (dbHandler.isBookAddedISBN(b)) {
             customISBN.setError("Custom book exists with this ISBN");
         } else {
             return true;

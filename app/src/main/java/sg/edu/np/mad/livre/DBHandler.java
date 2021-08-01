@@ -157,7 +157,7 @@ public class DBHandler extends SQLiteOpenHelper {
      */
     public int GetBookId(Book book) {
         String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE " + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\" and " + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0);
-        int id = -1;
+        int id = 0;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.moveToFirst()) {
@@ -493,6 +493,26 @@ public class DBHandler extends SQLiteOpenHelper {
      */
     public boolean isBookAdded(Book book) {
         String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_ID + " = " + book.getID() + ") and (" + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0) + ")";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(dbQuery, null);
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            db.close();
+            return true;
+        } else {
+            cursor.close();
+            db.close();
+            return false;
+        }
+    }
+
+    /**
+     * Check if the book is stored in the Database
+     * @param book Book to check if is added in Database
+     * @return Whether the book is added in the Database
+     */
+    public boolean isBookAddedISBN(Book book) {
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_ISBN + " = " + book.getIsbn() + ") and (" + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0) + ")";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.getCount() > 0) {

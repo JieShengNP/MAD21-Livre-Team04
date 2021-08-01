@@ -73,7 +73,7 @@ public class EditBook extends AppCompatActivity {
 
             //find id of book, finish if error
             int idnew = dbHandler.GetBookId(book);
-            if (idnew == -1) {
+            if (idnew == 0) {
                 Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -192,10 +192,10 @@ public class EditBook extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //reset original book from database
-        if (id != -1 && book != null) {
+        if (id != 0 && book != null) {
             //find id of book, finish if error
             int idnew = dbHandler.FindBookByID(book.getID()).getID();
-            if (idnew == -1) {
+            if (idnew == 0) {
                 Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -313,7 +313,7 @@ public class EditBook extends AppCompatActivity {
 
                     //find id of book, finish if error
                     int idnew = dbHandler.GetBookId(book);
-                    if (idnew == -1) {
+                    if (idnew == 0) {
                         Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -410,7 +410,7 @@ public class EditBook extends AppCompatActivity {
         b.setIsbn(editISBN.getText().toString());
         if (b.getIsbn().length() != 13) {
             editISBN.setError("Invalid ISBN-13!");
-        } else if (dbHandler.isBookAdded(b) && !(b.getIsbn().equals(book.getIsbn()))) {
+        } else if (dbHandler.isBookAddedISBN(b) && !(b.getIsbn().equals(book.getIsbn()))) {
             editISBN.setError("Custom book exists with this ISBN");
         } else {
             return true;
@@ -466,7 +466,7 @@ public class EditBook extends AppCompatActivity {
         } else {
             //find id of book, finish if error
             int idnew = dbHandler.GetBookId(book);
-            if (idnew == -1) {
+            if (idnew == 0) {
                 Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                 finish();
             }
