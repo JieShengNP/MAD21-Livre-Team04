@@ -23,7 +23,7 @@ public class Test00_SplashScreenActivityTest {
     @Test
     public void testLogin() {
         try {
-            Thread.sleep(7000);
+            Thread.sleep(8000);
         } catch (Exception e) {
         }
         intended(hasComponent(SignUpActivity.class.getName()));
