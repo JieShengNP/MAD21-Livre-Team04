@@ -112,14 +112,7 @@ Book details would show buttons meant for books that are pending a confirmation 
 
 **9**
 <br/>
-*SCENARIO A*<br/>
-User edits a Custom book and clicks done (and passed validation) and is brought to book details where the details of their edited book is displayed (db has not been updated).
-Book details would show buttons meant for books that are pending a confirmation to save edits.
-<img src="https://user-images.githubusercontent.com/72980567/127622511-9fea1028-84ea-4c7d-9afd-3b1deee1d2cf.png"  width="200">
 
-Saving changes would display update bookdetails and DB, and the activity will look like "it will look like this for added custom books:" under **6, 8**.Clicking moving to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11**. Clicking move to archive would update the database and stay on the same activity. Start Reading would open the timer (not in my scope) and delete custom book would trigger **11** scanario C.
-<br/>
-*SCENARIO B*<br/>
 User, while on edit page decided to go back and confirms to delete unsaved changes (if any), user would be brought back to bookdetails with book unchanged.
 <br/>
 
