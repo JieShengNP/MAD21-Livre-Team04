@@ -274,6 +274,7 @@ public class BookDetails extends AppCompatActivity {
         book.setAdded(true);
         book.setArchived(false);
         dbHandler.AddBook(book);
+        book.setID(dbHandler.GetBookId(book));
         recreate();
         Toast.makeText(getBaseContext(), "Added", Toast.LENGTH_SHORT).show();
     }
