@@ -75,7 +75,7 @@ public class BookDetails extends AppCompatActivity {
             if (book == null) {
                 book = (Book) receivedIntent.getSerializableExtra("BookObject");
                 //set added of book
-                book.setAdded(dbHandler.isBookAdded(book));
+                book.setAdded(dbHandler.GetBookId(book) != 0);
             }
         } catch (Exception e) {
             //finish if there is an error
