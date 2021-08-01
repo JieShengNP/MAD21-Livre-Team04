@@ -48,17 +48,7 @@ public class Test02_LibraryActivityTest {
     }
 
     @Test
-    public void test3_BookArchiveToggle() {
-        onView(withId(R.id.libraryRecyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        swipeUp();
-        onView(withId(R.id.detToggleArcBtn)).check(matches(isDisplayed())).check(matches(withText("Move to Archive")));
-        onView(withId(R.id.detToggleArcBtn)).perform(click());
-        onView(withId(R.id.detToggleArcBtn)).check(matches(isDisplayed())).check(matches(withText("Move to Library")));
-        onView(withId(R.id.detToggleArcBtn)).perform(click());
-    }
-
-    @Test
-    public void test4_OpenArchive(){
+    public void test3_OpenArchive(){
         onView(withId(R.id.libraryArchiveImage)).perform(click());
         try {
             Thread.sleep(1000);

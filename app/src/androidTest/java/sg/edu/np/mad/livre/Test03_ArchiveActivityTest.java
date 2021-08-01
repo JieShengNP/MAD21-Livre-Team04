@@ -51,15 +51,6 @@ public class Test03_ArchiveActivityTest {
         intended(hasComponent(BookDetails.class.getName()));
     }
 
-    @Test
-    public void test4_ArchiveBookArchiveToggle() {
-        onView(withId(R.id.libraryArchiveImage)).perform(click());
-        onView(withId(R.id.archiveRecyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        swipeUp();
-        onView(withId(R.id.detToggleArcBtn)).perform(click());
-        onView(withId(R.id.detToggleArcBtn)).perform(click());
-    }
-
     @After
     public void tearDown() throws Exception {
         Intents.release();
