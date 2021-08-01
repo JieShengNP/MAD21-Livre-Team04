@@ -492,7 +492,7 @@ public class DBHandler extends SQLiteOpenHelper {
      * @return Whether the book is added in the Database
      */
     public boolean isBookAdded(Book book) {
-        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_ISBN + " = \"" + book.getIsbn() + "\") and (" + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0) + ")";
+        String dbQuery = "SELECT * FROM " + TABLE_BOOK + " WHERE (" + BOOK_COLUMN_ID + " = " + book.getID() + ") and (" + BOOK_COLUMN_CUSTOM + " = " + (book.isCustom() ? 1 : 0) + ")";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(dbQuery, null);
         if (cursor.getCount() > 0) {

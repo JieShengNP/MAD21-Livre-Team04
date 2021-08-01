@@ -194,7 +194,7 @@ public class EditBook extends AppCompatActivity {
         //reset original book from database
         if (id != -1 && book != null) {
             //find id of book, finish if error
-            int idnew = dbHandler.GetBookId(book);
+            int idnew = dbHandler.FindBookByID(book.getID()).getID();
             if (idnew == -1) {
                 Toast.makeText(getApplicationContext(), "Book does not exist, please delete.", Toast.LENGTH_SHORT).show();
                 finish();
@@ -344,7 +344,7 @@ public class EditBook extends AppCompatActivity {
 
 
         Book newBook = book;
-        newBook.setName(editTitle.getText().toString());
+        newBook.setID(id);
         newBook.setName(editTitle.getText().toString());
         newBook.setAuthor(editAuthor.getText().toString());
         newBook.setYear(editPublishYear.getText().toString());
