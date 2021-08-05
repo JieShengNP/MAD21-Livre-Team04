@@ -188,6 +188,7 @@
         android:layout_width="129dp"
         android:layout_height="114dp"
         android:visibility="gone"
+        android:translationY="-60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/catRecyclerView"
         app:layout_constraintStart_toStartOf="parent"

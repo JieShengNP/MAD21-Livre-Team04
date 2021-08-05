@@ -81,7 +81,7 @@ public class CatalogueActivity extends AppCompatActivity {
         loadVid.setOnPreparedListener(mp -> mp.setLooping(true));
 
         //start levitation animation
-        levitate(50);
+        levitate(350);
 
 
         dbHandler = new DBHandler(this);
@@ -472,10 +472,10 @@ public class CatalogueActivity extends AppCompatActivity {
                 //250ms delay => shake featherduster => 500ms delay => levitate featherduster, alertdialogue
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-                    shake(70);
+                    shake(60);
 
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        levitate(50);
+                        levitate(350);
 
                         //alert dialogue (no results for query)
                         AlertDialog.Builder bui = new AlertDialog.Builder(CatalogueActivity.this);
@@ -527,7 +527,7 @@ public class CatalogueActivity extends AppCompatActivity {
 
     public void levitate(float Y) {
         //Levitation animation in one direction (up/down)
-        final long yourDuration = 3000; //duration of one direction
+        final long yourDuration = 7000; //duration of one direction
         final TimeInterpolator yourInterpolator = new DecelerateInterpolator();
         findViewById(R.id.featherDuster).animate().
                 translationYBy(Y).
