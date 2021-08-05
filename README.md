@@ -20,7 +20,7 @@ Livre is an app for readers, tracking their reading habits by logging the length
 | Name | Roles | Contributions |
 |-|-|-|
 | Tan Jie Sheng | <ul><li>Debugger</li><li>Application Tester</li><li>CI Automation with GitHub Actions</li></ul> | <ul><li>Library and Archive Activity (Showing of User's Books)</li><li>Navigation Drawer for Specific Scenarios</li><li>Book Database Creation</li><li>Firebase User Accounts</li><li>Integration of Database with Firebase Database</li><li>Showing of Public Analytics</li></ul> |
-| Kua Li Min | <ul><li>Ideator (come up with general ideas, solutions, and logic)</li><li>Designer (app colour scheme, UI, etc.)</li><li>Padlet submitter</li></ul> | <ul><li>Catalogue Activity, Layouts, API calls and putting response into recyclerview</li><li>Book Details Activity and Layouts for all kinds of books and scenarios</li><li>Customise Book Activity and Layout</li><li>Edit Book Activity and layout</li><li>Sections in DBHandler specific to my activities</li><li>Drawing certain images</li><li>Common sections of ReadMe</li></ul> |
+| Kua Li Min | <ul><li>Ideator (come up with general ideas, solutions, and logic)</li><li>Designer (app colour scheme, UI, etc.)</li><li>Padlet submitter</li></ul> | <ul><li>Catalogue Activity, Layouts, API calls and putting response into recyclerview</li><li>Book Details Activity and Layouts for all kinds of books and scenarios</li><li>Customise Book Activity and Layout</li><li>Edit Book Activity and layout</li><li>Sections in DBHandler specific to my activities</li><li>Drawing certain images</li><li>Common sections of ReadMe</li><li>Landscape versions of my layouts (configuration changes) with minimal impact</li></ul> |
 | Chow Yun Cong | <ul><li>Music Sourcer</li><li>Application Tester</li><li>App Publisher</li></ul> | <ul><li>Timer(Main) Activity(timing and recording)</li><li>Music Player and Disclaimer</li><li>Logs Database Creation</li><li>Showing of Logs(History)</li><li>Showing of Individual Statistics</li></ul> |
 
 ## Other
@@ -53,7 +53,12 @@ Consistent UI makes UX better as users can rely on intuition. Tags make navigati
 
 All tags look like the one above, with different text representing what it does. They are all located at the same spot, along with the Activity Name on the screen while portrait while some shift in landscape mode to allow for more space.
 
-### Brief Explanation of Navigation Between Activities (Li Min)
+### Li Min
+
+## Video for high user input activities (catalogue, customise, edit)
+[a](https://user-images.githubusercontent.com/72980567/128299578-31ce26c2-599e-4f97-95bf-c48968d76cca.mp4)
+
+## Brief Explanation of Navigation Between Activities (Li Min)
 
 <img src="https://user-images.githubusercontent.com/72980567/127614329-7c791051-02b0-481a-a7b1-5a6376b2c898.png" width="600" >
 (Library can be replace with archive in most circumstances. For example, clicking catalogue while in achive then clicking back would bring one back to archive. However, this does not apply to scenarios B, C, and D in 
