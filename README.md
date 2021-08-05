@@ -1,5 +1,8 @@
 # MAD21-Livre-Team04
 
+## App Link
+https://play.google.com/store/apps/details?id=sg.edu.np.mad.livre
+
 ## Team Members
 
 | Name | Student ID |
@@ -10,7 +13,7 @@
 
 ## Description of The app (Livre)
 
-Livre is an app for readers, tracking their reading habits by logging the length of reading sessions. The process of tracking one's reading habits digitally is easier with the ability to search for books in the catalogue and add it to one's library. Books can also be archived or removed to reduce clutter. Users have the flexibility of adding custom books. The app further enhances the reading experience by providing reading analytics and Popular book listings. Users' reading data is saved on the cloud, preserving their precious reading logs, that can still be erased if they choose to. Through making reading more hassle free, Livre is a good companion app for anyone who reads, from casual readers to book worms.
+Livre is an app for readers, tracking their reading habits by logging the length of reading sessions. The process of tracking one's reading habits digitally is easier with the ability to search for books in the catalogue and add it to one's library. Books can also be archived or removed to reduce clutter. Users have the flexibility of adding custom books and editing them. The app further enhances the reading experience by providing reading analytics and Popular book listings. Users' reading data is saved on the cloud, preserving their precious reading logs, that can still be erased if they choose to. Through making reading more hassle free, Livre is a good companion app for anyone who reads, from casual readers to book worms.
 
 ## Roles and Contributions
 
@@ -28,14 +31,26 @@ Livre is an app for readers, tracking their reading habits by logging the length
 
 ### Colour Scheme
 
-<img src="https://user-images.githubusercontent.com/72980567/127611667-19a48fb0-dba0-4dff-a1d2-33d1da013c7f.png" width="600" >
+<img src="https://user-images.githubusercontent.com/72980567/128291575-2cb449f1-06e3-4da8-8c7b-ae51887ee794.png" width="600" >
 - Comforting, not alarming<br/>
 - Associated with nurturement & academia
 
 ### Some Common, Repeated Elements
 
-<img src="https://user-images.githubusercontent.com/72980567/127612422-c2a40495-d836-4a8f-b335-17176cdc1f14.png" width="600" >
-<img src="https://user-images.githubusercontent.com/72980567/127616397-050a5477-311b-4811-951c-d468223ba686.png" width="600" >
+<img src="https://user-images.githubusercontent.com/72980567/128291792-b82312df-578b-4a2c-95e9-a8da79be054c.png" width="600" >
+<img src="https://user-images.githubusercontent.com/72980567/128291645-5c66cb83-b265-4cfb-8349-e3853386456f.png" width="600" >
+
+All tags look like the one above, with different text representing what it does. They are all located at the same spot, along with the Activity Name on the screen while portrait while some shift in landscape mode to allow for more space.
+
+Consistent UI makes UX better as users can rely on intuition. Tags make navigation easier.
+
+### Catalogue Animations
+
+<img src="https://user-images.githubusercontent.com/72980567/128292740-9ca5435b-26cb-4e14-abf3-684014760482.gif" width="200" >
+<img src="https://user-images.githubusercontent.com/72980567/128293059-68fcddf7-5b34-478f-b080-f218394c99fb.gif" width="200" >
+<img src="https://user-images.githubusercontent.com/72980567/128293652-2aed5a19-bffb-4da3-87f7-404ed9bbffc5.gif" width="200" >
+
+
 All tags look like the one above, with different text representing what it does. They are all located at the same spot, along with the Activity Name on the screen while portrait while some shift in landscape mode to allow for more space.
 
 ### Brief Explanation of Navigation Between Activities (Li Min)
@@ -70,7 +85,7 @@ User clicks back (button or tag) when in Customise (and confirmed to delete any 
 
 **6,8**
 <br/>
-User selects a book in Catalogue or clicks done in Customise (and passed validation) respectively and is brought to book details where the details of their book is displayed (no updated to db at this point). Button to add book is shown while the rest are hidden.
+User selects a book in Catalogue or clicks done in Customise (and passed validation) respectively and is brought to book details where the details of their book is displayed (no updated to db at this point). Button to add book is shown while the rest are hidden. Book covers added get made into bitmaps and resized to prevent crashing as putextras.
 <br/>
 <img src="https://user-images.githubusercontent.com/72980567/127618246-092b7ec7-8a47-4f07-bec7-fdeee4bd51a8.png" width="200" >
 <img src="https://user-images.githubusercontent.com/72980567/127620153-3cf548b8-8ad2-4812-8dd4-a509090a916b.png" width="200" >
@@ -97,7 +112,8 @@ Clicking move to archive would update the database and stay on the same activity
 
 **7**
 <br/>
-User is viewing a custom made book that they have not added yet and decided to go back, Bringing them to the customise page with the details still input, ideal for further edits.
+User is viewing a custom made book that they have not added yet and decided to go back, Bringing them to the 
+page with the details still input, ideal for further edits.
 <br/>
 
 **10**
