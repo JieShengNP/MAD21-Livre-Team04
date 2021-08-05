@@ -23,6 +23,9 @@ Livre is an app for readers, tracking their reading habits by logging the length
 | Kua Li Min | <ul><li>Ideator (come up with general ideas, solutions, and logic)</li><li>Designer (app colour scheme, UI, etc.)</li><li>Padlet submitter</li></ul> | <ul><li>Catalogue Activity, Layouts, API calls and putting response into recyclerview</li><li>Book Details Activity and Layouts for all kinds of books and scenarios</li><li>Customise Book Activity and Layout</li><li>Edit Book Activity and layout</li><li>Sections in DBHandler specific to my activities</li><li>Drawing certain images</li><li>Common sections of ReadMe</li><li>Landscape versions of my layouts (configuration changes) with minimal impact</li></ul> |
 | Chow Yun Cong | <ul><li>Music Sourcer</li><li>Application Tester</li><li>App Publisher</li></ul> | <ul><li>Timer(Main) Activity(timing and recording)</li><li>Music Player and Disclaimer</li><li>Logs Database Creation</li><li>Showing of Logs(History)</li><li>Showing of Individual Statistics</li></ul> |
 
+
+
+
 ## Other
 
 ### App Logo
@@ -52,6 +55,9 @@ Consistent UI makes UX better as users can rely on intuition. Tags make navigati
 
 
 All tags look like the one above, with different text representing what it does. They are all located at the same spot, along with the Activity Name on the screen while portrait while some shift in landscape mode to allow for more space.
+
+
+
 
 ### Li Min
 
@@ -156,6 +162,9 @@ User ends up in Bookdetails with no other activities below the stack, going back
 <br/>
 User clicks on book in Library, catalogue button in the library and redirects to Book details showing information about to book.
 
+
+
+
 ### Library and Archive
 #### Library
 This is the Library, where all the books that the user has added will be shown.<br/>
@@ -181,6 +190,9 @@ This option will replace all the user's current data with what the user last upl
 This option will delete the user's current data in the database, if the user wishes to restore their latest cloud data, they can still download from cloud as long as they do not save to cloud after deleting.<br/>
 #### Log out
 This option will log the user out of the app and will redirect them back to the sign in page.<br/>
+
+
+
 
 ### Credits
 All music tracks used are Royalty Free and are licensed under Creative Commons License. <br />
