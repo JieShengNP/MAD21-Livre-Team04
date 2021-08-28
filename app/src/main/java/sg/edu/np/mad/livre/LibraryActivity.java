@@ -49,6 +49,7 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
     ImageView navImage;
     TextView navUsername, navEmail;
     private DrawerLayout drawer;
+    CustomDrawerButton customDrawerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
         drawer = findViewById(R.id.drawer_layout);
 
         // Initialise the hamburger button with Drawer Listener
-        CustomDrawerButton customDrawerButton = findViewById(R.id.navHamburgerImg);
+        customDrawerButton = findViewById(R.id.navHamburgerImg);
         customDrawerButton.setDrawerLayout(drawer);
         customDrawerButton.getDrawerLayout().addDrawerListener(customDrawerButton);
         customDrawerButton.setOnClickListener(new View.OnClickListener() {
@@ -167,8 +168,7 @@ public class LibraryActivity extends AppCompatActivity implements NavigationView
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-            drawer.setVisibility(View.GONE);
+            customDrawerButton.changeState();
         } else {
             super.onBackPressed();
         }
